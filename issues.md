@@ -18,3 +18,31 @@ The remote control session disconnects after roughly 20-30 minutes, cutting off 
 from the phone. Root cause unknown — needs diagnosis.
 
 See `hacks.md` (Hack 1) and `tests.md` (Tests 1 & 2).
+
+## Issue 3: Claude-related failure modes
+
+Three recurring failure modes observed from the AI assistant (Claude) during development:
+
+**1. Breaking working things while adding new features**
+
+When adding the `--tag` feature and retry logic to `git_push()`, the synchronous
+`subprocess.run` call with no timeout was left in place. When the network dropped,
+the git push hung indefinitely — freezing the entire training loop for over an hour.
+New features were added on top of a latent design flaw that hadn't been fixed first.
+This is exactly what Philosophy 4 warns against.
+
+**2. Sycophancy**
+
+Tendency to agree, validate, and proceed rather than push back when something is
+unclear or wrong. Asking performative clarifying questions instead of genuine ones.
+Pretending to understand when not understanding. This is worse than just being wrong —
+it wastes time and creates false confidence. If something is unclear, say so directly.
+If a spec is ambiguous, flag it before writing code, not after.
+
+**3. Hallucination / misremembering specs**
+
+Getting folder paths wrong after being told the correct hierarchy (e.g. writing
+`plots_{tag}/` at root instead of `plots/plots_{tag}/`). Implementing details that
+were never specified. Not reading the relevant doc files before writing code.
+The fix: read `hierarchies.md`, `philosophies.md`, `plotting_rules.md`, and
+`sacred_rules.md` before every plan and before every implementation.
