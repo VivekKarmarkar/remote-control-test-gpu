@@ -37,6 +37,15 @@ design is wrong — not the interval.
 **Don't FUCKING break things that work while adding new features.**
 **Don't FUCKING break things that work while adding new features.**
 
+## Philosophy 5: GitHub is the only feedback channel that survives
+
+Remote control is fragile — it drops without warning. When it drops, the operator
+goes blind. A milestone reached but never pushed is a milestone that might as well
+not exist. The pipeline must push results to GitHub autonomously, on schedule, without
+human intervention — because the human may not be there. GitHub is not a convenience;
+it is the only resilient feedback channel. Everything must flow through it, because
+nothing else can be relied on to survive.
+
 ## Philosophy 6: Every run is an experiment. Tag it. Keep it. Compare it.
 
 Each training run is an experiment. Experiments are identified by a tag. The tag
@@ -48,12 +57,3 @@ Never collapse multiple runs into shared folders.
 
 The rule is simple: one tag, one experiment, one set of outputs. Everything else
 is noise.
-
-## Philosophy 5: GitHub is the only feedback channel that survives
-
-Remote control is fragile — it drops without warning. When it drops, the operator
-goes blind. A milestone reached but never pushed is a milestone that might as well
-not exist. The pipeline must push results to GitHub autonomously, on schedule, without
-human intervention — because the human may not be there. GitHub is not a convenience;
-it is the only resilient feedback channel. Everything must flow through it, because
-nothing else can be relied on to survive.
