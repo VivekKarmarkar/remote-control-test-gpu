@@ -37,6 +37,18 @@ design is wrong — not the interval.
 **Don't FUCKING break things that work while adding new features.**
 **Don't FUCKING break things that work while adding new features.**
 
+## Philosophy 6: Every run is an experiment. Tag it. Keep it. Compare it.
+
+Each training run is an experiment. Experiments are identified by a tag. The tag
+scopes every output — plots, results, logs — so no run overwrites another. The
+hierarchy is not cosmetic; it is the audit trail. When results appear on GitHub,
+the tag tells you exactly which run produced them. If the tag is gone, the
+experiment cannot be reconstructed. Never run without a tag. Never reuse a tag.
+Never collapse multiple runs into shared folders.
+
+The rule is simple: one tag, one experiment, one set of outputs. Everything else
+is noise.
+
 ## Philosophy 5: GitHub is the only feedback channel that survives
 
 Remote control is fragile — it drops without warning. When it drops, the operator
