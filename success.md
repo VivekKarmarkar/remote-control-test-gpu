@@ -7,7 +7,7 @@ remote control and it worked."
 
 ## The magic flow
 
-13 successful training runs fired from a phone over two days of walking.
+13 successful training runs fired from a phone within 90 minutes over two days of walking.
 36,607 steps on day 2, 35,100 steps on day 1. 71K+ steps total. 2+ miles out,
 40+ minutes of continuous remote control. Every run completed. Every result
 pushed to GitHub automatically.
