@@ -56,6 +56,19 @@ training happened). The gap between them is the proof.
 - GitHub Pages hosting — no server needed
 - Polls or listens for new git pushes to update training progress
 
+## Scientific report with data analysis
+
+A LaTeX report covering the full project — what was done, how it worked, and
+the data to back it up. Includes:
+
+- Training run data analysis (accuracy curves, variance across runs, etc.)
+- Code snippets showing key architectural decisions
+- Cylinder chart for CPU/GPU divide — the circle shows the percentage split
+  between CPU and GPU work, the height shows the time spent on each. Two
+  dimensions: what proportion of work goes where, and how long each takes.
+- Discussion of iterative design, the feedback loop, and the core insight
+- Experimental results from trialrun groups 6, 7, and 8
+
 ### Why this matters
 
 The web app doesn't launch training — Claude Code does. That's the magic
