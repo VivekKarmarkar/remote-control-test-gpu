@@ -22,7 +22,7 @@ every 2 minutes from my phone. Everything else emerged from that.
    disk I/O, no CPU-GPU transfers during training
 
 5. **Infrastructural requirements** — phone charged and topped up, Anthropic
-   servers stable, remote control working, auto-suspend disabled. The magic
+   servers stable, remote control working, laptop sleep disabled. The magic
    flow only works when all infrastructure is solid
 
 ## The process
