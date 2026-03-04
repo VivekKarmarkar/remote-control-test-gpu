@@ -1,56 +1,64 @@
 # Ideas
 
-## Strava overlay with location-aware training events
+## The web app
 
-Overlay training events on a walking route map with clickable icons linking
-to GitHub commits. Two types of events need location:
+A single web app (GitHub Pages) that serves as live proof that a neural
+network was trained remotely on a laptop GPU from a phone while walking.
 
-1. **Launch** — when a training run is kicked off from the phone. Can pass
-   `--lat` and `--lng` flags to train.py and embed coordinates in commits.
+### What it does
 
-2. **Viewing results** — when plots/results are opened on the phone while
-   walking. This is the hard part: GitHub has no location hook.
+1. **Finger-sketch inference** — draw a digit on a touch-screen canvas, the
+   model predicts it in the browser. Works before and after training.
+   - Pre-training: random weights, garbage predictions
+   - Post-training: trained weights, accurate predictions
+   - The before/after is the proof
 
-### Solution: location-aware results page
+2. **Live training monitor** — every git push from train.py is logged to the
+   web app. Checkpoint plots appear as training progresses. You watch training
+   happen from your phone while walking.
 
-Instead of viewing raw GitHub commits, host a page (GitHub Pages) that:
-- Shows the training plots
-- Uses the browser Geolocation API to capture lat/lng and timestamp when
-  the page is opened
-- Logs where the user was when they viewed each result
+3. **Location capture** — every interaction (sketch, view, page open) captures
+   lat/lng via the browser Geolocation API. No post-hoc correlation — the
+   proof is baked into the moment of interaction.
 
-Combined with Strava GPS data, this creates a map showing: where runs were
-launched, where results were viewed, and the walking route connecting them.
-Each marker links to the corresponding GitHub commit.
+4. **Commit metadata** — every git push embeds laptop time and location. The
+   distance between the laptop and the phone IS the proof of remote control.
 
-## Finger-sketch inference on phone
+### The flow on a walk
 
-A single HTML page (GitHub Pages) where the user draws a digit with their
-finger on a touch-screen canvas. The trained model runs inference in the
-browser and shows the prediction.
+1. Open web app, draw a digit — garbage prediction (no training yet)
+2. Switch to Claude Code, launch training (the magic moment)
+3. Watch checkpoint plots appear on the web app every 2 minutes
+4. Training completes, new weights available
+5. Draw a digit again — model nails it
+
+All while walking. All location-tracked.
+
+### The map
+
+All events on one map over a walking route:
+
+- **Sketch (pre-training)** — where you drew a digit and got garbage
+- **Launch** — where you kicked off training via Claude Code
+- **Checkpoints** — where you were when each checkpoint appeared
+- **Sketch (post-training)** — where you drew a digit and the model got it right
+
+Each marker shows phone location (where you were) and laptop location (where
+training happened). The gap between them is the proof.
+
+### Implementation
 
 - HTML5 `<canvas>` with touch events for drawing
 - Resize to 28x28, normalize to match MNIST preprocessing
 - Model weights exported as JSON (4 weight matrices, 4 bias vectors)
 - Inference in plain JavaScript — matrix multiply and ReLU, no ML framework
-- Single self-contained HTML file, no server needed
-
-Every sketch-and-predict event also captures location via the browser
-Geolocation API.
-
-## The map
-
-All three event types on one map over a walking route:
-
-1. **Launch** — where training was kicked off from the phone
-2. **View** — where results were opened and viewed
-3. **Sketch** — where a digit was drawn and the model ran inference
-
-Each marker is clickable and links to the corresponding GitHub commit or
-prediction result. The whole journey — train, view, interact — on one map.
+- Browser Geolocation API for location capture
+- GitHub Pages hosting — no server needed
+- Polls or listens for new git pushes to update training progress
 
 ### Why this matters
 
-The proof is baked into the events themselves — not overlaid after the fact.
-The location data comes from the moment of interaction, not from correlating
-two separate data sources by timestamp.
+The web app doesn't launch training — Claude Code does. That's the magic
+moment. The web app is the proof that it all works: a neural network was
+trained on a laptop GPU from a phone via Claude Code's remote control while
+out on a walk.
