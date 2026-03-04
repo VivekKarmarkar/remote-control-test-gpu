@@ -23,6 +23,32 @@ Combined with Strava GPS data, this creates a map showing: where runs were
 launched, where results were viewed, and the walking route connecting them.
 Each marker links to the corresponding GitHub commit.
 
+## Finger-sketch inference on phone
+
+A single HTML page (GitHub Pages) where the user draws a digit with their
+finger on a touch-screen canvas. The trained model runs inference in the
+browser and shows the prediction.
+
+- HTML5 `<canvas>` with touch events for drawing
+- Resize to 28x28, normalize to match MNIST preprocessing
+- Model weights exported as JSON (4 weight matrices, 4 bias vectors)
+- Inference in plain JavaScript — matrix multiply and ReLU, no ML framework
+- Single self-contained HTML file, no server needed
+
+Every sketch-and-predict event also captures location via the browser
+Geolocation API.
+
+## The map
+
+All three event types on one map over a walking route:
+
+1. **Launch** — where training was kicked off from the phone
+2. **View** — where results were opened and viewed
+3. **Sketch** — where a digit was drawn and the model ran inference
+
+Each marker is clickable and links to the corresponding GitHub commit or
+prediction result. The whole journey — train, view, interact — on one map.
+
 ### Why this matters
 
 The proof is baked into the events themselves — not overlaid after the fact.
