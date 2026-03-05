@@ -56,6 +56,38 @@ training happened). The gap between them is the proof.
 - GitHub Pages hosting — no server needed
 - Polls or listens for new git pushes to update training progress
 
+## Screenshot timestamp proof for the magic moment
+
+The hardest thing to prove: that training was launched remotely from the phone.
+The Claude Code app exposes no location data, no timestamps, no device info.
+Uploaded photos lose EXIF metadata. There is no programmatic way to prove the
+launch command came from the phone.
+
+### The solution: paired screenshots
+
+1. **Laptop side (automatic)** — when a GPU run is requested, Claude Code
+   takes a screenshot of the laptop screen before launching. The file has a
+   filesystem timestamp to the second.
+
+2. **Phone side (manual)** — user screenshots the Claude app showing the
+   same launch message. The phone saves the screenshot with a timestamp.
+
+3. **After the walk** — phone screenshots are transferred to the laptop via
+   USB. Timestamps from both sides are extracted and compared. Matching
+   timestamps (seconds apart) prove the command traveled from phone to laptop.
+
+### Why this works
+
+- Laptop screenshot: proves when the command was received (automatic, zero effort)
+- Phone screenshot: proves when the command was sent (one tap per launch)
+- USB transfer preserves raw file metadata (unlike uploading through the Claude app)
+- Timestamps are to-the-second accuracy on both sides
+
+### What it doesn't prove
+
+- Phone location (screenshots have no GPS in EXIF — only photos from the camera do)
+- Still need the web app's browser Geolocation API for location proof
+
 ## Cylinder chart: CPU/GPU operation profiling
 
 A cylinder chart where:

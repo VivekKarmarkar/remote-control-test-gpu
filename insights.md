@@ -25,6 +25,12 @@ every 2 minutes from my phone. Everything else emerged from that.
    servers stable, remote control working, laptop sleep disabled. The magic
    flow only works when all infrastructure is solid
 
+6. **Walk radius constraints** — two limits pull you back to the lab:
+   remote control sessions drop after ~2.5 hours (Anthropic-side, not
+   distance-related), and phone battery drains. Walk radius is whatever
+   you can do within whichever limit hits first. The lab acts as an
+   aid-station — come back, charge, reconnect, head back out
+
 ## The process
 
 None of this was specced upfront. The specs were non-optimal given the model's
