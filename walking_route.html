@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_7e9713904954de067f5a9b1dd987cc79 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;
+     background: rgba(0,0,0,0.8); color: white; padding: 12px 24px; border-radius: 8px;
+     font-family: sans-serif; font-size: 14px; font-weight: bold; text-align: center;">
+     Walking Route — Iowa City<br>
+     <span style="font-weight: normal; font-size: 12px;">
+     Click 📱 to view the git commit pushed while walking
+     </span>
+</div>
+    
+            <div class="folium-map" id="map_7e9713904954de067f5a9b1dd987cc79" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_7e9713904954de067f5a9b1dd987cc79 = L.map(
+                "map_7e9713904954de067f5a9b1dd987cc79",
+                {
+                    center: [41.660810749999996, -91.5375395],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 17,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_40c22d60a2bdc531c493667b5619673e = L.tileLayer(
+                "https://mt1.google.com/vt/lyrs=y\u0026x={x}\u0026y={y}\u0026z={z}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Google Satellite",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_40c22d60a2bdc531c493667b5619673e.addTo(map_7e9713904954de067f5a9b1dd987cc79);
+        
+    
+            var poly_line_de8566793331b60c5d60f4bbeebeb931 = L.polyline(
+                [[41.65974, -91.537403], [41.660283, -91.537554], [41.661293, -91.537517], [41.661927, -91.537684]],
+                {"bubblingMouseEvents": true, "color": "#FF4136", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF4136", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
+        
+    
+            var marker_4d4cc60b63f7fba452d2d25228fb1d48 = L.marker(
+                [41.65974, -91.537403],
+                {
+}
+            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
+        
+    
+            var icon_fe41c5770d7c2f23b7db21582edfe4f2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "play",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7785a254cec204cacffaf602ea668969 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_66901b98d05f67e4b8dde86f8c2fffbe = $(`<div id="html_66901b98d05f67e4b8dde86f8c2fffbe" style="width: 100.0%; height: 100.0%;">Pin 1 — Start</div>`)[0];
+                popup_7785a254cec204cacffaf602ea668969.setContent(html_66901b98d05f67e4b8dde86f8c2fffbe);
+            
+        
+
+        marker_4d4cc60b63f7fba452d2d25228fb1d48.bindPopup(popup_7785a254cec204cacffaf602ea668969)
+        ;
+
+        
+    
+    
+                marker_4d4cc60b63f7fba452d2d25228fb1d48.setIcon(icon_fe41c5770d7c2f23b7db21582edfe4f2);
+            
+    
+            var marker_2ccb7be37143a229824ec1ae0b0a2610 = L.marker(
+                [41.661927, -91.537684],
+                {
+}
+            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
+        
+    
+            var icon_886f16b5c351a80c5f6293e2e5aa58c2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "stop",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f9a69deec4ad67d3d3c638ec73985d3a = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b6eaed0de837e906bff628d90b853da1 = $(`<div id="html_b6eaed0de837e906bff628d90b853da1" style="width: 100.0%; height: 100.0%;">Pin 4 — N Madison St</div>`)[0];
+                popup_f9a69deec4ad67d3d3c638ec73985d3a.setContent(html_b6eaed0de837e906bff628d90b853da1);
+            
+        
+
+        marker_2ccb7be37143a229824ec1ae0b0a2610.bindPopup(popup_f9a69deec4ad67d3d3c638ec73985d3a)
+        ;
+
+        
+    
+    
+                marker_2ccb7be37143a229824ec1ae0b0a2610.setIcon(icon_886f16b5c351a80c5f6293e2e5aa58c2);
+            
+    
+            var circle_marker_9a531853da0f61daa254344929bf0cd7 = L.circleMarker(
+                [41.660283, -91.537554],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0074D9", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
+        
+    
+        var popup_85b0f9a9f2a03ae48baf5d8dc90870eb = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_952b314aff24cb09943a5c16c06ea321 = $(`<div id="html_952b314aff24cb09943a5c16c06ea321" style="width: 100.0%; height: 100.0%;">Pin 2</div>`)[0];
+                popup_85b0f9a9f2a03ae48baf5d8dc90870eb.setContent(html_952b314aff24cb09943a5c16c06ea321);
+            
+        
+
+        circle_marker_9a531853da0f61daa254344929bf0cd7.bindPopup(popup_85b0f9a9f2a03ae48baf5d8dc90870eb)
+        ;
+
+        
+    
+    
+            var circle_marker_634a17c26f4d76f2dd2a4a55b819a837 = L.circleMarker(
+                [41.661293, -91.537517],
+                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0074D9", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
+            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
+        
+    
+        var popup_2808506dc4a2359805fc3f2306667524 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6b94a0ed7c3988daa255413b42a95066 = $(`<div id="html_6b94a0ed7c3988daa255413b42a95066" style="width: 100.0%; height: 100.0%;">Pin 3</div>`)[0];
+                popup_2808506dc4a2359805fc3f2306667524.setContent(html_6b94a0ed7c3988daa255413b42a95066);
+            
+        
+
+        circle_marker_634a17c26f4d76f2dd2a4a55b819a837.bindPopup(popup_2808506dc4a2359805fc3f2306667524)
+        ;
+
+        
+    
+    
+            var marker_d49d3df5d8ee2323c71eb9d3ef56b1a0 = L.marker(
+                [41.660889, -91.5375318],
+                {
+}
+            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
+        
+    
+            var div_icon_a421738071d1548e2e703b26ce356777 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size: 28px; text-align: center;\"\u003e\ud83d\udcf1\u003c/div\u003e",
+  "iconSize": [35, 35],
+  "iconAnchor": [17, 17],
+  "className": "empty",
+});
+        
+    
+        var popup_93050b4d8116ee74ee212cdc0448a772 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_f6b3452a53c398006b13874bdecd1b84 = $(`<div id="html_f6b3452a53c398006b13874bdecd1b84" style="width: 100.0%; height: 100.0%;"> <div style="font-family: sans-serif; text-align: center;">     <b>git push — checkpoint</b><br>     <code>99ce763</code><br>     <a href="https://github.com/VivekKarmarkar/remote-control-test-gpu/commit/99ce763" target="_blank" style="color: #0074D9; font-weight: bold;">         View commit on GitHub →     </a> </div> </div>`)[0];
+                popup_93050b4d8116ee74ee212cdc0448a772.setContent(html_f6b3452a53c398006b13874bdecd1b84);
+            
+        
+
+        marker_d49d3df5d8ee2323c71eb9d3ef56b1a0.bindPopup(popup_93050b4d8116ee74ee212cdc0448a772)
+        ;
+
+        
+    
+    
+                marker_d49d3df5d8ee2323c71eb9d3ef56b1a0.setIcon(div_icon_a421738071d1548e2e703b26ce356777);
+            
+</script>
+</html>

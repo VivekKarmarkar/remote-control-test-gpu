@@ -13,7 +13,7 @@ network was trained remotely on a laptop GPU from a phone while walking.
    - Post-training: trained weights, accurate predictions
    - The before/after is the proof
 
-2. **Live training monitor** — every git push from train.py is logged to the
+2. **Live training monitor** — every git push from nn_mnist_gpu.py is logged to the
    web app. Checkpoint plots appear as training progresses. You watch training
    happen from your phone while walking.
 
@@ -94,7 +94,7 @@ A cylinder chart where:
 - **Pie (circular cross-section)**: percentage of total work done by CPU vs GPU
 - **Height per slice**: time per operation for that category
 
-This requires thoroughly tracing EVERY operation in train.py and categorizing
+This requires thoroughly tracing EVERY operation in nn_mnist_gpu.py and categorizing
 each as CPU or GPU, with actual measured time per operation.
 
 ### GPU operations to profile

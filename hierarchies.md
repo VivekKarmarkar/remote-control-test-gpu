@@ -34,5 +34,5 @@ logs/                           ← top-level folder for all training logs
 - Inside `plots/` and `results/`: one subfolder per tag (`plots_{tag}/`, `results_{tag}/`)
 - Inside `logs/`: files are flat — no subfolders, just `log_{tag}.log` directly
 - Default tag = timestamp (e.g. `20260302_143000`)
-- Tag is always passed at launch: `python train.py --tag <tag>`
+- Tag is always passed at launch: `python nn_mnist_gpu.py --tag <tag>`
 - Never write outputs outside these three top-level folders

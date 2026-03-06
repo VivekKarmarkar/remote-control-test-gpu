@@ -9,7 +9,7 @@ alive but spins forever on a GPU call that will never complete.
 ### Option 1: Per-run inhibit (preferred)
 
 ```bash
-systemd-inhibit --what=sleep --why="GPU training" .venv/bin/python train.py --tag <tag>
+systemd-inhibit --what=sleep --why="GPU training" .venv/bin/python nn_mnist_gpu.py --tag <tag>
 ```
 
 ### Option 2: Disable sleep system-wide for the session

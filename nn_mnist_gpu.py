@@ -92,15 +92,23 @@ class MLP(nn.Module):
 
 def load_data():
     train_ds = datasets.MNIST(root='data', train=True, download=True)
-    val_ds = datasets.MNIST(root='data', train=False, download=True)
+    test_ds = datasets.MNIST(root='data', train=False, download=True)
 
-    X_train = train_ds.data.float().div(255).view(-1, 784).cuda()
-    y_train = train_ds.targets.cuda()
-    X_val = val_ds.data.float().div(255).view(-1, 784).cuda()
-    y_val = val_ds.targets.cuda()
+    # Split 60K into 50K train + 10K val
+    X_all = train_ds.data.float().div(255).view(-1, 784)
+    y_all = train_ds.targets
+    perm = torch.randperm(len(X_all))
+    X_train = X_all[perm[:50000]].cuda()
+    y_train = y_all[perm[:50000]].cuda()
+    X_val = X_all[perm[50000:]].cuda()
+    y_val = y_all[perm[50000:]].cuda()
 
-    print(f"Data loaded to GPU: train={X_train.shape}, val={X_val.shape}")
-    return X_train, y_train, X_val, y_val
+    # 10K test set — held out, only used for final evaluation
+    X_test = test_ds.data.float().div(255).view(-1, 784).cuda()
+    y_test = test_ds.targets.cuda()
+
+    print(f"Data loaded to GPU: train={X_train.shape}, val={X_val.shape}, test={X_test.shape}")
+    return X_train, y_train, X_val, y_val, X_test, y_test
 
 
 # ── Git push ─────────────────────────────────────────────────────────────────
@@ -379,7 +387,7 @@ def plot_confusion_matrix(model, X_val, y_val, results_dir):
     ax.set_yticks(range(10))
     ax.set_xlabel('Predicted Label')
     ax.set_ylabel('True Label')
-    ax.set_title(f'Confusion Matrix \u2014 Validation Set (N={len(labels):,})')
+    ax.set_title(f'Confusion Matrix \u2014 Test Set (N={len(labels):,})')
     ax.grid(False)
     ax.spines['top'].set_visible(True)
     ax.spines['right'].set_visible(True)
@@ -417,7 +425,7 @@ def main():
     print(f"{'='*60}")
 
     setup_style()
-    X_train, y_train, X_val, y_val = load_data()
+    X_train, y_train, X_val, y_val, X_test, y_test = load_data()
 
     model = MLP().cuda()
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
@@ -496,15 +504,24 @@ def main():
             next_checkpoint += CHECKPOINT_INTERVAL
             print()
 
+    # Final evaluation on held-out test set
+    model.eval()
+    with torch.no_grad():
+        test_out = model(X_test)
+        test_acc = 100 * (test_out.argmax(1) == y_test).sum().item() / y_test.shape[0]
+        test_loss = criterion(test_out, y_test).item()
+
     print(f"\n{'='*60}")
-    print("Training complete. Generating final visualizations...")
+    print("Training complete.")
+    print(f"Test set: loss={test_loss:.4f}, acc={test_acc:.1f}%")
+    print("Generating final visualizations (on test set)...")
     print(f"{'='*60}")
 
     plot_training_curves(metrics, results_dir)
-    plot_easy_wins(model, X_val, y_val, results_dir)
-    plot_edge_cases(model, X_val, y_val, results_dir)
-    plot_failures(model, X_val, y_val, results_dir)
-    plot_confusion_matrix(model, X_val, y_val, results_dir)
+    plot_easy_wins(model, X_test, y_test, results_dir)
+    plot_edge_cases(model, X_test, y_test, results_dir)
+    plot_failures(model, X_test, y_test, results_dir)
+    plot_confusion_matrix(model, X_test, y_test, results_dir)
 
     push_threads.append(
         git_push(f"final results [{tag}]", results_dir))
