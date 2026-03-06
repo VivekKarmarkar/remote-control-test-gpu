@@ -1,273 +1,319 @@
 <!DOCTYPE html>
 <html>
 <head>
-    
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Walking Route — Iowa City</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
-    
-            <meta name="viewport" content="width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-            <style>
-                #map_7e9713904954de067f5a9b1dd987cc79 {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            </style>
-
-            <style>html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            </style>
-
-            <style>#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            </style>
-
-            <script>
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            </script>
-
-        
+    <style>
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+        #map { position: absolute; inset: 0; }
+        .header {
+            position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;
+            background: rgba(0,0,0,0.85); color: white; padding: 14px 28px; border-radius: 10px;
+            font-family: sans-serif; font-size: 15px; font-weight: bold; text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .header small { font-weight: normal; font-size: 12px; color: #aaa; }
+        .legend {
+            position: fixed; bottom: 20px; left: 14px; z-index: 1000;
+            background: rgba(0,0,0,0.85); color: white; padding: 12px 16px; border-radius: 8px;
+            font-family: sans-serif; font-size: 12px; line-height: 1.8;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .legend-dot {
+            display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+            margin-right: 6px; vertical-align: middle;
+        }
+        .commit-popup { font-family: sans-serif; text-align: center; line-height: 1.6; }
+        .commit-popup b { font-size: 13px; }
+        .commit-popup code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+        .commit-popup a { color: #0074D9; font-weight: bold; text-decoration: none; }
+        .commit-popup a:hover { text-decoration: underline; }
+        .pin-popup { font-family: sans-serif; font-size: 13px; }
+        .walker-dot {
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #2ECC40; border: 3px solid white;
+            box-shadow: 0 0 12px rgba(46, 204, 64, 0.6);
+        }
+        .walker-pulse { animation: pulse 1.5s ease-in-out infinite; }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(46, 204, 64, 0.6); }
+            50% { box-shadow: 0 0 24px rgba(46, 204, 64, 0.9); }
+        }
+        .playback {
+            position: fixed; bottom: 20px; right: 14px; z-index: 1000;
+            background: rgba(0,0,0,0.85); color: white; padding: 10px 16px; border-radius: 8px;
+            font-family: sans-serif; font-size: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .playback button {
+            background: #2ECC40; color: white; border: none; border-radius: 6px;
+            padding: 6px 14px; cursor: pointer; font-size: 13px; font-weight: bold;
+        }
+        .playback button:hover { background: #27ae60; }
+        .playback button.paused { background: #FF851B; }
+        .playback-time { min-width: 80px; text-align: center; font-variant-numeric: tabular-nums; }
+    </style>
 </head>
 <body>
-    
-    
-<div style="position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 1000;
-     background: rgba(0,0,0,0.8); color: white; padding: 12px 24px; border-radius: 8px;
-     font-family: sans-serif; font-size: 14px; font-weight: bold; text-align: center;">
-     Walking Route — Iowa City<br>
-     <span style="font-weight: normal; font-size: 12px;">
-     Click 📱 to view the git commit pushed while walking
-     </span>
+
+<div class="header">
+    Walking Route — Iowa City
+    <br><small>Click the phone emojis to view git commits pushed while walking</small>
 </div>
-    
-            <div class="folium-map" id="map_7e9713904954de067f5a9b1dd987cc79" ></div>
-        
-</body>
+
+<div class="legend">
+    <div><span class="legend-dot" style="background:#2ECC40;"></span> Start</div>
+    <div><span class="legend-dot" style="background:#FF4136;"></span> End</div>
+    <div><span class="legend-dot" style="background:#0074D9;"></span> Pin drop (every 2 min)</div>
+    <div style="margin-top: 4px;">&#11088; Training launched from phone</div>
+    <div>&#128241; Git commit pushed while walking</div>
+</div>
+
+<div class="playback">
+    <button id="playBtn" onclick="togglePlay()">&#9654; Play</button>
+    <span class="playback-time" id="timeLabel"></span>
+    <input type="range" id="scrubber" min="0" max="1000" value="0" style="width: 140px; cursor: pointer;"
+           oninput="scrub(this.value)">
+    <span style="color: #aaa;">&times;</span>
+    <select id="speedSelect" onchange="setSpeed(this.value)" style="background: #333; color: white; border: 1px solid #555; border-radius: 4px; padding: 2px;">
+        <option value="1">1&times;</option>
+        <option value="2" selected>2&times;</option>
+        <option value="4">4&times;</option>
+        <option value="8">8&times;</option>
+    </select>
+</div>
+
+<div id="map"></div>
+
 <script>
-    
-    
-            var map_7e9713904954de067f5a9b1dd987cc79 = L.map(
-                "map_7e9713904954de067f5a9b1dd987cc79",
-                {
-                    center: [41.660810749999996, -91.5375395],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  "zoom": 17,
-  "zoomControl": true,
-  "preferCanvas": false,
-}
+const pins = [
+    {lat: 41.66037, lng: -91.53749, time: '7:20:', label: 'Start'},
+    {lat: 41.66085, lng: -91.5375, time: '7:22:', label: 'Pin 2'},
+    {lat: 41.66116, lng: -91.5376, time: '7:24:', label: 'Pin 3'},
+    {lat: 41.66172, lng: -91.53754, time: '7:26:', label: 'Pin 4'},
+    {lat: 41.66222, lng: -91.53748, time: '7:28:', label: 'Pin 5'},
+    {lat: 41.66237, lng: -91.53691, time: '7:30:', label: 'Pin 6'},
+    {lat: 41.66249, lng: -91.53636, time: '7:32:', label: 'Pin 7'},
+    {lat: 41.66249, lng: -91.53613, time: '7:34:', label: 'Pin 8'},
+    {lat: 41.66315, lng: -91.53601, time: '7:36:', label: 'Pin 9'},
+    {lat: 41.66366, lng: -91.53609, time: '7:38:', label: 'Pin 10'},
+    {lat: 41.6637, lng: -91.53638, time: '7:40:', label: 'Pin 11'},
+    {lat: 41.6637, lng: -91.53713, time: '7:42:', label: 'Pin 12'},
+    {lat: 41.66372, lng: -91.53751, time: '7:44:', label: 'Pin 13'},
+    {lat: 41.66331, lng: -91.53766, time: '7:46:', label: 'Pin 14'},
+    {lat: 41.66256, lng: -91.53784, time: '7:48:', label: 'Pin 15'},
+    {lat: 41.66193, lng: -91.53768, time: '7:50:', label: 'Pin 16'},
+    {lat: 41.66116, lng: -91.5376, time: '7:52:', label: 'Pin 17'},
+    {lat: 41.66077, lng: -91.53769, time: '7:54:', label: 'Pin 18'},
+    {lat: 41.66042, lng: -91.53769, time: '7:56:', label: 'End'}
+];
 
-                }
-            );
+const commits = [
+    {
+        hash: '5283d13', label: 'checkpoint 2min',
+        lat: 41.66237, lng: -91.53691,
+        url: 'https://github.com/VivekKarmarkar/remote-control-test-gpu/commit/5283d13',
+    },
+    {
+        hash: '21da022', label: 'checkpoint 4min',
+        lat: 41.66249, lng: -91.53636,
+        url: 'https://github.com/VivekKarmarkar/remote-control-test-gpu/commit/21da022',
+    },
+    {
+        hash: 'b420a34', label: 'checkpoint 6min',
+        lat: 41.66249, lng: -91.53613,
+        url: 'https://github.com/VivekKarmarkar/remote-control-test-gpu/commit/b420a34',
+    },
+    {
+        hash: 'cb5d95e', label: 'checkpoint 8min',
+        lat: 41.66315, lng: -91.53601,
+        url: 'https://github.com/VivekKarmarkar/remote-control-test-gpu/commit/cb5d95e',
+    },
+    {
+        hash: '00a9e3f', label: 'final results',
+        lat: 41.66368, lng: -91.536235,
+        url: 'https://github.com/VivekKarmarkar/remote-control-test-gpu/commit/00a9e3f',
+    }
+];
 
-            
+const launchPin = {lat: 41.66222, lng: -91.53748};
 
-        
-    
-            var tile_layer_40c22d60a2bdc531c493667b5619673e = L.tileLayer(
-                "https://mt1.google.com/vt/lyrs=y\u0026x={x}\u0026y={y}\u0026z={z}",
-                {
-  "minZoom": 0,
-  "maxZoom": 18,
-  "maxNativeZoom": 18,
-  "noWrap": false,
-  "attribution": "Google Satellite",
-  "subdomains": "abc",
-  "detectRetina": false,
-  "tms": false,
-  "opacity": 1,
-}
+const center = [
+    pins.reduce((s, p) => s + p.lat, 0) / pins.length,
+    pins.reduce((s, p) => s + p.lng, 0) / pins.length,
+];
 
-            );
-        
-    
-            tile_layer_40c22d60a2bdc531c493667b5619673e.addTo(map_7e9713904954de067f5a9b1dd987cc79);
-        
-    
-            var poly_line_de8566793331b60c5d60f4bbeebeb931 = L.polyline(
-                [[41.65974, -91.537403], [41.660283, -91.537554], [41.661293, -91.537517], [41.661927, -91.537684]],
-                {"bubblingMouseEvents": true, "color": "#FF4136", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#FF4136", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 5}
-            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
-        
-    
-            var marker_4d4cc60b63f7fba452d2d25228fb1d48 = L.marker(
-                [41.65974, -91.537403],
-                {
-}
-            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
-        
-    
-            var icon_fe41c5770d7c2f23b7db21582edfe4f2 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "green",
-  "iconColor": "white",
-  "icon": "play",
-  "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
-}
-            );
-        
-    
-        var popup_7785a254cec204cacffaf602ea668969 = L.popup({
-  "maxWidth": "100%",
+const map = L.map('map', {center, zoom: 17, zoomControl: true});
+
+L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    maxZoom: 20, attribution: 'Google Satellite',
+}).addTo(map);
+
+const routeCoords = pins.map(p => [p.lat, p.lng]);
+L.polyline(routeCoords, {
+    color: '#FF4136', weight: 5, opacity: 0.9,
+    lineCap: 'round', lineJoin: 'round',
+}).addTo(map);
+
+pins.forEach((pin, i) => {
+    const isStart = i === 0;
+    const isEnd = i === pins.length - 1;
+    const marker = L.circleMarker([pin.lat, pin.lng], {
+        radius: (isStart || isEnd) ? 10 : 6,
+        fillColor: isStart ? '#2ECC40' : (isEnd ? '#FF4136' : '#0074D9'),
+        color: 'white', weight: (isStart || isEnd) ? 3 : 2,
+        fillOpacity: (isStart || isEnd) ? 1 : 0.9,
+    }).addTo(map);
+    marker.bindPopup('<div class="pin-popup"><b>' + pin.label + '</b><br>' + pin.time + '</div>');
 });
 
-        
-            
-                var html_66901b98d05f67e4b8dde86f8c2fffbe = $(`<div id="html_66901b98d05f67e4b8dde86f8c2fffbe" style="width: 100.0%; height: 100.0%;">Pin 1 — Start</div>`)[0];
-                popup_7785a254cec204cacffaf602ea668969.setContent(html_66901b98d05f67e4b8dde86f8c2fffbe);
-            
-        
+commits.forEach(commit => {
+    const icon = L.divIcon({
+        html: '<div style="font-size: 26px; text-align: center; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">&#128241;</div>',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        className: '',
+    });
+    const marker = L.marker([commit.lat, commit.lng], {icon}).addTo(map);
+    marker.bindPopup(
+        '<div class="commit-popup"><b>' + commit.label + '</b><br>' +
+        '<code>' + commit.hash + '</code><br>' +
+        '<a href="' + commit.url + '" target="_blank">View commit on GitHub &rarr;</a></div>',
+        {maxWidth: 250}
+    );
+});
 
-        marker_4d4cc60b63f7fba452d2d25228fb1d48.bindPopup(popup_7785a254cec204cacffaf602ea668969)
-        ;
 
-        
-    
-    
-                marker_4d4cc60b63f7fba452d2d25228fb1d48.setIcon(icon_fe41c5770d7c2f23b7db21582edfe4f2);
-            
-    
-            var marker_2ccb7be37143a229824ec1ae0b0a2610 = L.marker(
-                [41.661927, -91.537684],
-                {
+// ── Launch marker ────────────────────────────────────────────────────
+const launchIcon = L.divIcon({
+    html: '<div style="font-size: 36px; text-align: center; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7));">⭐</div>',
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+    className: '',
+});
+const launchMarkerEl = L.marker([launchPin.lat, launchPin.lng], {icon: launchIcon, zIndexOffset: 900}).addTo(map);
+launchMarkerEl.bindPopup(`
+    <div class="commit-popup">
+        <b>Training launched</b><br>
+        <span style="color: #888;">Fired from phone</span>
+    </div>
+`, {maxWidth: 280});
+
+
+map.fitBounds(L.polyline(routeCoords).getBounds().pad(0.1));
+
+// ── Animated walker ──────────────────────────────────────────────────
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+const segDists = [];
+let totalDist = 0;
+for (let i = 1; i < routeCoords.length; i++) {
+    totalDist += map.distance(routeCoords[i - 1], routeCoords[i]);
+    segDists.push(totalDist);
 }
-            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
-        
-    
-            var icon_886f16b5c351a80c5f6293e2e5aa58c2 = L.AwesomeMarkers.icon(
-                {
-  "markerColor": "red",
-  "iconColor": "white",
-  "icon": "stop",
-  "prefix": "fa",
-  "extraClasses": "fa-rotate-0",
+
+function posAtProgress(progress) {
+    const targetDist = progress * totalDist;
+    if (progress <= 0) return routeCoords[0];
+    if (progress >= 1) return routeCoords[routeCoords.length - 1];
+    for (let i = 0; i < segDists.length; i++) {
+        const segStart = i === 0 ? 0 : segDists[i - 1];
+        if (targetDist <= segDists[i]) {
+            const segT = (targetDist - segStart) / (segDists[i] - segStart);
+            return [
+                lerp(routeCoords[i][0], routeCoords[i + 1][0], segT),
+                lerp(routeCoords[i][1], routeCoords[i + 1][1], segT),
+            ];
+        }
+    }
+    return routeCoords[routeCoords.length - 1];
 }
-            );
-        
-    
-        var popup_f9a69deec4ad67d3d3c638ec73985d3a = L.popup({
-  "maxWidth": "100%",
-});
 
-        
-            
-                var html_b6eaed0de837e906bff628d90b853da1 = $(`<div id="html_b6eaed0de837e906bff628d90b853da1" style="width: 100.0%; height: 100.0%;">Pin 4 — N Madison St</div>`)[0];
-                popup_f9a69deec4ad67d3d3c638ec73985d3a.setContent(html_b6eaed0de837e906bff628d90b853da1);
-            
-        
+const walkEndMin = (pins.length - 1) * 2;
 
-        marker_2ccb7be37143a229824ec1ae0b0a2610.bindPopup(popup_f9a69deec4ad67d3d3c638ec73985d3a)
-        ;
-
-        
-    
-    
-                marker_2ccb7be37143a229824ec1ae0b0a2610.setIcon(icon_886f16b5c351a80c5f6293e2e5aa58c2);
-            
-    
-            var circle_marker_9a531853da0f61daa254344929bf0cd7 = L.circleMarker(
-                [41.660283, -91.537554],
-                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0074D9", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
-            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
-        
-    
-        var popup_85b0f9a9f2a03ae48baf5d8dc90870eb = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_952b314aff24cb09943a5c16c06ea321 = $(`<div id="html_952b314aff24cb09943a5c16c06ea321" style="width: 100.0%; height: 100.0%;">Pin 2</div>`)[0];
-                popup_85b0f9a9f2a03ae48baf5d8dc90870eb.setContent(html_952b314aff24cb09943a5c16c06ea321);
-            
-        
-
-        circle_marker_9a531853da0f61daa254344929bf0cd7.bindPopup(popup_85b0f9a9f2a03ae48baf5d8dc90870eb)
-        ;
-
-        
-    
-    
-            var circle_marker_634a17c26f4d76f2dd2a4a55b819a837 = L.circleMarker(
-                [41.661293, -91.537517],
-                {"bubblingMouseEvents": true, "color": "white", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0074D9", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 2}
-            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
-        
-    
-        var popup_2808506dc4a2359805fc3f2306667524 = L.popup({
-  "maxWidth": "100%",
-});
-
-        
-            
-                var html_6b94a0ed7c3988daa255413b42a95066 = $(`<div id="html_6b94a0ed7c3988daa255413b42a95066" style="width: 100.0%; height: 100.0%;">Pin 3</div>`)[0];
-                popup_2808506dc4a2359805fc3f2306667524.setContent(html_6b94a0ed7c3988daa255413b42a95066);
-            
-        
-
-        circle_marker_634a17c26f4d76f2dd2a4a55b819a837.bindPopup(popup_2808506dc4a2359805fc3f2306667524)
-        ;
-
-        
-    
-    
-            var marker_d49d3df5d8ee2323c71eb9d3ef56b1a0 = L.marker(
-                [41.660889, -91.5375318],
-                {
+function progressToTime(progress) {
+    const startParts = pins[0].time.split(':');
+    const startH = parseInt(startParts[0]);
+    const startM = parseInt(startParts[1]);
+    const totalMin = startM + progress * walkEndMin;
+    const h = startH + Math.floor(totalMin / 60);
+    const m = Math.floor(totalMin % 60);
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
 }
-            ).addTo(map_7e9713904954de067f5a9b1dd987cc79);
-        
-    
-            var div_icon_a421738071d1548e2e703b26ce356777 = L.divIcon({
-  "html": "\u003cdiv style=\"font-size: 28px; text-align: center;\"\u003e\ud83d\udcf1\u003c/div\u003e",
-  "iconSize": [35, 35],
-  "iconAnchor": [17, 17],
-  "className": "empty",
+
+const walkerIcon = L.divIcon({
+    html: '<div class="walker-dot walker-pulse"></div>',
+    iconSize: [24, 24], iconAnchor: [12, 12], className: '',
 });
-        
-    
-        var popup_93050b4d8116ee74ee212cdc0448a772 = L.popup({
-  "maxWidth": 250,
-});
+const walkerMarker = L.marker(routeCoords[0], {icon: walkerIcon, zIndexOffset: 1000}).addTo(map);
 
-        
-            
-                var html_f6b3452a53c398006b13874bdecd1b84 = $(`<div id="html_f6b3452a53c398006b13874bdecd1b84" style="width: 100.0%; height: 100.0%;"> <div style="font-family: sans-serif; text-align: center;">     <b>git push — checkpoint</b><br>     <code>99ce763</code><br>     <a href="https://github.com/VivekKarmarkar/remote-control-test-gpu/commit/99ce763" target="_blank" style="color: #0074D9; font-weight: bold;">         View commit on GitHub →     </a> </div> </div>`)[0];
-                popup_93050b4d8116ee74ee212cdc0448a772.setContent(html_f6b3452a53c398006b13874bdecd1b84);
-            
-        
+const trail = L.polyline([], {
+    color: '#2ECC40', weight: 3, opacity: 0.7,
+    lineCap: 'round', lineJoin: 'round',
+}).addTo(map);
 
-        marker_d49d3df5d8ee2323c71eb9d3ef56b1a0.bindPopup(popup_93050b4d8116ee74ee212cdc0448a772)
-        ;
+let playing = false, progress = 0, speed = 2, lastTimestamp = null;
 
-        
-    
-    
-                marker_d49d3df5d8ee2323c71eb9d3ef56b1a0.setIcon(div_icon_a421738071d1548e2e703b26ce356777);
-            
+function updateWalker(p) {
+    progress = Math.max(0, Math.min(1, p));
+    const pos = posAtProgress(progress);
+    walkerMarker.setLatLng(pos);
+    const trailCoords = [routeCoords[0]];
+    const targetDist = progress * totalDist;
+    for (let i = 0; i < segDists.length; i++) {
+        if (segDists[i] <= targetDist) trailCoords.push(routeCoords[i + 1]);
+        else { trailCoords.push(pos); break; }
+    }
+    trail.setLatLngs(trailCoords);
+    document.getElementById('timeLabel').textContent = progressToTime(progress);
+    document.getElementById('scrubber').value = Math.round(progress * 1000);
+}
+
+function animate(timestamp) {
+    if (!playing) return;
+    if (lastTimestamp === null) lastTimestamp = timestamp;
+    const dt = timestamp - lastTimestamp;
+    lastTimestamp = timestamp;
+    progress += dt * speed / (walkEndMin * 1000);
+    if (progress >= 1) {
+        progress = 1; playing = false;
+        document.getElementById('playBtn').innerHTML = '&#8634; Replay';
+        document.getElementById('playBtn').className = '';
+    }
+    updateWalker(progress);
+    if (playing) requestAnimationFrame(animate);
+}
+
+function togglePlay() {
+    const btn = document.getElementById('playBtn');
+    if (progress >= 1) {
+        progress = 0; playing = true; lastTimestamp = null;
+        btn.innerHTML = '&#9208; Pause'; btn.className = 'paused';
+        requestAnimationFrame(animate);
+    } else if (playing) {
+        playing = false; lastTimestamp = null;
+        btn.innerHTML = '&#9654; Play'; btn.className = '';
+    } else {
+        playing = true; lastTimestamp = null;
+        btn.innerHTML = '&#9208; Pause'; btn.className = 'paused';
+        requestAnimationFrame(animate);
+    }
+}
+
+function scrub(val) {
+    playing = false; lastTimestamp = null;
+    updateWalker(val / 1000);
+    document.getElementById('playBtn').innerHTML = '&#9654; Play';
+    document.getElementById('playBtn').className = '';
+}
+
+function setSpeed(val) { speed = parseFloat(val); }
+
+updateWalker(0);
 </script>
+</body>
 </html>

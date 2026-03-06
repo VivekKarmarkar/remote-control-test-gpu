@@ -27,12 +27,9 @@ runs independently.
 Training finishes after 8 minutes. Final results push to GitHub.
 
 You come back. You tell me you're back. I ask "terminate data collection for this
-tag?" — then I run `process_pins.py --tag <tag> --commits <hashes> --launch-pin <N>`.
-That script commits and pushes the pin data, resolves coordinates, generates the
-interactive HTML map and static PNG, and pushes those too. I screenshot the checkpoint
-commit on GitHub via Playwright, copy the training curves and result plots from
-`results/results_<tag>/`, update `data.ts` with the real pin coordinates, update
-`WalkingMap.tsx` with the real commit hashes and accuracy, and render the video with
-Remotion.
+tag?" — then I extract coordinates from `pins/pins_<tag>/pins.txt`, screenshot the checkpoint commit on GitHub via Playwright, copy the
+training curves from `results/results_<tag>/`, update `data.ts` with the real pin
+coordinates, update `WalkingMap.tsx` with the real commit hash and accuracy, and
+render the video with Remotion.
 
 You watch it. Done.
