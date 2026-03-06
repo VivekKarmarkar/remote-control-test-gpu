@@ -27,10 +27,14 @@ results/                        ← top-level folder for all final visualization
 
 logs/                           ← top-level folder for all training logs
     log_{tag}.log               ← training log for run {tag} (flat inside logs/)
+
+pins/                           ← top-level folder for all pin drop data
+    pins_{tag}/                 ← pin drops for run {tag}
+        pins.txt                ← timestamped pin URLs collected during walk
 ```
 
 **Rules:**
-- Three fixed top-level folders: `plots/`, `results/`, `logs/`
+- Four fixed top-level folders: `plots/`, `results/`, `logs/`, `pins/`
 - Inside `plots/` and `results/`: one subfolder per tag (`plots_{tag}/`, `results_{tag}/`)
 - Inside `logs/`: files are flat — no subfolders, just `log_{tag}.log` directly
 - Default tag = timestamp (e.g. `20260302_143000`)

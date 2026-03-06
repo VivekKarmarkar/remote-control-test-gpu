@@ -61,15 +61,24 @@ pushes its own checkpoints independently.
 
 ### During the walk
 
-1. Launch training:
+**Critical ordering: walk first, launch second.**
+
+At 1.5 mph, checkpoint 1 fires at T_launch + 120s — only 0.05 miles from the laptop.
+Training ends at T_launch + 480s — only ~0.2 miles away. The demo only works if
+T_launch happens after you are already ≥0.25 miles from the laptop.
+
+1. Leave the laptop. Drop a Google Maps pin at the starting point.
+2. Paste the URL into Claude Code — Claude appends to `pins.txt`, nothing else.
+3. Walk. Drop more pins as you go.
+4. Once you are ≥0.25 miles from the laptop (~10 min at 1.5 mph), **launch training**
+   from the phone via Claude Code:
    ```
    nohup .venv/bin/python nn_mnist_gpu.py --tag <tag> > /dev/null 2>&1 &
    echo "PID: $!"
    ```
-2. Drop Google Maps pins periodically while walking
-3. Paste each pin URL into Claude Code
-4. Claude appends to `pins.txt` with timestamp — nothing else
-5. Monitor training via GitHub (checkpoint plots appear every 2 min)
+5. Keep walking. Drop more pins.
+6. Monitor GitHub — checkpoint plots appear every 2 min while you are genuinely far away.
+7. Return whenever you like. Training runs for 8 min total and exits cleanly.
 
 ### After the walk
 
