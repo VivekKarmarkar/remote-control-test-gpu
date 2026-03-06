@@ -176,8 +176,9 @@ def plot_checkpoint(metrics, checkpoint_min, epoch, plots_dir):
     best_idx = metrics['val_acc'].index(best_val)
     ax2.annotate(f'Best val: {best_val:.1f}%',
                  xy=(times[best_idx], best_val),
-                 fontsize=8, ha='center',
-                 xytext=(0, 10), textcoords='offset points')
+                 fontsize=8, ha='left',
+                 xytext=(8, -20), textcoords='offset points',
+                 arrowprops=dict(arrowstyle='->', color='gray', lw=0.8))
 
     fig.suptitle(f'Checkpoint \u2014 {checkpoint_min} min  |  '
                  f'Epoch {epoch}  |  Val acc: {best_val:.1f}%',
@@ -220,10 +221,11 @@ def plot_training_curves(metrics, results_dir):
 
     ax1.axvline(best_time, color='gray', linestyle='--', linewidth=0.8)
     ax2.axvline(best_time, color='gray', linestyle='--', linewidth=0.8)
-    ax2.annotate(f'Best val acc: {best_val:.1f}% @ {best_time:.0f}s',
+    ax2.annotate(f'Best val: {best_val:.1f}% @ {best_time:.0f}s',
                  xy=(best_time, best_val),
-                 fontsize=8, ha='center',
-                 xytext=(0, 10), textcoords='offset points')
+                 fontsize=8, ha='left',
+                 xytext=(8, -20), textcoords='offset points',
+                 arrowprops=dict(arrowstyle='->', color='gray', lw=0.8))
 
     fig.suptitle('Training Curves \u2014 Full Run',
                  fontsize=10, fontweight='bold')
