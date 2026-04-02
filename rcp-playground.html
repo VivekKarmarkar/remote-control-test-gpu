@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remote Control Protocol — Interactive Diagram</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #131a2b;
+    --border: #1e2a42;
+    --green: #00ff88;
+    --green-dim: #00ff8833;
+    --red: #ff3355;
+    --red-dim: #ff335533;
+    --amber: #ffaa00;
+    --amber-dim: #ffaa0033;
+    --gray: #334;
+    --text: #e0e8f0;
+    --text-dim: #667;
+    --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STATUS BANNER */
+  #status-banner {
+    text-align: center;
+    padding: 18px 20px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.5s ease;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  #status-banner.ready {
+    background: linear-gradient(135deg, #001a0d, #002a15);
+    color: var(--green);
+    border-bottom-color: var(--green);
+    text-shadow: 0 0 20px var(--green), 0 0 40px var(--green-dim);
+  }
+  #status-banner.not-ready {
+    background: linear-gradient(135deg, #1a0005, #2a000d);
+    color: var(--red);
+    border-bottom-color: var(--red);
+    text-shadow: 0 0 20px var(--red);
+  }
+  #status-banner .scanline {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    animation: scanline 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  #status-banner.ready .scanline { opacity: 0.6; }
+  @keyframes scanline {
+    0% { top: 0; }
+    100% { top: 100%; }
+  }
+
+  #failing-list {
+    text-align: center;
+    padding: 8px 20px;
+    font-size: 0.8rem;
+    color: var(--red);
+    font-family: var(--mono);
+    min-height: 28px;
+    transition: all 0.3s;
+  }
+  #failing-list.hidden { opacity: 0; }
+
+  /* MAIN CANVAS */
+  #canvas {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    height: 620px;
+    margin: 10px auto 20px;
+  }
+
+  /* SVG LINES */
+  #lines-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .conn-line {
+    stroke-width: 2.5;
+    fill: none;
+    transition: stroke 0.4s, filter 0.4s;
+    stroke-dasharray: none;
+  }
+  .conn-line.off {
+    stroke: #222;
+    filter: none;
+  }
+  .conn-line.on {
+    stroke: var(--green);
+    filter: drop-shadow(0 0 6px var(--green));
+  }
+  .conn-line.dashed {
+    stroke-dasharray: 8 6;
+  }
+
+  /* LAPTOP (center) */
+  #laptop {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px; height: 100px;
+    z-index: 10;
+    cursor: default;
+    transition: filter 0.5s;
+  }
+  #laptop.ready {
+    filter: drop-shadow(0 0 25px var(--green)) drop-shadow(0 0 50px var(--green-dim));
+  }
+  #laptop.not-ready {
+    filter: drop-shadow(0 0 10px #222);
+  }
+
+  .laptop-body { fill: #1a2236; stroke: #2a3a5c; stroke-width: 2; rx: 6; }
+  .laptop-screen { fill: #0d1520; rx: 3; }
+  .laptop-base { fill: #1a2236; stroke: #2a3a5c; stroke-width: 2; }
+  .laptop-screen-content { fill: var(--green-dim); rx: 2; transition: fill 0.5s; }
+  #laptop.ready .laptop-screen-content { fill: var(--green); opacity: 0.3; }
+  #laptop.not-ready .laptop-screen-content { fill: var(--red); opacity: 0.15; }
+
+  @keyframes pulse-ready {
+    0%, 100% { filter: drop-shadow(0 0 25px var(--green)) drop-shadow(0 0 50px var(--green-dim)); }
+    50% { filter: drop-shadow(0 0 40px var(--green)) drop-shadow(0 0 80px var(--green-dim)); }
+  }
+  #laptop.ready.celebrating {
+    animation: pulse-ready 1.5s ease-in-out infinite;
+  }
+
+  /* NODE ICON (clickable circle only) */
+  .node-icon-wrap {
+    position: absolute;
+    z-index: 20;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s;
+  }
+  .node-icon-wrap:hover { transform: scale(1.08); }
+  .node-icon-wrap:active { transform: scale(0.95); }
+
+  .node-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    border: 2.5px solid var(--border);
+    transition: all 0.4s ease;
+  }
+  .node-icon-wrap.on .node-icon {
+    border-color: var(--green);
+    background: radial-gradient(circle, var(--green-dim), transparent);
+    box-shadow: 0 0 15px var(--green-dim), inset 0 0 15px var(--green-dim);
+  }
+  .node-icon-wrap.off .node-icon {
+    border-color: #333;
+    background: var(--surface);
+    box-shadow: none;
+  }
+
+  /* Phone icon shape override */
+  .node-icon-wrap.phone-shape .node-icon {
+    border-radius: 14px;
+    width: 48px; height: 72px;
+  }
+
+  /* NODE LABEL (positioned beyond circle on radial ray) */
+  .node-label-group {
+    position: absolute;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .node-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    transition: color 0.3s;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+  .node-label-group.on .node-label { color: var(--green); text-shadow: 0 0 8px var(--green-dim); }
+  .node-label-group.off .node-label { color: var(--text-dim); }
+
+  .node-status {
+    font-size: 0.6rem;
+    font-family: var(--mono);
+    padding: 2px 8px;
+    border-radius: 3px;
+    transition: all 0.3s;
+  }
+  .node-label-group.on .node-status { background: var(--green-dim); color: var(--green); }
+  .node-label-group.off .node-status { background: #1a1a2a; color: #555; }
+
+  /* PRESETS */
+  #presets {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+  .preset-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .preset-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: #0a1a12;
+  }
+
+  /* NEXT STEP TEXT */
+  #prompt-section {
+    max-width: 900px;
+    margin: 0 auto 30px;
+    padding: 0 20px;
+  }
+  #prompt-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text);
+    text-align: center;
+  }
+  #prompt-box .step-label {
+    color: var(--amber);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+  #prompt-box.all-ready {
+    border-color: var(--green);
+    color: var(--green);
+  }
+  #prompt-box.all-ready .step-label {
+    color: var(--green);
+  }
+
+  /* COUNTER */
+  #counter {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 6px;
+    color: var(--text-dim);
+  }
+  #counter span { font-weight: 700; }
+  #counter .on-count { color: var(--green); }
+  #counter .total-count { color: var(--text-dim); }
+
+  /* Toggle animation */
+  @keyframes flash-green {
+    0% { box-shadow: 0 0 0 0 var(--green); }
+    50% { box-shadow: 0 0 30px 10px var(--green-dim); }
+    100% { box-shadow: 0 0 15px var(--green-dim), inset 0 0 15px var(--green-dim); }
+  }
+  .node-icon-wrap.just-toggled-on .node-icon {
+    animation: flash-green 0.4s ease-out;
+  }
+</style>
+</head>
+<body>
+
+<div id="status-banner" class="not-ready">
+  <div class="scanline"></div>
+  <span id="status-text">REMOTE CONTROL: NOT READY</span>
+</div>
+<div id="failing-list"></div>
+<div id="counter"><span class="on-count" id="on-count">0</span> / <span class="total-count">8</span> systems online</div>
+
+<div id="canvas">
+  <svg id="lines-svg"></svg>
+
+  <!-- Laptop (center) -->
+  <div id="laptop" class="not-ready">
+    <svg viewBox="0 0 140 100" width="140" height="100">
+      <rect class="laptop-body" x="15" y="5" width="110" height="70" rx="6"/>
+      <rect class="laptop-screen" x="22" y="12" width="96" height="56" rx="3"/>
+      <rect class="laptop-screen-content" x="26" y="16" width="88" height="48" rx="2"/>
+      <path class="laptop-base" d="M 5 78 L 15 75 L 125 75 L 135 78 L 135 85 Q 135 90 130 90 L 10 90 Q 5 90 5 85 Z"/>
+      <g fill="#2a3a5c" opacity="0.5">
+        <rect x="20" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="27" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="34" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="41" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="48" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="58" y="80" width="20" height="2" rx="0.5"/>
+        <rect x="82" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="89" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="96" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="103" y="80" width="4" height="2" rx="0.5"/>
+        <rect x="110" y="80" width="4" height="2" rx="0.5"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div id="presets">
+  <button class="preset-btn" onclick="applyPreset('all-off')">All Off</button>
+  <button class="preset-btn" onclick="applyPreset('all-on')">All On</button>
+  <button class="preset-btn" onclick="applyPreset('at-desk')">At Desk (No Phone)</button>
+  <button class="preset-btn" onclick="applyPreset('forgot-sleep')">Forgot Sleep Inhibit</button>
+  <button class="preset-btn" onclick="applyPreset('no-gpu')">No GPU Driver</button>
+</div>
+
+<div id="prompt-section">
+  <div id="prompt-box">
+    <span class="step-label" id="step-label">NEXT STEP</span>
+    <span id="prompt-text"></span>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────
+
+// Priority order: this IS the checklist sequence
+const conditions = [
+  { id: 'power', label: 'Power',         icon: '\u26A1', desc: 'Laptop plugged in',
+    next: 'Plug in the laptop.' },
+  { id: 'wifi',  label: 'WiFi',          icon: '\uD83D\uDCF6', desc: 'Connected to WiFi',
+    next: 'Connect to WiFi.' },
+  { id: 'sleep', label: 'Sleep Inhibit', icon: '\uD83D\uDEE1\uFE0F', desc: 'Sleep/suspend masked',
+    next: 'Mask sleep targets: sudo systemctl mask sleep.target suspend.target hibernate.target' },
+  { id: 'gpu',   label: 'GPU Driver',    icon: '\uD83D\uDD27', desc: 'nvidia_uvm loaded',
+    next: 'Load GPU driver: sudo modprobe nvidia_uvm' },
+  { id: 'cuda',  label: 'CUDA',          icon: '\uD83D\uDFE9', desc: 'CUDA available',
+    next: 'Verify CUDA: python -c "import torch; print(torch.cuda.is_available())"' },
+  { id: 'git',   label: 'Git Public',    icon: '\uD83D\uDCE6', desc: 'Repo is public on GitHub',
+    next: 'Ensure GitHub repo is public so it can be accessed from phone.' },
+  { id: 'gws',   label: 'GWS CLI',       icon: '\u2601\uFE0F', desc: 'Google Workspace CLI connected',
+    next: 'Verify GWS CLI is healthy.' },
+  { id: 'phone', label: 'Phone',         icon: '\uD83D\uDCF1', desc: 'Phone connected via data',
+    next: 'Connect phone to mobile data and open remote session.' },
+];
+
+const state = {};
+conditions.forEach(c => state[c.id] = false);
+
+// ── Layout geometry ────────────────────────────────
+// Canvas is 960x620, laptop center at 480,310
+const cx = 480, cy = 310, radius = 200;
+const LABEL_OFFSET = 80; // px beyond the circle center along radial ray
+
+const nodePositions = {};
+// 7 nodes on left arc (power..gws), phone on far right
+const arcNodes = conditions.filter(c => c.id !== 'phone');
+arcNodes.forEach((c, i) => {
+  const startAngle = -155;
+  const endAngle = 55;
+  const angle = (startAngle + (endAngle - startAngle) * (i / (arcNodes.length - 1))) * Math.PI / 180;
+  nodePositions[c.id] = {
+    x: cx + radius * Math.cos(angle),
+    y: cy + radius * Math.sin(angle),
+    angle: angle,
+  };
+});
+nodePositions.phone = {
+  x: cx + 310,
+  y: cy,
+  angle: 0,
+};
+
+// ── Build DOM ──────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const svg = document.getElementById('lines-svg');
+
+conditions.forEach(c => {
+  const pos = nodePositions[c.id];
+
+  // --- Connection line (laptop center to node) ---
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', cx);
+  line.setAttribute('y1', cy);
+  line.setAttribute('x2', pos.x);
+  line.setAttribute('y2', pos.y);
+  line.classList.add('conn-line', 'off');
+  if (c.id === 'phone' || c.id === 'git' || c.id === 'gws') line.classList.add('dashed');
+  line.id = `line-${c.id}`;
+  svg.appendChild(line);
+
+  // --- Icon circle (clickable) ---
+  const iconWrap = document.createElement('div');
+  iconWrap.className = 'node-icon-wrap off';
+  iconWrap.id = `icon-${c.id}`;
+  if (c.id === 'phone') iconWrap.classList.add('phone-shape');
+  iconWrap.style.left = (pos.x - 32) + 'px';
+  iconWrap.style.top = (pos.y - 32) + 'px';
+  iconWrap.innerHTML = `<div class="node-icon">${c.icon}</div>`;
+  iconWrap.addEventListener('click', () => toggleCondition(c.id));
+  canvas.appendChild(iconWrap);
+
+  // --- Label group (beyond circle on radial ray) ---
+  const dx = pos.x - cx;
+  const dy = pos.y - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  const ux = dx / dist;
+  const uy = dy / dist;
+  const labelX = pos.x + ux * LABEL_OFFSET;
+  const labelY = pos.y + uy * LABEL_OFFSET;
+
+  const labelGroup = document.createElement('div');
+  labelGroup.className = 'node-label-group off';
+  labelGroup.id = `label-${c.id}`;
+  labelGroup.style.left = labelX + 'px';
+  labelGroup.style.top = labelY + 'px';
+  labelGroup.style.transform = 'translate(-50%, -50%)';
+  labelGroup.innerHTML = `
+    <div class="node-label">${c.label}</div>
+    <div class="node-status">OFF</div>
+  `;
+  canvas.appendChild(labelGroup);
+});
+
+// ── Toggle logic ───────────────────────────────────
+function toggleCondition(id) {
+  state[id] = !state[id];
+  updateAll();
+
+  const iconWrap = document.getElementById(`icon-${id}`);
+  if (state[id]) {
+    iconWrap.classList.add('just-toggled-on');
+    setTimeout(() => iconWrap.classList.remove('just-toggled-on'), 500);
+  }
+}
+
+function updateAll() {
+  const allOn = conditions.every(c => state[c.id]);
+  const onCount = conditions.filter(c => state[c.id]).length;
+  const failing = conditions.filter(c => !state[c.id]);
+
+  // Update each node
+  conditions.forEach(c => {
+    const iconWrap = document.getElementById(`icon-${c.id}`);
+    const labelGroup = document.getElementById(`label-${c.id}`);
+    const lineEl = document.getElementById(`line-${c.id}`);
+    const statusEl = labelGroup.querySelector('.node-status');
+
+    if (state[c.id]) {
+      iconWrap.classList.remove('off'); iconWrap.classList.add('on');
+      labelGroup.classList.remove('off'); labelGroup.classList.add('on');
+      lineEl.classList.remove('off'); lineEl.classList.add('on');
+      statusEl.textContent = 'ONLINE';
+    } else {
+      iconWrap.classList.remove('on'); iconWrap.classList.add('off');
+      labelGroup.classList.remove('off'); labelGroup.classList.add('off');
+      labelGroup.classList.remove('on');
+      lineEl.classList.remove('on'); lineEl.classList.add('off');
+      statusEl.textContent = 'OFF';
+    }
+  });
+
+  // Banner
+  const banner = document.getElementById('status-banner');
+  const statusText = document.getElementById('status-text');
+  if (allOn) {
+    banner.className = 'ready';
+    statusText.textContent = 'REMOTE CONTROL: READY';
+  } else {
+    banner.className = 'not-ready';
+    statusText.textContent = 'REMOTE CONTROL: NOT READY';
+  }
+
+  // Laptop
+  const laptop = document.getElementById('laptop');
+  laptop.className = allOn ? 'ready celebrating' : 'not-ready';
+
+  // Failing list
+  const failList = document.getElementById('failing-list');
+  if (failing.length > 0) {
+    failList.className = '';
+    failList.textContent = 'FAILING: ' + failing.map(c => c.label).join(' \u2022 ');
+  } else {
+    failList.className = 'hidden';
+    failList.textContent = '';
+  }
+
+  // Counter
+  document.getElementById('on-count').textContent = onCount;
+
+  // Next step (immediate next only)
+  updatePrompt(allOn, failing);
+}
+
+// ── Prompt: only the IMMEDIATE next step ───────────
+function updatePrompt(allOn, failing) {
+  const box = document.getElementById('prompt-box');
+  const label = document.getElementById('step-label');
+  const text = document.getElementById('prompt-text');
+
+  if (allOn) {
+    box.classList.add('all-ready');
+    label.textContent = 'ALL SYSTEMS GO';
+    text.textContent = 'Ready for remote-controlled GPU operation. Walk away.';
+  } else {
+    box.classList.remove('all-ready');
+    // Show only the first failing condition (priority order)
+    const next = failing[0];
+    label.textContent = `NEXT STEP \u2014 ${next.label.toUpperCase()}`;
+    text.textContent = next.next;
+  }
+}
+
+// ── Presets ─────────────────────────────────────────
+function applyPreset(name) {
+  switch (name) {
+    case 'all-off':
+      conditions.forEach(c => state[c.id] = false); break;
+    case 'all-on':
+      conditions.forEach(c => state[c.id] = true); break;
+    case 'at-desk':
+      conditions.forEach(c => state[c.id] = true);
+      state.phone = false; break;
+    case 'forgot-sleep':
+      conditions.forEach(c => state[c.id] = true);
+      state.sleep = false; break;
+    case 'no-gpu':
+      conditions.forEach(c => state[c.id] = true);
+      state.gpu = false; state.cuda = false; break;
+  }
+  updateAll();
+}
+
+// ── Init ────────────────────────────────────────────
+updateAll();
+</script>
+</body>
+</html>

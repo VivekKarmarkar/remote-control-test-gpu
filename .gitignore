@@ -9,5 +9,5 @@ build/
 .DS_Store
 logs/
 data/
-walking-video/.env
-walking-video/node_modules/
+walking-video/
+.playwright-mcp/
