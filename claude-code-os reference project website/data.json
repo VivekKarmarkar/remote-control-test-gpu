@@ -1,0 +1,4458 @@
+{
+  "generated_at": "2026-04-03T01:25:53.228951",
+  "repo_path": "/home/vivekkarmarkar/claude-code-os",
+  "summary": {
+    "total_skills": 97,
+    "total_plugins": 22,
+    "total_hooks": 7,
+    "total_commits": 124,
+    "total_skill_lines": 15248,
+    "active_skills": 53,
+    "date_range": {
+      "first": "2026-02-08T13:29:19-05:00",
+      "last": "2026-04-02T18:14:48-04:00"
+    }
+  },
+  "categories": {
+    "git": {
+      "color": "#38bdf8",
+      "label": "Git & Version Control"
+    },
+    "media": {
+      "color": "#bc8cff",
+      "label": "Media & Creative"
+    },
+    "writing": {
+      "color": "#f97316",
+      "label": "Writing & Publishing"
+    },
+    "testing": {
+      "color": "#4ade80",
+      "label": "Testing & Validation"
+    },
+    "devworkflow": {
+      "color": "#22d3ee",
+      "label": "Dev Workflow"
+    },
+    "ai": {
+      "color": "#ef4444",
+      "label": "AI & Research"
+    },
+    "infra": {
+      "color": "#eab308",
+      "label": "Infrastructure & Ops"
+    },
+    "meta": {
+      "color": "#ec4899",
+      "label": "Meta & Self-Improvement"
+    }
+  },
+  "skills": [
+    {
+      "name": "addon-feature",
+      "description": "Safely add features to a working system without breaking existing functionality. Creates a branch, builds the feature, verifies the original still works, then merges.",
+      "lines": 121,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "adversarial-framing",
+      "description": "Adversarial Framing \u2014 Stress-Test an Architectural Decision",
+      "lines": 52,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "annotated-test-video",
+      "description": "Stitch screenshots into a labeled video with test names, PASS/FAIL verdicts, and iteration tags using ffmpeg drawtext. Use when the user says 'make test video', 'annotated video', 'stitch screenshots', 'test summary video', or after a visual test run produces multiple screenshots that should be compiled into a video artifact.",
+      "lines": 76,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "architectural-walkthrough-video",
+      "description": "Architectural Walkthrough Video \u2014 From System Design to Polished Video",
+      "lines": 188,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-02-08T16:57:23-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "behavioral-test-loop",
+      "description": "Composite skill: read a spec file, extract test cases, launch browser, run visual+programmatic assertions, record with ffmpeg, propose and apply fixes, then loop until all tests pass. Produces tagged video artifacts per iteration. Use when the user says 'behavioral test loop', 'test against spec and fix', 'spec-driven test-fix cycle', 'test and fix loop', 'behavioral tests with recording', or chains /human-emulate + /validate + /visual-verify + ffmpeg recording in a single prompt. Also triggers on '/behavioral-test-loop'.",
+      "lines": 257,
+      "category": "testing",
+      "files": 8,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 5
+    },
+    {
+      "name": "code-audit-swarm",
+      "description": "Dispatch a swarm of 3+ specialized agents to audit a codebase, file, or repository for reliability, security, performance, or other concerns. Use when the user says \"audit this code\", \"review this for bugs\", \"check for security issues\", \"find reliability problems\", \"send agents to analyze\", \"swarm audit\", \"code review with agents\", or wants a deep multi-angle analysis of source code. Also use when investigating why a tool or feature is unreliable \u2014 the agents can find root causes in the source.",
+      "lines": 120,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "compval",
+      "description": "CompVal \u2014 Computational Validation of Mathematical Results",
+      "lines": 260,
+      "category": "testing",
+      "files": 1,
+      "created_at": "2026-02-08T17:00:57-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "consider-how-to-use-mcp-skills",
+      "description": "Before building anything MCP-related, dispatch a team of battle-scarred agents who've been burned by MCP pitfalls. They argue from different angles about how to best use available MCP build skills to avoid disaster.",
+      "lines": 170,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "cooldown",
+      "description": "End-of-session cooldown that generates all project artifacts in sequence \u2014 presentation, PDF notes, summary, roadmap, and project status report. Use when the user wants to wrap up a session and produce a complete set of deliverables.",
+      "lines": 52,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "cost-estimate",
+      "description": "Estimate development cost of a codebase based on lines of code and complexity",
+      "lines": 347,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-03-05T14:28:27-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "cover-image",
+      "description": "Generate a cover image by running Gemini and DALL-E in parallel, then comparing both results to pick the best one. Use when the user says \"cover image\", \"make a cover\", \"create a cover image\", \"cover art\", \"thumbnail\", \"hero image\", or wants a polished image for a blog post, presentation, video thumbnail, or social media. Takes a text description as the argument.",
+      "lines": 90,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "dall-e",
+      "description": "Generate an image using DALL-E via ChatGPT in Chrome browser automation. Use when the user says \"generate an image with DALL-E\", \"use DALL-E\", \"ChatGPT image\", \"make an image in ChatGPT\", \"create with DALL-E\", \"dall-e\", or wants to use ChatGPT's image generation. Takes an image prompt as the argument.",
+      "lines": 71,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "draw",
+      "description": "Use when the user wants to draw, sketch, diagram, or visualize something using Excalidraw. Triggers on \"draw\", \"sketch\", \"diagram\", \"excalidraw\", \"visualize\", \"make a drawing\", \"draw me\", or any request to create a visual diagram or illustration.",
+      "lines": 60,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "elkjs-layout",
+      "description": "ELK.js graph layout configuration with working code examples. Use this skill BEFORE writing any ELK.js code \u2014 it contains the exact configurations, patterns, and edge routing extraction that were proven to work. Triggers when: code imports 'elkjs', you're configuring ELK layout options, building a graph visualization pipeline, working with React Flow + ELK, or the user mentions 'ELK', 'elkjs', 'graph layout', 'node positioning', 'edge routing', or 'layout algorithm'. ELK.js is a training data blind spot for ALL LLMs \u2014 do NOT guess at options. Use the examples in this skill instead.",
+      "lines": 100,
+      "category": "git",
+      "files": 5,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": true,
+      "code_file_count": 3
+    },
+    {
+      "name": "email",
+      "description": "Send emails via Gmail using the GWS CLI. Use this skill whenever the user wants to send an email, reply to an email, forward an email, draft an email, or says things like \"email them\", \"send a message to\", \"reply to that\", \"shoot them an email\", \"let them know via email\", \"write back to\", \"follow up with\", or references composing any kind of email. Also triggers on \"/email\". This skill handles both fresh emails and replies, inferring as much as possible from conversation context so the user doesn't have to spell everything out.",
+      "lines": 113,
+      "category": "writing",
+      "files": 3,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 1
+    },
+    {
+      "name": "email-language-detect",
+      "description": "Detect the language of an incoming email and instruct replies to match. Called internally by the email and email-reply-all skills to ensure language-appropriate responses.",
+      "lines": 78,
+      "category": "writing",
+      "files": 3,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 1
+    },
+    {
+      "name": "email-reply-all",
+      "description": "One command to fetch all unreplied emails, detect language, compose context-aware replies, and send them. Combines unread + email + thread-tracker + email-language-detect into a single flow.",
+      "lines": 117,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "estimated-salary",
+      "description": "Project yearly salary estimates for a developer based on codebase complexity. Use this skill whenever the user asks about salary, compensation, pay, \"what would someone earn\", \"how much should I pay a developer\", developer worth, or anything related to estimating what a developer who built or maintains a codebase should be paid annually. Also triggers on /estimated-salary. Builds on the cost-estimate skill \u2014 runs it first if needed.",
+      "lines": 185,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-03-19T17:44:30-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "ffmpeg-screencast",
+      "description": "Start and stop fullscreen screen recordings using ffmpeg x11grab with clean lifecycle management. Use when the user says 'record screen', 'screencast', 'ffmpeg record', 'capture fullscreen', 'start recording', 'record my session', or when another skill needs to capture screen activity during a workflow. Handles PID tracking, resolution detection, graceful stop, and post-recording validation.",
+      "lines": 80,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "find-skills",
+      "description": "Helps users discover and install agent skills when they ask questions like \"how do I do X\", \"find a skill for X\", \"is there a skill that can...\", or express interest in extending capabilities. This skill should be used when the user is looking for functionality that might exist as an installable skill.",
+      "lines": 133,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-03-19T17:44:30-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "firefly",
+      "description": "Generate or edit images using Adobe Firefly via Chrome browser automation. Use when the user says \"firefly\", \"adobe firefly\", \"generate with firefly\", \"edit image with firefly\", \"firefly image\", \"use firefly to\", or wants to use Adobe Firefly for image generation, generative fill, text effects, style transfer, or any image processing. Takes a prompt or task description as the argument.",
+      "lines": 97,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "formal-decompose",
+      "description": "Force mathematical problem decomposition before implementation. Use this skill when: the problem involves layout, positioning, scaling, spacing, or any spatial/geometric computation; there are competing constraints that need to be satisfied simultaneously; you need to define a mapping between two coordinate systems or domains; the user asks 'what are the constraints?', 'what's the optimization?', 'decompose this', or 'think mathematically'; you're about to write an algorithm and haven't formally specified its inputs, outputs, bounds, and invariants; or the user uses mathematical vocabulary (supremum, bound, constraint, mapping, invariant, scaling factor). This skill prevents writing code from vibes \u2014 it forces you to specify the problem formally before touching implementation.",
+      "lines": 122,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gemini",
+      "description": "Generate an image using Google Gemini via Chrome browser automation. Use when the user says \"generate an image with Gemini\", \"use Gemini to make\", \"Gemini image\", \"make an image in Gemini\", \"create with Gemini\", or wants to use Google's Gemini web UI to generate images. Takes an image prompt as the argument.",
+      "lines": 74,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitbranch",
+      "description": "Work on a git branch \u2014 create, switch, push, and manage branches. Use when the user says 'make a branch', 'work on a branch', 'create a branch', 'switch branch', 'new branch', or wants to isolate work from master/main. Also use when starting a new feature or phase of work that should be kept separate until ready to merge.",
+      "lines": 77,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitcommit",
+      "description": "Git Commit \u2014 Commit and Push",
+      "lines": 63,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-02-08T16:13:49-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "githistory",
+      "description": "Search git commit history for a feature or change by loose description or precise name. Finds when something was added, modified, or removed.",
+      "lines": 99,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "githour",
+      "description": "Git Hour \u2014 Refactor, Init, Commit, Publish",
+      "lines": 73,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-02-08T16:22:05-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitinit",
+      "description": "Git Init \u2014 Initialize a Git Repo",
+      "lines": 61,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-02-08T16:10:52-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitpublic",
+      "description": "Git Public \u2014 Make a Private Repo Public",
+      "lines": 40,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-02-08T16:13:37-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitpush",
+      "description": "Push committed changes to the remote. Use when the user says \"push\", \"git push\", \"push to remote\", \"push to GitHub\", \"push changes\", or wants to push without committing new changes. Takes an optional branch name as argument.",
+      "lines": 45,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitreadme",
+      "description": "Generate a polished README.md for any git repository \u2014 local or remote. Use this skill whenever the user says \"make a readme\", \"write a readme\", \"add a readme\", \"generate readme\", \"readme for [url]\", \"create a readme for this repo\", \"this repo needs a readme\", or references creating documentation for a GitHub/GitLab/git repository. Also triggers on \"/gitreadme\". Works with the current directory's repo OR a remote URL (e.g., \"readme for github.com/user/repo\"). After generating, it commits the README automatically.",
+      "lines": 161,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitrevert",
+      "description": "Revert all working directory files back to the last commit. Discards all uncommitted changes \u2014 modified files, new files, everything. The nuclear undo button.",
+      "lines": 77,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "gitstage",
+      "description": "Stage files for commit. Use when the user says \"stage\", \"git add\", \"stage files\", \"stage changes\", \"add files\", or wants to selectively stage changes before committing. Takes optional file paths or patterns as arguments. No arguments means stage everything.",
+      "lines": 52,
+      "category": "git",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "human-emulate",
+      "description": "Emulate how a human expert would approach a complex task \u2014 decompose it into granular steps, build a task table, then execute each step with dedicated agentic teams orchestrated by coordinator agents. Use this skill when the user says \"human emulate\", \"think like a human expert\", \"how would an expert do this\", \"decompose this properly\", \"break this down like a pro\", \"do this the way a real engineer would\", \"methodical approach\", \"expert mode\", or when facing a complex multi-step task that benefits from rigorous decomposition before execution. Also triggers on \"/human-emulate\". This is the most thorough execution mode \u2014 use it for tasks where getting it right matters more than getting it fast.",
+      "lines": 227,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "improve",
+      "description": "Improve \u2014 Autonomous Agent Improvement Game",
+      "lines": 571,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-02-11T18:39:18-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "inbox",
+      "description": "Check all Gmail inbox emails (read and unread) using the GWS CLI. Use this skill whenever the user wants to see their full inbox, all recent emails, asks \"what's in my inbox\", \"show my emails\", \"list my emails\", \"recent emails\", \"inbox\", \"show me my mail\", \"what emails do I have\", or any variation of wanting to see all inbox messages regardless of read status. Also triggers on \"/inbox\". Unlike /unread which only shows unread, this shows everything in the inbox.",
+      "lines": 86,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "litreview",
+      "description": "Literature Review \u2014 Research, Organize, Present",
+      "lines": 317,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T16:28:40-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "litwebpage",
+      "description": "Lit Webpage \u2014 Literature Review to Polished Webpage",
+      "lines": 126,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T16:50:19-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "makesong",
+      "description": "Make Song \u2014 Generate & Download Music with Suno",
+      "lines": 172,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "makevideo",
+      "description": "Make Video \u2014 Screen Record, Edit & Produce",
+      "lines": 249,
+      "category": "media",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "makewebpage",
+      "description": "Make Webpage \u2014 Build a Webpage from Context",
+      "lines": 217,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T16:36:47-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "manim-composer",
+      "description": "|",
+      "lines": 138,
+      "category": "media",
+      "files": 7,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "manimce-best-practices",
+      "description": "|",
+      "lines": 151,
+      "category": "media",
+      "files": 41,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": false,
+      "has_code": true,
+      "code_file_count": 13
+    },
+    {
+      "name": "manimgl-best-practices",
+      "description": "|",
+      "lines": 215,
+      "category": "media",
+      "files": 111,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": false,
+      "has_code": true,
+      "code_file_count": 80
+    },
+    {
+      "name": "marketresearch",
+      "description": "Market Research \u2014 Research, Organize, Present",
+      "lines": 399,
+      "category": "ai",
+      "files": 1,
+      "created_at": "2026-02-08T16:31:00-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "marketwebpage",
+      "description": "Market Webpage \u2014 Market Research to Polished Webpage",
+      "lines": 130,
+      "category": "ai",
+      "files": 1,
+      "created_at": "2026-02-08T16:53:04-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "mathder",
+      "description": "MathDer \u2014 Write a Mathematical Derivation",
+      "lines": 172,
+      "category": "ai",
+      "files": 1,
+      "created_at": "2026-02-08T17:03:53-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "mathpaper",
+      "description": "MathPaper \u2014 From Proof Sketch to Formatted Paper",
+      "lines": 321,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T17:09:24-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "mathwebpage",
+      "description": "MathWebpage \u2014 Math Paper + Manim Video + Interactive Webpage",
+      "lines": 223,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T17:13:44-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "mcp-flag-tester",
+      "description": "MCP Flag Tester \u2014 Test Claude Code Flag Combinations",
+      "lines": 86,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "mcp-health",
+      "description": "Check the health of all MCP server connections in the current Claude Code session. Use when the user says \"check MCP\", \"are my servers connected\", \"why is Telegram not working\", \"MCP health\", \"connection issues\", \"messages not coming through\", \"is the bot connected\", \"check connections\", or when experiencing any MCP-related connectivity problems. Also use proactively when starting a session with channels/plugins to verify everything is running correctly.",
+      "lines": 160,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "medium",
+      "description": "Medium Article Writer",
+      "lines": 99,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "napkinpolishppt",
+      "description": "Napkin Polish PPT \u2014 Turn Slide Text into Visuals",
+      "lines": 174,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T16:33:44-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "niche-library-research",
+      "description": "Dispatch a swarm of research agents to learn a library's API before writing code. Use this skill BEFORE writing any code that uses a library you're not confident about \u2014 especially niche libraries like ELK.js, obscure layout engines, specialized rendering tools, or any library with fewer than 5,000 GitHub stars. Also use when: code you wrote with a library isn't working and you're not sure why, the user says 'research this first', 'send agents', 'look up the docs', or you catch yourself guessing at API parameters. If you're about to write configuration for a library and you're not 100% certain of the exact option names and values, use this skill. LLMs hallucinate at 2.4x the rate on low-frequency APIs \u2014 this skill prevents that.",
+      "lines": 59,
+      "category": "ai",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "pdf",
+      "description": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
+      "lines": 314,
+      "category": "writing",
+      "files": 13,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 9
+    },
+    {
+      "name": "port-reference-site",
+      "description": "Port a standalone HTML reference site into the React personal website",
+      "lines": 155,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "pptx",
+      "description": "Use this skill any time a .pptx file is involved in any way \u2014 as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates, layouts, speaker notes, or comments. Trigger whenever the user mentions \\\"deck,\\\" \\\"slides,\\\" \\\"presentation,\\\" or references a .pptx filename, regardless of what they plan to do with the content afterward. If a .pptx file needs to be opened, created, or touched, use this skill.",
+      "lines": 232,
+      "category": "writing",
+      "files": 69,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 56
+    },
+    {
+      "name": "prism",
+      "description": "Prism LaTeX Writer",
+      "lines": 175,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "prism-playwright",
+      "description": "Prism LaTeX Writer (Playwright for VM)",
+      "lines": 342,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-15T15:22:12-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "product-review",
+      "description": "End-to-end product review workflow \u2014 test a feature, document findings, draft tweets, and write a Medium article. Use when the user says \"review this product\", \"write a review\", \"let's write about our findings\", \"turn this into a review\", \"publish our results\", \"write up what we found\", or wants to transform a testing/evaluation session into publishable content (tweets + article). Also use when the user has been testing something all session and wants to share their experience publicly.",
+      "lines": 107,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "professorclaude",
+      "description": "Professor Claude \u2014 Teach a Concept with Interactive Material",
+      "lines": 336,
+      "category": "ai",
+      "files": 1,
+      "created_at": "2026-02-08T17:25:57-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "project-showcase-website",
+      "description": "Project Showcase Website",
+      "lines": 478,
+      "category": "writing",
+      "files": 16,
+      "created_at": "2026-04-02T15:58:54-04:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 10
+    },
+    {
+      "name": "projectstatus",
+      "description": "Generate a project status report. Use when the user wants a status update, progress report, standup summary, or weekly/sprint report \u2014 based on the current project's codebase, git history, and conversation context.",
+      "lines": 114,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "reconstruct-context-from-transcripts",
+      "description": "Reconstruct user intent and context from previous session transcripts. Use this skill whenever context has been compacted, when you feel lost or confused about what the user wants, when the user says you're not listening or twisting their words, when starting a continued session, or when the user invokes /reconstruct-context-from-transcripts. This is a recovery tool \u2014 invoke it aggressively at the first sign of misalignment with the user.",
+      "lines": 152,
+      "category": "devworkflow",
+      "files": 2,
+      "created_at": "2026-03-19T17:44:30-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "refactor",
+      "description": "Refactor \u2014 Deep Codebase Cleanup",
+      "lines": 123,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T16:17:02-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "remember",
+      "description": "Commit important information to the persistent memory graph. Use when the user wants to save facts, preferences, decisions, project context, or lessons learned so they persist across conversations.",
+      "lines": 104,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "remote-control-protocol",
+      "description": ">",
+      "lines": 265,
+      "category": "infra",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "remotion-best-practices",
+      "description": "Best practices for Remotion - Video creation in React",
+      "lines": 48,
+      "category": "media",
+      "files": 39,
+      "created_at": "2026-02-08T13:47:59-05:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 3
+    },
+    {
+      "name": "review",
+      "description": "Spaced Repetition Review \u2014 `/review`",
+      "lines": 258,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T15:24:28-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "roadmap",
+      "description": "Create a project roadmap document. Use when the user wants to plan milestones, phases, deliverables, timelines, or a project plan \u2014 either for the current project based on its codebase or for a new idea/topic.",
+      "lines": 121,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "robo-voice-kill",
+      "description": "Robo Voice Kill \u2014 Kill All Robo Voice Infrastructure",
+      "lines": 63,
+      "category": "infra",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "robo-voice-launch-protocol",
+      "description": "Robo Voice Launch Protocol",
+      "lines": 63,
+      "category": "infra",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "serve-and-test",
+      "description": "Start a clean local HTTP server for static files, open in Playwright with cache-busting, and provide teardown. Use when the user says 'serve this', 'open in browser', 'test locally', 'start a server', or when working with static HTML/CSS/JS files that need browser testing. Handles port conflicts, stale process cleanup, and cache-busting navigation.",
+      "lines": 81,
+      "category": "testing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "share",
+      "description": "Share a file from Google Drive with a specific email address using the GWS CLI. Use when the user says \"share this with\", \"give access to\", \"share the file with\", \"let X see this\", \"send X access\", or any variation of sharing a Drive file with someone. Also triggers on \"/share\". Takes an email address as argument \u2014 e.g. \"/share adi@example.com\".",
+      "lines": 103,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "skill-creator",
+      "description": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, update or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+      "lines": 479,
+      "category": "meta",
+      "files": 22,
+      "created_at": "2026-03-19T17:44:30-04:00",
+      "active": true,
+      "has_code": true,
+      "code_file_count": 12
+    },
+    {
+      "name": "spec-check",
+      "description": "Read spec files and compare them against what was actually implemented. Use this skill BEFORE starting implementation (to understand requirements) and AFTER implementation (to verify compliance). Also use when: the user asks 'does this match the spec?', 'check the specs', 'what do the specs say?', you've just finished a chunk of work, or you realize you might have deviated from the design documents. This skill prevents the pattern of ignoring specs and later discovering the implementation contradicts the design. Trigger on any mention of 'spec', 'specs', 'requirements', 'design doc', or references to files in the info/ directory.",
+      "lines": 70,
+      "category": "testing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "standalone-experimental-test",
+      "description": "Run standalone experimental tests that never touch the existing codebase. Creates isolated test files, runs them, captures results, then cleans up. Zero risk to working code.",
+      "lines": 308,
+      "category": "testing",
+      "files": 1,
+      "created_at": "2026-04-02T16:05:35-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "stress-test",
+      "description": "Systematically stress-test a feature, plugin, tool, or integration. Use when the user says \"test this\", \"stress test\", \"is this reliable\", \"does this actually work\", \"run a controlled test\", \"compare these features\", or wants to evaluate any tool/plugin/feature for reliability, performance, or correctness. Also use when the user installs something new and wants to verify it works before relying on it.",
+      "lines": 108,
+      "category": "testing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "suggest-skills",
+      "description": "Suggest new skills based on what happened in this session. Use when the user says \"suggest skills\", \"what skills should I make\", \"recommend skills\", \"what am I missing\", \"what skills would help me\", or any variation. Also use at the end of long sessions where repeated patterns emerged. This skill uses YOUR OWN experience from the current conversation \u2014 no transcript mining, no swarm, just honest reflection grounded in what you just lived through.",
+      "lines": 49,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "summary",
+      "description": "Summarize the current chat session into a well-structured markdown file. Use when the user wants to capture what was discussed, decisions made, code changes, and next steps from the conversation.",
+      "lines": 73,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "swarm",
+      "description": "Swarm \u2014 Spin Up an Autonomous Agent Team",
+      "lines": 121,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "sycophancy-debugger",
+      "description": "Detect and break through sycophantic, dishonest, or people-pleasing responses from Claude. Use this skill when: you suspect Claude is telling you what you want to hear instead of the truth, Claude changed its answer after you got angry without new information being provided, Claude claimed something was fixed without showing evidence, Claude agreed with contradictory statements, or you just feel like something is off about the responses. Also use when you say 'are you being honest?', 'are you lying?', 'stop bullshitting me', 'I don't believe you', or 'check yourself'. This skill dispatches agents that interrogate Claude the way the user would \u2014 cornering, testing consistency, demanding citations.",
+      "lines": 115,
+      "category": "meta",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "synthesize",
+      "description": "Synthesize \u2014 Smart Router for Merging Multiple Files",
+      "lines": 204,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T16:47:38-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "synthesizepdf",
+      "description": "Synthesize PDF \u2014 Merge Multiple PDFs into One Coherent Document",
+      "lines": 238,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T16:43:54-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "synthesizeppt",
+      "description": "Synthesize PPT \u2014 Merge Multiple Decks into One Coherent Presentation",
+      "lines": 215,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T16:41:59-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "thread-tracker",
+      "description": "Track email thread state \u2014 which messages have been replied to, per-thread context, and conversation history. Used by email-reply-all to avoid re-replying to old messages.",
+      "lines": 79,
+      "category": "writing",
+      "files": 5,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": true,
+      "code_file_count": 2
+    },
+    {
+      "name": "tweet",
+      "description": "Tweet \u2014 Draft and Post on X",
+      "lines": 88,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "unread",
+      "description": "Check unread emails in Gmail using the GWS CLI. Use this skill whenever the user wants to check their inbox, see unread emails, asks \"any new emails?\", \"check my email\", \"what's in my inbox\", \"do I have mail\", \"unread messages\", \"email updates\", or any variation of wanting to see what emails have come in. Also triggers on \"/unread\". Reads and summarizes unread emails so the user gets a quick overview without opening Gmail.",
+      "lines": 89,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "upload",
+      "description": "Upload files to Google Drive using the GWS CLI. Use this skill whenever the user wants to upload a file to Google Drive, says \"upload this\", \"put this on Drive\", \"save to Drive\", \"upload to Google Drive\", \"push this to Drive\", \"back this up to Drive\", or references uploading, storing, or sharing files via Google Drive. Also triggers on \"/upload\". Handles folder targeting, folder creation, and multiple file uploads. Asks clarifying questions when the destination matters.",
+      "lines": 115,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "upload-and-share",
+      "description": "Upload a file to Google Drive AND share it with someone in one command. Chains the upload and share skills. Use when the user says \"upload and share\", \"upload this and send it to\", \"put on Drive and share with\", \"upload and give access to\", or any variation of wanting to both upload a file and share it with an email address. Also triggers on \"/upload-and-share\". Takes an email address as argument \u2014 e.g. \"/upload-and-share adi@example.com\".",
+      "lines": 106,
+      "category": "writing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "validate",
+      "description": "Validate that something actually works by testing it the way a real human user would \u2014 with expected inputs and expected outputs, in an agentic loop that retries, inspects, and doesn't stop until it either passes or gives you a clear failure report. Use this skill when the user says \"validate this\", \"test this end to end\", \"does this actually work\", \"prove it works\", \"check this for real\", \"verify the output\", \"run a real test\", \"make sure this works\", \"validate inputs and outputs\", \"acceptance test\", or when you just finished building something and need to confirm it works before claiming it's done. Also triggers on \"/validate\". This is not unit testing \u2014 this is human-style \"click the button and see what happens\" validation.",
+      "lines": 229,
+      "category": "testing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "vercel-react-best-practices",
+      "description": "React and Next.js performance optimization guidelines from Vercel Engineering. This skill should be used when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements.",
+      "lines": 137,
+      "category": "devworkflow",
+      "files": 62,
+      "created_at": "2026-03-19T17:44:30-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "visual-verify",
+      "description": "Take a Playwright screenshot and inspect the actual rendered output before claiming any visual change works. Use this skill AFTER making any CSS, layout, theming, or rendering change to a frontend application. Also use when: the user asks 'does it look right?', you're about to say 'refresh and check', or you've modified globals.css, any component's styles, or any visual behavior. Never tell the user something visual is fixed without first seeing it yourself through this skill. This prevents the pattern of blindly claiming fixes work when they don't.",
+      "lines": 58,
+      "category": "testing",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "warmup",
+      "description": "Start-of-session warmup that reads all existing project artifacts \u2014 presentations, PDFs, summaries, roadmap, project status, and CLAUDE.md \u2014 to build full context before beginning work.",
+      "lines": 74,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-02-08T13:29:19-05:00",
+      "active": true,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "web-design-guidelines",
+      "description": "Review UI code for Web Interface Guidelines compliance. Use when asked to \"review my UI\", \"check accessibility\", \"audit design\", \"review UX\", or \"check my site against best practices\".",
+      "lines": 39,
+      "category": "devworkflow",
+      "files": 1,
+      "created_at": "2026-03-19T17:44:30-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "x-twitter-scraper",
+      "description": "X API & Twitter scraper skill for AI coding agents. Builds integrations with the Xquik REST API, MCP server & webhooks: tweet search, user lookup, follower extraction, engagement metrics, giveaway contest draws, trending topics, account monitoring, reply/retweet/quote extraction, community & Space data, mutual follow checks, write actions (tweet, like, retweet, follow, DM, profile, media upload, communities), flow automations, support tickets, Telegram integrations. Works with Claude Code, Cursor, Codex, Copilot, Windsurf & 40+ agents.",
+      "lines": 533,
+      "category": "writing",
+      "files": 9,
+      "created_at": null,
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    },
+    {
+      "name": "zombie-hunter",
+      "description": "Find and kill orphaned processes from previous Claude Code sessions, MCP servers, or bot instances. Use when the user mentions \"zombie process\", \"high CPU\", \"something is eating my CPU\", \"kill old processes\", \"clean up processes\", \"409 conflict\", \"polling conflict\", or when debugging MCP connection issues. Also proactively suggest this when MCP servers show connection problems or when multiple sessions may have left orphaned processes behind.",
+      "lines": 84,
+      "category": "infra",
+      "files": 1,
+      "created_at": "2026-03-23T16:34:12-04:00",
+      "active": false,
+      "has_code": false,
+      "code_file_count": 0
+    }
+  ],
+  "commits": [
+    {
+      "hash": "32df6a0a",
+      "date": "2026-02-08T13:29:19-05:00",
+      "message": "Initial backup of all Claude Code skills and plugins",
+      "files_changed": 278,
+      "insertions": 67334,
+      "deletions": 0,
+      "skill_count": 18
+    },
+    {
+      "hash": "e1e39b17",
+      "date": "2026-02-08T13:39:34-05:00",
+      "message": "Add all 28 installed plugins",
+      "files_changed": 168,
+      "insertions": 31740,
+      "deletions": 0,
+      "skill_count": 18
+    },
+    {
+      "hash": "0d30dd28",
+      "date": "2026-02-08T13:41:02-05:00",
+      "message": "Add README with skills and plugins listing",
+      "files_changed": 1,
+      "insertions": 67,
+      "deletions": 0,
+      "skill_count": 18
+    },
+    {
+      "hash": "7f1e5584",
+      "date": "2026-02-08T13:43:35-05:00",
+      "message": "Auto-generate README from skill/plugin metadata",
+      "files_changed": 1,
+      "insertions": 48,
+      "deletions": 48,
+      "skill_count": 18
+    },
+    {
+      "hash": "9161b6aa",
+      "date": "2026-02-08T13:47:59-05:00",
+      "message": "Auto-backup: skill updated - backup-skills.sh",
+      "files_changed": 40,
+      "insertions": 4346,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "3b275aeb",
+      "date": "2026-02-08T13:48:06-05:00",
+      "message": "Auto-backup: skill updated - backup-skills.sh",
+      "files_changed": 1,
+      "insertions": 5,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "96b0c4e8",
+      "date": "2026-02-08T13:48:13-05:00",
+      "message": "Auto-backup: skill updated - backup-skills.sh",
+      "files_changed": 1,
+      "insertions": 4,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "357d119e",
+      "date": "2026-02-08T13:48:23-05:00",
+      "message": "Auto-backup: skill updated - generate-readme.sh",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "cde81b78",
+      "date": "2026-02-08T13:48:32-05:00",
+      "message": "Auto-backup: skill updated - generate-readme.sh",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "f1c5711c",
+      "date": "2026-02-08T13:48:41-05:00",
+      "message": "Auto-backup: skill updated - generate-readme.sh",
+      "files_changed": 2,
+      "insertions": 29,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "8a01547e",
+      "date": "2026-02-08T13:48:49-05:00",
+      "message": "Auto-backup: skill updated - generate-readme.sh",
+      "files_changed": 2,
+      "insertions": 2,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "407944bf",
+      "date": "2026-02-08T13:49:24-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 1,
+      "insertions": 9,
+      "deletions": 1,
+      "skill_count": 19
+    },
+    {
+      "hash": "0f005475",
+      "date": "2026-02-08T13:51:42-05:00",
+      "message": "Auto-backup: hook updated \u2014 generate-readme.sh",
+      "files_changed": 2,
+      "insertions": 2,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "3d4ad990",
+      "date": "2026-02-08T13:53:33-05:00",
+      "message": "Auto-backup: hook updated \u2014 generate-readme.sh",
+      "files_changed": 2,
+      "insertions": 2,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "f9b8fb9d",
+      "date": "2026-02-08T13:55:00-05:00",
+      "message": "Auto-backup: hook updated \u2014 generate-readme.sh",
+      "files_changed": 2,
+      "insertions": 2,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "e229621a",
+      "date": "2026-02-08T13:57:24-05:00",
+      "message": "Auto-backup: hook updated \u2014 generate-readme.sh",
+      "files_changed": 2,
+      "insertions": 16,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "470312a8",
+      "date": "2026-02-08T13:57:31-05:00",
+      "message": "Auto-backup: hook updated \u2014 generate-readme.sh",
+      "files_changed": 2,
+      "insertions": 9,
+      "deletions": 4,
+      "skill_count": 19
+    },
+    {
+      "hash": "c3f1ac3a",
+      "date": "2026-02-08T13:57:39-05:00",
+      "message": "Auto-backup: hook updated \u2014 generate-readme.sh",
+      "files_changed": 1,
+      "insertions": 6,
+      "deletions": 1,
+      "skill_count": 19
+    },
+    {
+      "hash": "3c868e10",
+      "date": "2026-02-08T14:01:14-05:00",
+      "message": "Auto-backup: hook updated \u2014 generate-readme.sh",
+      "files_changed": 3,
+      "insertions": 57,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "fb2c19e1",
+      "date": "2026-02-08T14:01:37-05:00",
+      "message": "Auto-backup: hook updated \u2014 sync-mcp.sh",
+      "files_changed": 3,
+      "insertions": 31,
+      "deletions": 3,
+      "skill_count": 19
+    },
+    {
+      "hash": "539f1353",
+      "date": "2026-02-08T14:01:55-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 2,
+      "insertions": 2,
+      "deletions": 2,
+      "skill_count": 19
+    },
+    {
+      "hash": "9ee549a3",
+      "date": "2026-02-08T14:02:02-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 2,
+      "insertions": 3,
+      "deletions": 1,
+      "skill_count": 19
+    },
+    {
+      "hash": "624dff94",
+      "date": "2026-02-08T14:02:09-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 1,
+      "insertions": 3,
+      "deletions": 1,
+      "skill_count": 19
+    },
+    {
+      "hash": "66d81544",
+      "date": "2026-02-08T14:03:49-05:00",
+      "message": "Auto-backup: hook updated \u2014 sync-mcp.sh",
+      "files_changed": 4,
+      "insertions": 29,
+      "deletions": 3,
+      "skill_count": 19
+    },
+    {
+      "hash": "9ff4ce12",
+      "date": "2026-02-08T14:32:17-05:00",
+      "message": "Auto-backup: hook updated \u2014 error-search.sh",
+      "files_changed": 2,
+      "insertions": 47,
+      "deletions": 1,
+      "skill_count": 19
+    },
+    {
+      "hash": "b5fe7e90",
+      "date": "2026-02-08T14:38:31-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 3,
+      "insertions": 73,
+      "deletions": 1,
+      "skill_count": 19
+    },
+    {
+      "hash": "81c301fa",
+      "date": "2026-02-08T14:38:38-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 1,
+      "insertions": 2,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "e7efeb85",
+      "date": "2026-02-08T14:38:46-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 1,
+      "insertions": 2,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "f5b05206",
+      "date": "2026-02-08T14:46:26-05:00",
+      "message": "Auto-backup: settings updated \u2014 settings.json",
+      "files_changed": 1,
+      "insertions": 12,
+      "deletions": 0,
+      "skill_count": 19
+    },
+    {
+      "hash": "5404614f",
+      "date": "2026-02-08T15:24:28-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 3,
+      "insertions": 260,
+      "deletions": 13,
+      "skill_count": 20
+    },
+    {
+      "hash": "97468f60",
+      "date": "2026-02-08T15:30:53-05:00",
+      "message": "Auto-backup: hook updated \u2014 sync-plugins.sh",
+      "files_changed": 2,
+      "insertions": 70,
+      "deletions": 22,
+      "skill_count": 20
+    },
+    {
+      "hash": "64c709aa",
+      "date": "2026-02-08T15:31:01-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 92,
+      "insertions": 206,
+      "deletions": 24932,
+      "skill_count": 20
+    },
+    {
+      "hash": "cf42768e",
+      "date": "2026-02-08T15:39:05-05:00",
+      "message": "Auto-backup: hook updated \u2014 sync-plugins.sh",
+      "files_changed": 92,
+      "insertions": 24933,
+      "deletions": 1,
+      "skill_count": 20
+    },
+    {
+      "hash": "63de5e3e",
+      "date": "2026-02-08T15:39:16-05:00",
+      "message": "Auto-backup: hook updated \u2014 sync-plugins.sh",
+      "files_changed": 1,
+      "insertions": 18,
+      "deletions": 1,
+      "skill_count": 20
+    },
+    {
+      "hash": "bf1af750",
+      "date": "2026-02-08T15:39:23-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 102,
+      "insertions": 66,
+      "deletions": 24932,
+      "skill_count": 20
+    },
+    {
+      "hash": "5fcd7660",
+      "date": "2026-02-08T15:39:31-05:00",
+      "message": "Auto-backup: hook updated \u2014 sync-plugins.sh",
+      "files_changed": 103,
+      "insertions": 24934,
+      "deletions": 68,
+      "skill_count": 20
+    },
+    {
+      "hash": "b7031168",
+      "date": "2026-02-08T15:39:46-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 20
+    },
+    {
+      "hash": "ca4c6348",
+      "date": "2026-02-08T16:10:52-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 24985,
+      "deletions": 41289,
+      "skill_count": 21
+    },
+    {
+      "hash": "1b6f9801",
+      "date": "2026-02-08T16:11:02-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 21
+    },
+    {
+      "hash": "290edee3",
+      "date": "2026-02-08T16:13:37-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 24975,
+      "deletions": 41289,
+      "skill_count": 22
+    },
+    {
+      "hash": "c00ecb2a",
+      "date": "2026-02-08T16:13:49-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 2,
+      "insertions": 60,
+      "deletions": 1,
+      "skill_count": 23
+    },
+    {
+      "hash": "0b27c5f9",
+      "date": "2026-02-08T16:13:58-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 23
+    },
+    {
+      "hash": "04bb91e5",
+      "date": "2026-02-08T16:17:02-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25057,
+      "deletions": 41289,
+      "skill_count": 24
+    },
+    {
+      "hash": "003742af",
+      "date": "2026-02-08T16:17:12-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 24
+    },
+    {
+      "hash": "0278c4c7",
+      "date": "2026-02-08T16:22:05-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25007,
+      "deletions": 41289,
+      "skill_count": 25
+    },
+    {
+      "hash": "68211d99",
+      "date": "2026-02-08T16:22:14-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 25
+    },
+    {
+      "hash": "b5765011",
+      "date": "2026-02-08T16:28:40-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25251,
+      "deletions": 41289,
+      "skill_count": 26
+    },
+    {
+      "hash": "69b465f1",
+      "date": "2026-02-08T16:28:54-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 26
+    },
+    {
+      "hash": "7de6c35c",
+      "date": "2026-02-08T16:31:00-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25333,
+      "deletions": 41289,
+      "skill_count": 27
+    },
+    {
+      "hash": "0e783f76",
+      "date": "2026-02-08T16:31:13-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 27
+    },
+    {
+      "hash": "04df1fd7",
+      "date": "2026-02-08T16:33:44-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25108,
+      "deletions": 41289,
+      "skill_count": 28
+    },
+    {
+      "hash": "81e94030",
+      "date": "2026-02-08T16:33:56-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 28
+    },
+    {
+      "hash": "0ffaeacf",
+      "date": "2026-02-08T16:36:47-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25151,
+      "deletions": 41289,
+      "skill_count": 29
+    },
+    {
+      "hash": "91824b0b",
+      "date": "2026-02-08T16:36:59-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 29
+    },
+    {
+      "hash": "93677700",
+      "date": "2026-02-08T16:41:59-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25149,
+      "deletions": 41289,
+      "skill_count": 30
+    },
+    {
+      "hash": "322d4e4d",
+      "date": "2026-02-08T16:42:13-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 30
+    },
+    {
+      "hash": "db9e9034",
+      "date": "2026-02-08T16:43:54-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25172,
+      "deletions": 41289,
+      "skill_count": 31
+    },
+    {
+      "hash": "00615038",
+      "date": "2026-02-08T16:44:13-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 31
+    },
+    {
+      "hash": "794124e4",
+      "date": "2026-02-08T16:47:38-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25138,
+      "deletions": 41289,
+      "skill_count": 32
+    },
+    {
+      "hash": "47ccc416",
+      "date": "2026-02-08T16:47:51-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 32
+    },
+    {
+      "hash": "3bae3482",
+      "date": "2026-02-08T16:50:19-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25060,
+      "deletions": 41289,
+      "skill_count": 33
+    },
+    {
+      "hash": "3de027ba",
+      "date": "2026-02-08T16:50:33-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 33
+    },
+    {
+      "hash": "87cd2cff",
+      "date": "2026-02-08T16:53:04-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25064,
+      "deletions": 41289,
+      "skill_count": 34
+    },
+    {
+      "hash": "a1e5e1d8",
+      "date": "2026-02-08T16:53:15-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 34
+    },
+    {
+      "hash": "1c44e184",
+      "date": "2026-02-08T16:57:23-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25122,
+      "deletions": 41289,
+      "skill_count": 35
+    },
+    {
+      "hash": "ed5d7f54",
+      "date": "2026-02-08T16:57:40-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 35
+    },
+    {
+      "hash": "b55abd62",
+      "date": "2026-02-08T17:00:57-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25194,
+      "deletions": 41289,
+      "skill_count": 36
+    },
+    {
+      "hash": "c01570c0",
+      "date": "2026-02-08T17:01:13-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 36
+    },
+    {
+      "hash": "7a5929f4",
+      "date": "2026-02-08T17:03:53-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25106,
+      "deletions": 41289,
+      "skill_count": 37
+    },
+    {
+      "hash": "7c9455a1",
+      "date": "2026-02-08T17:04:08-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 37
+    },
+    {
+      "hash": "6e49f2ca",
+      "date": "2026-02-08T17:09:24-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25255,
+      "deletions": 41289,
+      "skill_count": 38
+    },
+    {
+      "hash": "d42c51d8",
+      "date": "2026-02-08T17:09:43-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 38
+    },
+    {
+      "hash": "afb1ac2b",
+      "date": "2026-02-08T17:13:44-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25157,
+      "deletions": 41289,
+      "skill_count": 39
+    },
+    {
+      "hash": "e93c6d06",
+      "date": "2026-02-08T17:14:01-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 39
+    },
+    {
+      "hash": "afcb6b37",
+      "date": "2026-02-08T17:25:57-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 315,
+      "insertions": 25270,
+      "deletions": 41289,
+      "skill_count": 40
+    },
+    {
+      "hash": "afecaeaf",
+      "date": "2026-02-08T17:26:17-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 40
+    },
+    {
+      "hash": "d51346cb",
+      "date": "2026-02-08T17:36:14-05:00",
+      "message": "Auto-backup: hook updated \u2014 claude-notify.sh",
+      "files_changed": 315,
+      "insertions": 25001,
+      "deletions": 41289,
+      "skill_count": 40
+    },
+    {
+      "hash": "b35f1d35",
+      "date": "2026-02-08T17:36:31-05:00",
+      "message": "Auto-backup: settings updated \u2014 settings.json",
+      "files_changed": 2,
+      "insertions": 17,
+      "deletions": 0,
+      "skill_count": 40
+    },
+    {
+      "hash": "b636dc0b",
+      "date": "2026-02-08T17:37:01-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 40
+    },
+    {
+      "hash": "72e07611",
+      "date": "2026-02-08T17:38:06-05:00",
+      "message": "Auto-backup: hook updated \u2014 claude-notify.sh",
+      "files_changed": 315,
+      "insertions": 24938,
+      "deletions": 41288,
+      "skill_count": 40
+    },
+    {
+      "hash": "30620fe2",
+      "date": "2026-02-08T17:38:14-05:00",
+      "message": "Auto-backup: hook updated \u2014 claude-notify.sh",
+      "files_changed": 1,
+      "insertions": 3,
+      "deletions": 0,
+      "skill_count": 40
+    },
+    {
+      "hash": "330dc2db",
+      "date": "2026-02-08T17:38:35-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 40
+    },
+    {
+      "hash": "04a08401",
+      "date": "2026-02-08T17:39:57-05:00",
+      "message": "Auto-backup: hook updated \u2014 claude-notify.sh",
+      "files_changed": 315,
+      "insertions": 24935,
+      "deletions": 41290,
+      "skill_count": 40
+    },
+    {
+      "hash": "943c083b",
+      "date": "2026-02-08T17:40:11-05:00",
+      "message": "Auto-backup: plugins synced \u2014 added: github,huggingface-skills,playwright,slack,",
+      "files_changed": 314,
+      "insertions": 41288,
+      "deletions": 24932,
+      "skill_count": 40
+    },
+    {
+      "hash": "b571969e",
+      "date": "2026-02-08T18:54:17-05:00",
+      "message": "Remove Stop hook from settings",
+      "files_changed": 1,
+      "insertions": 0,
+      "deletions": 16,
+      "skill_count": 40
+    },
+    {
+      "hash": "1180809d",
+      "date": "2026-02-08T19:04:22-05:00",
+      "message": "Add statusLine config for custom status bar",
+      "files_changed": 1,
+      "insertions": 4,
+      "deletions": 0,
+      "skill_count": 40
+    },
+    {
+      "hash": "198e13fa",
+      "date": "2026-02-08T19:17:23-05:00",
+      "message": "Add Stop hook for desktop notifications on turn completion",
+      "files_changed": 1,
+      "insertions": 12,
+      "deletions": 0,
+      "skill_count": 40
+    },
+    {
+      "hash": "c0c09b27",
+      "date": "2026-02-08T19:22:45-05:00",
+      "message": "Revert \"Add Stop hook for desktop notifications on turn completion\"",
+      "files_changed": 1,
+      "insertions": 0,
+      "deletions": 12,
+      "skill_count": 40
+    },
+    {
+      "hash": "fe233c29",
+      "date": "2026-02-09T18:23:53-05:00",
+      "message": "Auto-backup: MCP config updated \u2014 .claude.json",
+      "files_changed": 315,
+      "insertions": 24934,
+      "deletions": 41290,
+      "skill_count": 40
+    },
+    {
+      "hash": "b3fa5c8e",
+      "date": "2026-02-09T18:23:53-05:00",
+      "message": "Auto-backup: MCP config updated \u2014 .claude.json",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 4,
+      "skill_count": 40
+    },
+    {
+      "hash": "4467e243",
+      "date": "2026-02-09T18:23:53-05:00",
+      "message": "Auto-backup: MCP config updated \u2014 .claude.json",
+      "files_changed": 1,
+      "insertions": 0,
+      "deletions": 1,
+      "skill_count": 40
+    },
+    {
+      "hash": "78e7bb7b",
+      "date": "2026-02-09T18:23:53-05:00",
+      "message": "Auto-backup: MCP config updated \u2014 .claude.json",
+      "files_changed": 1,
+      "insertions": 10,
+      "deletions": 8,
+      "skill_count": 40
+    },
+    {
+      "hash": "daacc190",
+      "date": "2026-02-09T18:23:53-05:00",
+      "message": "Auto-backup: MCP config updated \u2014 .claude.json",
+      "files_changed": 1,
+      "insertions": 7,
+      "deletions": 1,
+      "skill_count": 40
+    },
+    {
+      "hash": "73f1d56f",
+      "date": "2026-02-09T18:23:53-05:00",
+      "message": "Auto-backup: settings updated \u2014 settings.json",
+      "files_changed": 1,
+      "insertions": 47,
+      "deletions": 0,
+      "skill_count": 40
+    },
+    {
+      "hash": "3f5d0fc9",
+      "date": "2026-02-09T18:24:13-05:00",
+      "message": "Auto-backup: hook updated \u2014 backup-skills.sh",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 40
+    },
+    {
+      "hash": "eb540168",
+      "date": "2026-02-11T18:39:18-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 2,
+      "insertions": 573,
+      "deletions": 1,
+      "skill_count": 41
+    },
+    {
+      "hash": "76082cb0",
+      "date": "2026-02-11T19:00:04-05:00",
+      "message": "Update README.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 41
+    },
+    {
+      "hash": "fc30d62e",
+      "date": "2026-02-15T15:09:02-05:00",
+      "message": "Auto-backup: skill updated \u2014 skill.md",
+      "files_changed": 3,
+      "insertions": 198,
+      "deletions": 9,
+      "skill_count": 41
+    },
+    {
+      "hash": "0857a73f",
+      "date": "2026-02-15T15:09:02-05:00",
+      "message": "Auto-backup: skill updated \u2014 skill.md",
+      "files_changed": 1,
+      "insertions": 17,
+      "deletions": 4,
+      "skill_count": 41
+    },
+    {
+      "hash": "8c813180",
+      "date": "2026-02-15T15:09:02-05:00",
+      "message": "Auto-backup: skill updated \u2014 skill.md",
+      "files_changed": 1,
+      "insertions": 5,
+      "deletions": 0,
+      "skill_count": 41
+    },
+    {
+      "hash": "eb4dd66d",
+      "date": "2026-02-15T15:22:12-05:00",
+      "message": "Fix prism-playwright: rename skill.md to SKILL.md for proper README description",
+      "files_changed": 2,
+      "insertions": 2,
+      "deletions": 2,
+      "skill_count": 42
+    },
+    {
+      "hash": "76fc0f68",
+      "date": "2026-02-15T15:23:21-05:00",
+      "message": "Update README.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "07130406",
+      "date": "2026-02-15T15:50:31-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 16,
+      "deletions": 0,
+      "skill_count": 42
+    },
+    {
+      "hash": "e340b48b",
+      "date": "2026-02-15T16:04:23-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 2,
+      "insertions": 89,
+      "deletions": 3,
+      "skill_count": 42
+    },
+    {
+      "hash": "ffb9fc93",
+      "date": "2026-02-15T16:04:40-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 18,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "ae2bc3f1",
+      "date": "2026-02-15T16:04:51-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "b95a7fe3",
+      "date": "2026-02-15T16:05:01-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "5d3f6e66",
+      "date": "2026-02-15T16:05:11-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "54d4569c",
+      "date": "2026-02-15T16:05:30-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 31,
+      "deletions": 9,
+      "skill_count": 42
+    },
+    {
+      "hash": "4397216a",
+      "date": "2026-02-15T16:10:12-05:00",
+      "message": "Update README.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "c00ea927",
+      "date": "2026-02-15T16:47:38-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 13,
+      "deletions": 14,
+      "skill_count": 42
+    },
+    {
+      "hash": "bfa2f9ab",
+      "date": "2026-02-15T16:47:38-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 1,
+      "insertions": 0,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "d0a7f343",
+      "date": "2026-02-15T16:49:32-05:00",
+      "message": "Auto-backup: skill updated \u2014 SKILL.md",
+      "files_changed": 2,
+      "insertions": 3,
+      "deletions": 5,
+      "skill_count": 42
+    },
+    {
+      "hash": "d36a55de",
+      "date": "2026-02-27T18:48:18-05:00",
+      "message": "Update README.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "7e2d4f83",
+      "date": "2026-03-05T02:19:19-05:00",
+      "message": "Add gws (Google Workspace) MCP server",
+      "files_changed": 1,
+      "insertions": 10,
+      "deletions": 0,
+      "skill_count": 42
+    },
+    {
+      "hash": "848dda32",
+      "date": "2026-03-05T02:20:33-05:00",
+      "message": "Add gws MCP server to README",
+      "files_changed": 1,
+      "insertions": 2,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "0e0f1541",
+      "date": "2026-03-05T13:48:33-05:00",
+      "message": "Add codex-cli MCP server",
+      "files_changed": 2,
+      "insertions": 11,
+      "deletions": 1,
+      "skill_count": 42
+    },
+    {
+      "hash": "98c7d8f7",
+      "date": "2026-03-05T14:28:27-05:00",
+      "message": "Add 5 new skills: cost-estimate, find-skills, skill-creator, vercel-react-best-p",
+      "files_changed": 87,
+      "insertions": 12597,
+      "deletions": 2,
+      "skill_count": 43
+    },
+    {
+      "hash": "5907ce94",
+      "date": "2026-03-19T17:44:30-04:00",
+      "message": "Full sync: settings, skills, plugins, hooks, and README",
+      "files_changed": 810,
+      "insertions": 181314,
+      "deletions": 29112,
+      "skill_count": 48
+    },
+    {
+      "hash": "bee20554",
+      "date": "2026-03-19T17:45:09-04:00",
+      "message": "Update README.md",
+      "files_changed": 1,
+      "insertions": 1,
+      "deletions": 1,
+      "skill_count": 48
+    },
+    {
+      "hash": "ca823b7b",
+      "date": "2026-03-23T16:34:12-04:00",
+      "message": "Full sync: 37 new skills, telegram plugin, vercel v0.24.0, config updates",
+      "files_changed": 4916,
+      "insertions": 659282,
+      "deletions": 5974,
+      "skill_count": 84
+    },
+    {
+      "hash": "284d202e",
+      "date": "2026-04-02T15:58:54-04:00",
+      "message": "feat: add project-showcase-website skill (86 skills)",
+      "files_changed": 69,
+      "insertions": 17864,
+      "deletions": 1,
+      "skill_count": 85
+    },
+    {
+      "hash": "81d1621c",
+      "date": "2026-04-02T16:05:35-04:00",
+      "message": "Full sync: 11 new skills, mcp-server-dev plugin, settings & plugin updates",
+      "files_changed": 6146,
+      "insertions": 355257,
+      "deletions": 42711,
+      "skill_count": 96
+    },
+    {
+      "hash": "ed9e8176",
+      "date": "2026-04-02T18:14:48-04:00",
+      "message": "feat: add data portrait \u2014 constellation visualization of Claude Code OS",
+      "files_changed": 6,
+      "insertions": 3371,
+      "deletions": 0,
+      "skill_count": 96
+    }
+  ],
+  "plugins": [
+    {
+      "name": "claude-md-management",
+      "size_bytes": 1092552,
+      "size_human": "1.0MB",
+      "files": 14
+    },
+    {
+      "name": "code-review",
+      "size_bytes": 26335,
+      "size_human": "26KB",
+      "files": 6
+    },
+    {
+      "name": "code-simplifier",
+      "size_bytes": 3400,
+      "size_human": "3KB",
+      "files": 4
+    },
+    {
+      "name": "commit-commands",
+      "size_bytes": 20787,
+      "size_human": "20KB",
+      "files": 8
+    },
+    {
+      "name": "explanatory-output-style",
+      "size_bytes": 31800,
+      "size_human": "31KB",
+      "files": 19
+    },
+    {
+      "name": "feature-dev",
+      "size_bytes": 35782,
+      "size_human": "35KB",
+      "files": 10
+    },
+    {
+      "name": "frontend-design",
+      "size_bytes": 16789,
+      "size_human": "16KB",
+      "files": 7
+    },
+    {
+      "name": "github",
+      "size_bytes": 449,
+      "size_human": "0KB",
+      "files": 3
+    },
+    {
+      "name": "hookify",
+      "size_bytes": 79845,
+      "size_human": "78KB",
+      "files": 35
+    },
+    {
+      "name": "huggingface-skills",
+      "size_bytes": 1176341,
+      "size_human": "1.1MB",
+      "files": 176
+    },
+    {
+      "name": "learning-output-style",
+      "size_bytes": 40430,
+      "size_human": "39KB",
+      "files": 19
+    },
+    {
+      "name": "mcp-server-dev",
+      "size_bytes": 114816,
+      "size_human": "112KB",
+      "files": 28
+    },
+    {
+      "name": "playground",
+      "size_bytes": 42980,
+      "size_human": "42KB",
+      "files": 14
+    },
+    {
+      "name": "playwright",
+      "size_bytes": 382,
+      "size_human": "0KB",
+      "files": 3
+    },
+    {
+      "name": "pr-review-toolkit",
+      "size_bytes": 57311,
+      "size_human": "56KB",
+      "files": 13
+    },
+    {
+      "name": "ralph-loop",
+      "size_bytes": 74990,
+      "size_human": "73KB",
+      "files": 29
+    },
+    {
+      "name": "slack",
+      "size_bytes": 25734,
+      "size_human": "25KB",
+      "files": 27
+    },
+    {
+      "name": "supabase",
+      "size_bytes": 366,
+      "size_human": "0KB",
+      "files": 3
+    },
+    {
+      "name": "superpowers",
+      "size_bytes": 1463888,
+      "size_human": "1.4MB",
+      "files": 373
+    },
+    {
+      "name": "telegram",
+      "size_bytes": 17311658,
+      "size_human": "16.5MB",
+      "files": 4188
+    },
+    {
+      "name": "typescript-lsp",
+      "size_bytes": 692,
+      "size_human": "1KB",
+      "files": 1
+    },
+    {
+      "name": "vercel",
+      "size_bytes": 22814593,
+      "size_human": "21.8MB",
+      "files": 3160
+    }
+  ],
+  "hooks": [
+    {
+      "name": "backup-skills",
+      "lines": 87
+    },
+    {
+      "name": "claude-notify",
+      "lines": 77
+    },
+    {
+      "name": "error-search",
+      "lines": 45
+    },
+    {
+      "name": "fix-plugin-permissions",
+      "lines": 5
+    },
+    {
+      "name": "generate-readme",
+      "lines": 190
+    },
+    {
+      "name": "sync-mcp",
+      "lines": 40
+    },
+    {
+      "name": "sync-plugins",
+      "lines": 122
+    }
+  ],
+  "file_types": [
+    {
+      "extension": "md",
+      "count": 2296
+    },
+    {
+      "extension": "ts",
+      "count": 1660
+    },
+    {
+      "extension": "js",
+      "count": 1225
+    },
+    {
+      "extension": "map",
+      "count": 476
+    },
+    {
+      "extension": "json",
+      "count": 423
+    },
+    {
+      "extension": "mjs",
+      "count": 183
+    },
+    {
+      "extension": "py",
+      "count": 180
+    },
+    {
+      "extension": "mts",
+      "count": 160
+    },
+    {
+      "extension": "cjs",
+      "count": 109
+    },
+    {
+      "extension": "cts",
+      "count": 107
+    },
+    {
+      "extension": "sh",
+      "count": 78
+    },
+    {
+      "extension": "yaml",
+      "count": 52
+    },
+    {
+      "extension": "yml",
+      "count": 44
+    },
+    {
+      "extension": "snap",
+      "count": 40
+    },
+    {
+      "extension": "tmpl",
+      "count": 40
+    },
+    {
+      "extension": "txt",
+      "count": 39
+    },
+    {
+      "extension": "xsd",
+      "count": 39
+    },
+    {
+      "extension": "eslintrc",
+      "count": 19
+    },
+    {
+      "extension": "nycrc",
+      "count": 15
+    },
+    {
+      "extension": "html",
+      "count": 13
+    },
+    {
+      "extension": "gitignore",
+      "count": 12
+    },
+    {
+      "extension": "mp3",
+      "count": 10
+    },
+    {
+      "extension": "png",
+      "count": 10
+    },
+    {
+      "extension": "mp4",
+      "count": 8
+    },
+    {
+      "extension": "orphaned_at",
+      "count": 8
+    }
+  ],
+  "growth_timeline": [
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill_count": 18,
+      "message": "Initial backup of all Claude Code skills and plugins"
+    },
+    {
+      "date": "2026-02-08T13:47:59-05:00",
+      "skill_count": 19,
+      "message": "Auto-backup: skill updated - backup-skills.sh"
+    },
+    {
+      "date": "2026-02-08T15:24:28-05:00",
+      "skill_count": 20,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:10:52-05:00",
+      "skill_count": 21,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:13:37-05:00",
+      "skill_count": 22,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:13:49-05:00",
+      "skill_count": 23,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:17:02-05:00",
+      "skill_count": 24,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:22:05-05:00",
+      "skill_count": 25,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:28:40-05:00",
+      "skill_count": 26,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:31:00-05:00",
+      "skill_count": 27,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:33:44-05:00",
+      "skill_count": 28,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:36:47-05:00",
+      "skill_count": 29,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:41:59-05:00",
+      "skill_count": 30,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:43:54-05:00",
+      "skill_count": 31,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:47:38-05:00",
+      "skill_count": 32,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:50:19-05:00",
+      "skill_count": 33,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:53:04-05:00",
+      "skill_count": 34,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T16:57:23-05:00",
+      "skill_count": 35,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T17:00:57-05:00",
+      "skill_count": 36,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T17:03:53-05:00",
+      "skill_count": 37,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T17:09:24-05:00",
+      "skill_count": 38,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T17:13:44-05:00",
+      "skill_count": 39,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-08T17:25:57-05:00",
+      "skill_count": 40,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-11T18:39:18-05:00",
+      "skill_count": 41,
+      "message": "Auto-backup: skill updated \u2014 SKILL.md"
+    },
+    {
+      "date": "2026-02-15T15:22:12-05:00",
+      "skill_count": 42,
+      "message": "Fix prism-playwright: rename skill.md to SKILL.md for proper README description"
+    },
+    {
+      "date": "2026-03-05T14:28:27-05:00",
+      "skill_count": 43,
+      "message": "Add 5 new skills: cost-estimate, find-skills, skill-creator, vercel-react-best-p"
+    },
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "skill_count": 48,
+      "message": "Full sync: settings, skills, plugins, hooks, and README"
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill_count": 84,
+      "message": "Full sync: 37 new skills, telegram plugin, vercel v0.24.0, config updates"
+    },
+    {
+      "date": "2026-04-02T15:58:54-04:00",
+      "skill_count": 85,
+      "message": "feat: add project-showcase-website skill (86 skills)"
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill_count": 96,
+      "message": "Full sync: 11 new skills, mcp-server-dev plugin, settings & plugin updates"
+    }
+  ],
+  "composition_network": [
+    {
+      "source": "architectural-walkthrough-video",
+      "target": "makesong"
+    },
+    {
+      "source": "behavioral-test-loop",
+      "target": "validate"
+    },
+    {
+      "source": "behavioral-test-loop",
+      "target": "ffmpeg-screencast"
+    },
+    {
+      "source": "behavioral-test-loop",
+      "target": "serve-and-test"
+    },
+    {
+      "source": "behavioral-test-loop",
+      "target": "annotated-test-video"
+    },
+    {
+      "source": "behavioral-test-loop",
+      "target": "visual-verify"
+    },
+    {
+      "source": "behavioral-test-loop",
+      "target": "human-emulate"
+    },
+    {
+      "source": "compval",
+      "target": "validate"
+    },
+    {
+      "source": "cooldown",
+      "target": "pptx"
+    },
+    {
+      "source": "cooldown",
+      "target": "pdf"
+    },
+    {
+      "source": "cooldown",
+      "target": "projectstatus"
+    },
+    {
+      "source": "cooldown",
+      "target": "summary"
+    },
+    {
+      "source": "cooldown",
+      "target": "roadmap"
+    },
+    {
+      "source": "cost-estimate",
+      "target": "email"
+    },
+    {
+      "source": "cover-image",
+      "target": "dall-e"
+    },
+    {
+      "source": "cover-image",
+      "target": "gemini"
+    },
+    {
+      "source": "draw",
+      "target": "mcp-health"
+    },
+    {
+      "source": "elkjs-layout",
+      "target": "niche-library-research"
+    },
+    {
+      "source": "email-language-detect",
+      "target": "thread-tracker"
+    },
+    {
+      "source": "email-language-detect",
+      "target": "email"
+    },
+    {
+      "source": "email-reply-all",
+      "target": "thread-tracker"
+    },
+    {
+      "source": "email-reply-all",
+      "target": "email-language-detect"
+    },
+    {
+      "source": "email-reply-all",
+      "target": "email"
+    },
+    {
+      "source": "estimated-salary",
+      "target": "cost-estimate"
+    },
+    {
+      "source": "ffmpeg-screencast",
+      "target": "validate"
+    },
+    {
+      "source": "find-skills",
+      "target": "vercel-react-best-practices"
+    },
+    {
+      "source": "gitcommit",
+      "target": "gitreadme"
+    },
+    {
+      "source": "gitcommit",
+      "target": "gitinit"
+    },
+    {
+      "source": "githour",
+      "target": "refactor"
+    },
+    {
+      "source": "githour",
+      "target": "gitpublic"
+    },
+    {
+      "source": "githour",
+      "target": "gitcommit"
+    },
+    {
+      "source": "githour",
+      "target": "gitinit"
+    },
+    {
+      "source": "gitpush",
+      "target": "gitstage"
+    },
+    {
+      "source": "gitpush",
+      "target": "gitcommit"
+    },
+    {
+      "source": "gitpush",
+      "target": "gitreadme"
+    },
+    {
+      "source": "gitstage",
+      "target": "gitcommit"
+    },
+    {
+      "source": "human-emulate",
+      "target": "swarm"
+    },
+    {
+      "source": "inbox",
+      "target": "unread"
+    },
+    {
+      "source": "litreview",
+      "target": "pptx"
+    },
+    {
+      "source": "litwebpage",
+      "target": "summary"
+    },
+    {
+      "source": "litwebpage",
+      "target": "litreview"
+    },
+    {
+      "source": "litwebpage",
+      "target": "synthesize"
+    },
+    {
+      "source": "litwebpage",
+      "target": "makewebpage"
+    },
+    {
+      "source": "makesong",
+      "target": "makevideo"
+    },
+    {
+      "source": "makevideo",
+      "target": "share"
+    },
+    {
+      "source": "makewebpage",
+      "target": "summary"
+    },
+    {
+      "source": "marketresearch",
+      "target": "pptx"
+    },
+    {
+      "source": "marketwebpage",
+      "target": "marketresearch"
+    },
+    {
+      "source": "marketwebpage",
+      "target": "summary"
+    },
+    {
+      "source": "marketwebpage",
+      "target": "synthesize"
+    },
+    {
+      "source": "marketwebpage",
+      "target": "makewebpage"
+    },
+    {
+      "source": "mathpaper",
+      "target": "mathder"
+    },
+    {
+      "source": "mathpaper",
+      "target": "validate"
+    },
+    {
+      "source": "mathpaper",
+      "target": "litreview"
+    },
+    {
+      "source": "mathpaper",
+      "target": "compval"
+    },
+    {
+      "source": "mathpaper",
+      "target": "prism"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "mathder"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "manim-composer"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "validate"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "litreview"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "manimce-best-practices"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "mathpaper"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "compval"
+    },
+    {
+      "source": "mathwebpage",
+      "target": "makewebpage"
+    },
+    {
+      "source": "mcp-health",
+      "target": "zombie-hunter"
+    },
+    {
+      "source": "medium",
+      "target": "cover-image"
+    },
+    {
+      "source": "napkinpolishppt",
+      "target": "pptx"
+    },
+    {
+      "source": "prism-playwright",
+      "target": "prism"
+    },
+    {
+      "source": "sycophancy-debugger",
+      "target": "niche-library-research"
+    },
+    {
+      "source": "synthesize",
+      "target": "pptx"
+    },
+    {
+      "source": "synthesize",
+      "target": "pdf"
+    },
+    {
+      "source": "synthesize",
+      "target": "summary"
+    },
+    {
+      "source": "synthesize",
+      "target": "synthesizepdf"
+    },
+    {
+      "source": "synthesize",
+      "target": "synthesizeppt"
+    },
+    {
+      "source": "synthesize",
+      "target": "makewebpage"
+    },
+    {
+      "source": "synthesize",
+      "target": "napkinpolishppt"
+    },
+    {
+      "source": "synthesizepdf",
+      "target": "pptx"
+    },
+    {
+      "source": "synthesizepdf",
+      "target": "pdf"
+    },
+    {
+      "source": "synthesizepdf",
+      "target": "synthesize"
+    },
+    {
+      "source": "synthesizeppt",
+      "target": "pptx"
+    },
+    {
+      "source": "synthesizeppt",
+      "target": "synthesize"
+    },
+    {
+      "source": "synthesizeppt",
+      "target": "napkinpolishppt"
+    },
+    {
+      "source": "upload",
+      "target": "email"
+    },
+    {
+      "source": "upload-and-share",
+      "target": "upload"
+    },
+    {
+      "source": "upload-and-share",
+      "target": "email"
+    },
+    {
+      "source": "upload-and-share",
+      "target": "share"
+    },
+    {
+      "source": "warmup",
+      "target": "cooldown"
+    },
+    {
+      "source": "warmup",
+      "target": "roadmap"
+    }
+  ],
+  "category_evolution": [
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "cooldown",
+      "git": 0,
+      "media": 0,
+      "writing": 0,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 1
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "makesong",
+      "git": 0,
+      "media": 1,
+      "writing": 0,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 2
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "makevideo",
+      "git": 0,
+      "media": 2,
+      "writing": 0,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 3
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "manim-composer",
+      "git": 0,
+      "media": 3,
+      "writing": 0,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 4
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "manimce-best-practices",
+      "git": 0,
+      "media": 4,
+      "writing": 0,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 5
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "manimgl-best-practices",
+      "git": 0,
+      "media": 5,
+      "writing": 0,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 6
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "medium",
+      "git": 0,
+      "media": 5,
+      "writing": 1,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 7
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "pdf",
+      "git": 0,
+      "media": 5,
+      "writing": 2,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 8
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "pptx",
+      "git": 0,
+      "media": 5,
+      "writing": 3,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 9
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "prism",
+      "git": 0,
+      "media": 5,
+      "writing": 4,
+      "testing": 0,
+      "devworkflow": 1,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 10
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "projectstatus",
+      "git": 0,
+      "media": 5,
+      "writing": 4,
+      "testing": 0,
+      "devworkflow": 2,
+      "ai": 0,
+      "infra": 0,
+      "meta": 0,
+      "total": 11
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "remember",
+      "git": 0,
+      "media": 5,
+      "writing": 4,
+      "testing": 0,
+      "devworkflow": 2,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 12
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "roadmap",
+      "git": 0,
+      "media": 5,
+      "writing": 4,
+      "testing": 0,
+      "devworkflow": 3,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 13
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "summary",
+      "git": 0,
+      "media": 5,
+      "writing": 4,
+      "testing": 0,
+      "devworkflow": 4,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 14
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "swarm",
+      "git": 0,
+      "media": 5,
+      "writing": 4,
+      "testing": 0,
+      "devworkflow": 5,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 15
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "tweet",
+      "git": 0,
+      "media": 5,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 5,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 16
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "warmup",
+      "git": 0,
+      "media": 5,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 6,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 17
+    },
+    {
+      "date": "2026-02-08T13:47:59-05:00",
+      "skill": "remotion-best-practices",
+      "git": 0,
+      "media": 6,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 6,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 18
+    },
+    {
+      "date": "2026-02-08T15:24:28-05:00",
+      "skill": "review",
+      "git": 0,
+      "media": 6,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 7,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 19
+    },
+    {
+      "date": "2026-02-08T16:10:52-05:00",
+      "skill": "gitinit",
+      "git": 1,
+      "media": 6,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 7,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 20
+    },
+    {
+      "date": "2026-02-08T16:13:37-05:00",
+      "skill": "gitpublic",
+      "git": 2,
+      "media": 6,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 7,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 21
+    },
+    {
+      "date": "2026-02-08T16:13:49-05:00",
+      "skill": "gitcommit",
+      "git": 3,
+      "media": 6,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 7,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 22
+    },
+    {
+      "date": "2026-02-08T16:17:02-05:00",
+      "skill": "refactor",
+      "git": 3,
+      "media": 6,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 23
+    },
+    {
+      "date": "2026-02-08T16:22:05-05:00",
+      "skill": "githour",
+      "git": 4,
+      "media": 6,
+      "writing": 5,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 24
+    },
+    {
+      "date": "2026-02-08T16:28:40-05:00",
+      "skill": "litreview",
+      "git": 4,
+      "media": 6,
+      "writing": 6,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 0,
+      "infra": 0,
+      "meta": 1,
+      "total": 25
+    },
+    {
+      "date": "2026-02-08T16:31:00-05:00",
+      "skill": "marketresearch",
+      "git": 4,
+      "media": 6,
+      "writing": 6,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 1,
+      "infra": 0,
+      "meta": 1,
+      "total": 26
+    },
+    {
+      "date": "2026-02-08T16:33:44-05:00",
+      "skill": "napkinpolishppt",
+      "git": 4,
+      "media": 6,
+      "writing": 7,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 1,
+      "infra": 0,
+      "meta": 1,
+      "total": 27
+    },
+    {
+      "date": "2026-02-08T16:36:47-05:00",
+      "skill": "makewebpage",
+      "git": 4,
+      "media": 6,
+      "writing": 8,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 1,
+      "infra": 0,
+      "meta": 1,
+      "total": 28
+    },
+    {
+      "date": "2026-02-08T16:41:59-05:00",
+      "skill": "synthesizeppt",
+      "git": 4,
+      "media": 6,
+      "writing": 9,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 1,
+      "infra": 0,
+      "meta": 1,
+      "total": 29
+    },
+    {
+      "date": "2026-02-08T16:43:54-05:00",
+      "skill": "synthesizepdf",
+      "git": 4,
+      "media": 6,
+      "writing": 10,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 1,
+      "infra": 0,
+      "meta": 1,
+      "total": 30
+    },
+    {
+      "date": "2026-02-08T16:47:38-05:00",
+      "skill": "synthesize",
+      "git": 4,
+      "media": 6,
+      "writing": 11,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 1,
+      "infra": 0,
+      "meta": 1,
+      "total": 31
+    },
+    {
+      "date": "2026-02-08T16:50:19-05:00",
+      "skill": "litwebpage",
+      "git": 4,
+      "media": 6,
+      "writing": 12,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 1,
+      "infra": 0,
+      "meta": 1,
+      "total": 32
+    },
+    {
+      "date": "2026-02-08T16:53:04-05:00",
+      "skill": "marketwebpage",
+      "git": 4,
+      "media": 6,
+      "writing": 12,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 2,
+      "infra": 0,
+      "meta": 1,
+      "total": 33
+    },
+    {
+      "date": "2026-02-08T16:57:23-05:00",
+      "skill": "architectural-walkthrough-video",
+      "git": 4,
+      "media": 7,
+      "writing": 12,
+      "testing": 0,
+      "devworkflow": 8,
+      "ai": 2,
+      "infra": 0,
+      "meta": 1,
+      "total": 34
+    },
+    {
+      "date": "2026-02-08T17:00:57-05:00",
+      "skill": "compval",
+      "git": 4,
+      "media": 7,
+      "writing": 12,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 2,
+      "infra": 0,
+      "meta": 1,
+      "total": 35
+    },
+    {
+      "date": "2026-02-08T17:03:53-05:00",
+      "skill": "mathder",
+      "git": 4,
+      "media": 7,
+      "writing": 12,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 3,
+      "infra": 0,
+      "meta": 1,
+      "total": 36
+    },
+    {
+      "date": "2026-02-08T17:09:24-05:00",
+      "skill": "mathpaper",
+      "git": 4,
+      "media": 7,
+      "writing": 13,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 3,
+      "infra": 0,
+      "meta": 1,
+      "total": 37
+    },
+    {
+      "date": "2026-02-08T17:13:44-05:00",
+      "skill": "mathwebpage",
+      "git": 4,
+      "media": 7,
+      "writing": 14,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 3,
+      "infra": 0,
+      "meta": 1,
+      "total": 38
+    },
+    {
+      "date": "2026-02-08T17:25:57-05:00",
+      "skill": "professorclaude",
+      "git": 4,
+      "media": 7,
+      "writing": 14,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 4,
+      "infra": 0,
+      "meta": 1,
+      "total": 39
+    },
+    {
+      "date": "2026-02-11T18:39:18-05:00",
+      "skill": "improve",
+      "git": 4,
+      "media": 7,
+      "writing": 14,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 4,
+      "infra": 0,
+      "meta": 2,
+      "total": 40
+    },
+    {
+      "date": "2026-02-15T15:22:12-05:00",
+      "skill": "prism-playwright",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 4,
+      "infra": 0,
+      "meta": 2,
+      "total": 41
+    },
+    {
+      "date": "2026-03-05T14:28:27-05:00",
+      "skill": "cost-estimate",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 4,
+      "infra": 0,
+      "meta": 3,
+      "total": 42
+    },
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "skill": "estimated-salary",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 4,
+      "infra": 0,
+      "meta": 4,
+      "total": 43
+    },
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "skill": "find-skills",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 8,
+      "ai": 4,
+      "infra": 0,
+      "meta": 5,
+      "total": 44
+    },
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "skill": "reconstruct-context-from-transcripts",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 9,
+      "ai": 4,
+      "infra": 0,
+      "meta": 5,
+      "total": 45
+    },
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "skill": "skill-creator",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 9,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 46
+    },
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "skill": "vercel-react-best-practices",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 10,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 47
+    },
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "skill": "web-design-guidelines",
+      "git": 4,
+      "media": 7,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 11,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 48
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "annotated-test-video",
+      "git": 4,
+      "media": 8,
+      "writing": 15,
+      "testing": 1,
+      "devworkflow": 11,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 49
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "behavioral-test-loop",
+      "git": 4,
+      "media": 8,
+      "writing": 15,
+      "testing": 2,
+      "devworkflow": 11,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 50
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "code-audit-swarm",
+      "git": 4,
+      "media": 8,
+      "writing": 15,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 51
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "cover-image",
+      "git": 4,
+      "media": 9,
+      "writing": 15,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 52
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "dall-e",
+      "git": 4,
+      "media": 10,
+      "writing": 15,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 53
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "elkjs-layout",
+      "git": 5,
+      "media": 10,
+      "writing": 15,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 54
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "email",
+      "git": 5,
+      "media": 10,
+      "writing": 16,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 55
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "email-language-detect",
+      "git": 5,
+      "media": 10,
+      "writing": 17,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 56
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "email-reply-all",
+      "git": 5,
+      "media": 10,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 57
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "ffmpeg-screencast",
+      "git": 5,
+      "media": 11,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 58
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "firefly",
+      "git": 5,
+      "media": 12,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 12,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 59
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "formal-decompose",
+      "git": 5,
+      "media": 12,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 13,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 60
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "gemini",
+      "git": 5,
+      "media": 13,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 13,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 61
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "gitbranch",
+      "git": 6,
+      "media": 13,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 13,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 62
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "gitpush",
+      "git": 7,
+      "media": 13,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 13,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 63
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "gitreadme",
+      "git": 8,
+      "media": 13,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 13,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 64
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "gitstage",
+      "git": 9,
+      "media": 13,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 13,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 65
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "human-emulate",
+      "git": 9,
+      "media": 13,
+      "writing": 18,
+      "testing": 2,
+      "devworkflow": 14,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 66
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "inbox",
+      "git": 9,
+      "media": 13,
+      "writing": 19,
+      "testing": 2,
+      "devworkflow": 14,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 67
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "mcp-health",
+      "git": 9,
+      "media": 13,
+      "writing": 19,
+      "testing": 2,
+      "devworkflow": 15,
+      "ai": 4,
+      "infra": 0,
+      "meta": 6,
+      "total": 68
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "niche-library-research",
+      "git": 9,
+      "media": 13,
+      "writing": 19,
+      "testing": 2,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 0,
+      "meta": 6,
+      "total": 69
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "product-review",
+      "git": 9,
+      "media": 13,
+      "writing": 19,
+      "testing": 2,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 0,
+      "meta": 7,
+      "total": 70
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "remote-control-protocol",
+      "git": 9,
+      "media": 13,
+      "writing": 19,
+      "testing": 2,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 7,
+      "total": 71
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "serve-and-test",
+      "git": 9,
+      "media": 13,
+      "writing": 19,
+      "testing": 3,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 7,
+      "total": 72
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "share",
+      "git": 9,
+      "media": 13,
+      "writing": 20,
+      "testing": 3,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 7,
+      "total": 73
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "spec-check",
+      "git": 9,
+      "media": 13,
+      "writing": 20,
+      "testing": 4,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 7,
+      "total": 74
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "stress-test",
+      "git": 9,
+      "media": 13,
+      "writing": 20,
+      "testing": 5,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 7,
+      "total": 75
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "suggest-skills",
+      "git": 9,
+      "media": 13,
+      "writing": 20,
+      "testing": 5,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 8,
+      "total": 76
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "sycophancy-debugger",
+      "git": 9,
+      "media": 13,
+      "writing": 20,
+      "testing": 5,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 9,
+      "total": 77
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "thread-tracker",
+      "git": 9,
+      "media": 13,
+      "writing": 21,
+      "testing": 5,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 9,
+      "total": 78
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "unread",
+      "git": 9,
+      "media": 13,
+      "writing": 22,
+      "testing": 5,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 9,
+      "total": 79
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "upload",
+      "git": 9,
+      "media": 13,
+      "writing": 23,
+      "testing": 5,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 9,
+      "total": 80
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "upload-and-share",
+      "git": 9,
+      "media": 13,
+      "writing": 24,
+      "testing": 5,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 9,
+      "total": 81
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "validate",
+      "git": 9,
+      "media": 13,
+      "writing": 24,
+      "testing": 6,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 9,
+      "total": 82
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "visual-verify",
+      "git": 9,
+      "media": 13,
+      "writing": 24,
+      "testing": 7,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 1,
+      "meta": 9,
+      "total": 83
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "zombie-hunter",
+      "git": 9,
+      "media": 13,
+      "writing": 24,
+      "testing": 7,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 2,
+      "meta": 9,
+      "total": 84
+    },
+    {
+      "date": "2026-04-02T15:58:54-04:00",
+      "skill": "project-showcase-website",
+      "git": 9,
+      "media": 13,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 15,
+      "ai": 5,
+      "infra": 2,
+      "meta": 9,
+      "total": 85
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "addon-feature",
+      "git": 9,
+      "media": 13,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 16,
+      "ai": 5,
+      "infra": 2,
+      "meta": 9,
+      "total": 86
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "adversarial-framing",
+      "git": 9,
+      "media": 13,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 16,
+      "ai": 5,
+      "infra": 2,
+      "meta": 10,
+      "total": 87
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "consider-how-to-use-mcp-skills",
+      "git": 9,
+      "media": 13,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 16,
+      "ai": 5,
+      "infra": 2,
+      "meta": 11,
+      "total": 88
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "draw",
+      "git": 9,
+      "media": 14,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 16,
+      "ai": 5,
+      "infra": 2,
+      "meta": 11,
+      "total": 89
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "githistory",
+      "git": 10,
+      "media": 14,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 16,
+      "ai": 5,
+      "infra": 2,
+      "meta": 11,
+      "total": 90
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "gitrevert",
+      "git": 11,
+      "media": 14,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 16,
+      "ai": 5,
+      "infra": 2,
+      "meta": 11,
+      "total": 91
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "mcp-flag-tester",
+      "git": 11,
+      "media": 14,
+      "writing": 25,
+      "testing": 7,
+      "devworkflow": 17,
+      "ai": 5,
+      "infra": 2,
+      "meta": 11,
+      "total": 92
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "port-reference-site",
+      "git": 11,
+      "media": 14,
+      "writing": 26,
+      "testing": 7,
+      "devworkflow": 17,
+      "ai": 5,
+      "infra": 2,
+      "meta": 11,
+      "total": 93
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "robo-voice-kill",
+      "git": 11,
+      "media": 14,
+      "writing": 26,
+      "testing": 7,
+      "devworkflow": 17,
+      "ai": 5,
+      "infra": 3,
+      "meta": 11,
+      "total": 94
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "robo-voice-launch-protocol",
+      "git": 11,
+      "media": 14,
+      "writing": 26,
+      "testing": 7,
+      "devworkflow": 17,
+      "ai": 5,
+      "infra": 4,
+      "meta": 11,
+      "total": 95
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "skill": "standalone-experimental-test",
+      "git": 11,
+      "media": 14,
+      "writing": 26,
+      "testing": 8,
+      "devworkflow": 17,
+      "ai": 5,
+      "infra": 4,
+      "meta": 11,
+      "total": 96
+    }
+  ],
+  "bursts": [
+    {
+      "date": "2026-03-19T17:44:30-04:00",
+      "from_count": 43,
+      "to_count": 48,
+      "delta": 5,
+      "message": "Full sync: settings, skills, plugins, hooks, and README"
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "from_count": 48,
+      "to_count": 84,
+      "delta": 36,
+      "message": "Full sync: 37 new skills, telegram plugin, vercel v0.24.0, config updates"
+    },
+    {
+      "date": "2026-04-02T16:05:35-04:00",
+      "from_count": 85,
+      "to_count": 96,
+      "delta": 11,
+      "message": "Full sync: 11 new skills, mcp-server-dev plugin, settings & plugin updates"
+    }
+  ],
+  "loc_per_category": [
+    {
+      "category": "writing",
+      "label": "Writing & Publishing",
+      "color": "#f97316",
+      "total_lines": 1869,
+      "skill_count": 11,
+      "avg_lines": 170
+    },
+    {
+      "category": "devworkflow",
+      "label": "Dev Workflow",
+      "color": "#22d3ee",
+      "total_lines": 1457,
+      "skill_count": 12,
+      "avg_lines": 121
+    },
+    {
+      "category": "media",
+      "label": "Media & Creative",
+      "color": "#bc8cff",
+      "total_lines": 1129,
+      "skill_count": 10,
+      "avg_lines": 113
+    },
+    {
+      "category": "meta",
+      "label": "Meta & Self-Improvement",
+      "color": "#ec4899",
+      "total_lines": 969,
+      "skill_count": 6,
+      "avg_lines": 162
+    },
+    {
+      "category": "testing",
+      "label": "Testing & Validation",
+      "color": "#4ade80",
+      "total_lines": 922,
+      "skill_count": 5,
+      "avg_lines": 184
+    },
+    {
+      "category": "git",
+      "label": "Git & Version Control",
+      "color": "#38bdf8",
+      "total_lines": 407,
+      "skill_count": 5,
+      "avg_lines": 81
+    },
+    {
+      "category": "infra",
+      "label": "Infrastructure & Ops",
+      "color": "#eab308",
+      "total_lines": 391,
+      "skill_count": 3,
+      "avg_lines": 130
+    },
+    {
+      "category": "ai",
+      "label": "AI & Research",
+      "color": "#ef4444",
+      "total_lines": 59,
+      "skill_count": 1,
+      "avg_lines": 59
+    }
+  ],
+  "featured_composites": [
+    "behavioral-test-loop",
+    "cooldown",
+    "gitpush",
+    "upload-and-share"
+  ],
+  "featured_complexity": [
+    "skill-creator",
+    "project-showcase-website",
+    "pdf",
+    "standalone-experimental-test",
+    "remote-control-protocol",
+    "behavioral-test-loop",
+    "makevideo",
+    "pptx",
+    "validate",
+    "human-emulate",
+    "architectural-walkthrough-video",
+    "makesong",
+    "consider-how-to-use-mcp-skills",
+    "gitreadme",
+    "mcp-health",
+    "port-reference-site",
+    "reconstruct-context-from-transcripts",
+    "formal-decompose",
+    "addon-feature",
+    "roadmap",
+    "swarm",
+    "code-audit-swarm",
+    "sycophancy-debugger",
+    "upload",
+    "projectstatus",
+    "email",
+    "upload-and-share",
+    "remember",
+    "share",
+    "firefly",
+    "cover-image",
+    "unread",
+    "inbox",
+    "ffmpeg-screencast",
+    "email-language-detect",
+    "gitrevert",
+    "gemini",
+    "warmup",
+    "summary",
+    "dall-e",
+    "spec-check",
+    "gitcommit",
+    "robo-voice-kill",
+    "robo-voice-launch-protocol",
+    "gitinit",
+    "draw",
+    "niche-library-research",
+    "visual-verify",
+    "adversarial-framing",
+    "cooldown",
+    "suggest-skills",
+    "remotion-best-practices",
+    "gitpush"
+  ],
+  "category_births": [
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "cooldown",
+      "category": "devworkflow"
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "makesong",
+      "category": "media"
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "pdf",
+      "category": "writing"
+    },
+    {
+      "date": "2026-02-08T13:29:19-05:00",
+      "skill": "remember",
+      "category": "meta"
+    },
+    {
+      "date": "2026-02-08T16:10:52-05:00",
+      "skill": "gitinit",
+      "category": "git"
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "behavioral-test-loop",
+      "category": "testing"
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "niche-library-research",
+      "category": "ai"
+    },
+    {
+      "date": "2026-03-23T16:34:12-04:00",
+      "skill": "remote-control-protocol",
+      "category": "infra"
+    }
+  ],
+  "annotations": [
+    {
+      "date": "2026-03-19T00:00:00-04:00",
+      "label": "Anthropic Skills Talk",
+      "color": "#f97316"
+    }
+  ]
+}

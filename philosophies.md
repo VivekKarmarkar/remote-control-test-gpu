@@ -1,5 +1,7 @@
 # Philosophies
 
+## CORE PHILOSOPHY: QUICK VERIFIABLE OUTPUT DRIVES DESIGN
+
 ## Philosophy 1: A chain is only as strong as its weakest link
 
 If the goal is to harness GPU speed, then every other part of the pipeline must be

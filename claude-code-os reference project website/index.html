@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code OS — Data Portrait</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+/* ─── Reset & Global ───────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: #0f1019;
+  color: #e0e0e0;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Layout ───────────────────────────────────────── */
+.section { padding: 80px 24px; }
+.section-inner { max-width: 700px; margin: 0 auto; }
+.section-header {
+  font-size: 32px; font-weight: 700; color: #e0e0e0;
+  margin-bottom: 48px; text-align: center; letter-spacing: 0.5px;
+}
+.section-text p { margin-bottom: 1.4em; color: #c8c8c8; }
+.section-text p:last-child { margin-bottom: 0; }
+
+/* ─── Hero ─────────────────────────────────────────── */
+.hero { text-align: center; padding: 120px 24px 80px; }
+.hero h1 {
+  font-size: clamp(36px, 6vw, 64px); font-weight: 700;
+  color: #e0e0e0; letter-spacing: 1px; line-height: 1.15;
+}
+.hero .tagline { margin-top: 16px; font-size: 17px; color: #a0a0a0; letter-spacing: 0.3px; }
+.hero-tags-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 10px; margin: 24px auto 0; width: fit-content;
+}
+.hero-tags { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.hero-tag {
+  padding: 6px 18px; border-radius: 20px; font-size: 14px; letter-spacing: 0.3px;
+}
+.tag-tech-primary { color: #f97316; border: 1px solid #f9731640; }
+.tag-tech-secondary { color: #f97316b0; border: 1px solid #f9731630; }
+.tag-domain-primary { color: #38bdf8; border: 1px solid #38bdf840; }
+.tag-domain-secondary { color: #38bdf8a0; border: 1px solid #38bdf825; }
+.tag-audience { color: #4ade80; border: 1px solid #4ade8040; }
+
+/* ─── Constellation ────────────────────────────────── */
+.constellation-section { padding: 40px 24px 80px; }
+.constellation-wrap {
+  max-width: 1100px; margin: 0 auto;
+  background: #0a0b12; border-radius: 16px;
+  border: 1px solid #1a1c2a; overflow: hidden;
+}
+#constellation {
+  width: 100%; height: 560px; display: block; cursor: grab;
+}
+#constellation:active { cursor: grabbing; }
+
+/* Tooltip */
+.tooltip {
+  position: absolute; pointer-events: none; opacity: 0;
+  background: #161822; border: 1px solid #2e3140; border-radius: 8px;
+  padding: 10px 14px; font-size: 13px; line-height: 1.5;
+  max-width: 280px; transition: opacity 0.15s; z-index: 10;
+}
+.tooltip .tt-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.tooltip .tt-cat { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
+.tooltip .tt-lines { font-size: 12px; color: #a0a0a0; margin-top: 4px; }
+
+/* Legend */
+.constellation-legend {
+  display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+  padding: 16px 24px; border-top: 1px solid #1a1c2a;
+}
+.legend-dot {
+  display: flex; align-items: center; gap: 6px; font-size: 12px; color: #a0a0a0;
+}
+.legend-dot span {
+  width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+}
+
+/* ─── Timeline / Heartbeat ─────────────────────────── */
+.timeline-wrap {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+}
+.timeline-controls {
+  display: flex; align-items: center; gap: 16px; margin-top: 16px;
+}
+#play-btn {
+  background: none; border: 1px solid #2e3140; color: #a0a0a0;
+  width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: all 0.2s;
+}
+#play-btn:hover { border-color: #f97316; color: #f97316; }
+.timeline-slider-wrap { flex: 1; position: relative; height: 40px; }
+#heartbeat-canvas { width: 100%; height: 40px; display: block; position: absolute; top: 0; left: 0; pointer-events: none; }
+#timeline-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 40px; background: transparent;
+  position: absolute; top: 0; left: 0; cursor: pointer; z-index: 5;
+  margin: 0; padding: 0;
+}
+#timeline-slider::-webkit-slider-runnable-track {
+  height: 2px; background: transparent;
+}
+#timeline-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px;
+  background: #f97316; border-radius: 50%; cursor: grab;
+  box-shadow: 0 0 10px #f9731680; margin-top: -5px;
+}
+#timeline-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.2); }
+#timeline-slider::-moz-range-track {
+  height: 2px; background: transparent;
+}
+#timeline-slider::-moz-range-thumb {
+  width: 12px; height: 12px; background: #f97316;
+  border-radius: 50%; cursor: grab; border: none;
+  box-shadow: 0 0 10px #f9731680;
+}
+.timeline-info {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; font-size: 13px; color: #888;
+}
+.timeline-info .date { color: #f97316; font-weight: 700; }
+.timeline-info .count { color: #e0e0e0; font-weight: 700; font-size: 15px; }
+
+/* ─── Stats bar ────────────────────────────────────── */
+.stats-bar {
+  display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  padding: 48px 24px;
+}
+.stat { text-align: center; }
+.stat-number {
+  font-size: 36px; font-weight: 700; letter-spacing: -1px;
+}
+.stat-label { font-size: 13px; color: #a0a0a0; margin-top: 4px; }
+
+/* ─── Category filter toggles ──────────────────────── */
+.cat-toggle {
+  display: flex; align-items: center; gap: 6px; cursor: pointer;
+  padding: 5px 12px; border-radius: 20px; font-size: 12px;
+  border: 1px solid; transition: opacity 0.2s; user-select: none;
+}
+.cat-toggle.off { opacity: 0.25; }
+
+/* ─── GitHub footer ────────────────────────────────── */
+.github-footer { text-align: center; padding: 60px 24px 80px; }
+.github-footer a {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: #a0a0a0; text-decoration: none; font-size: 16px; transition: color 0.2s;
+}
+.github-footer a:hover { color: #e0e0e0; }
+.github-footer svg { fill: currentColor; }
+
+/* ─── Responsive ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 80px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .section-header { font-size: 26px; margin-bottom: 36px; }
+  .stats-bar { gap: 24px; }
+  .stat-number { font-size: 28px; }
+  #constellation { height: 400px; }
+  .constellation-legend { gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 1. HERO                                             -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="hero">
+  <h1>Claude Code OS</h1>
+  <p class="tagline">A personalized operating system for Claude Code &mdash; visualized</p>
+  <div class="hero-tags-wrap">
+    <div class="hero-tags">
+      <span class="hero-tag tag-tech-primary">Claude Code</span>
+      <span class="hero-tag tag-tech-secondary">Exploratory Data Analysis</span>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag tag-audience">AI Startups</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 1A. COVER IMAGE                                     -->
+<!-- ════════════════════════════════════════════════════ -->
+<div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+  <img src="cover.png" alt="Claude Code OS constellation" style="width:100%;border-radius:12px;border:1px solid #1a1c2a;">
+</div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 1B. INTRODUCTION                                    -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Introduction</h2>
+    <div class="section-text">
+      <p>Claude Code is an AI agent that lives in your terminal. You talk to it in plain English. It reads your files, writes code, runs commands, and builds things. Out of the box, it's a powerful tool — but it doesn't assume what you'll use it for. That's up to you.</p>
+      <p>Over eight weeks, one person used Claude Code to build 103 custom skills — reusable instructions that extend what the system can do. Email automation, weather briefings, voice interaction, LaTeX documents, data analysis, music generation, screen recording, browser automation, and more. The skills accumulated into something that started to feel less like a tool and more like a personal operating system — a system shaped entirely by one person's needs, running on a base that never changed.</p>
+      <p>This page is a data portrait of that system. It asks where the instinct to call it an "operating system" came from, and whether the word is earned. It traces the system's growth, analyzes its structure, and maps it against ideas from the foundational papers of computing — Per Brinch Hansen on OS architecture, Doug McIlroy on Unix philosophy, and John Tukey on exploratory data analysis. Along the way, it asks a simpler question: what happens when someone with a scientific temperament gets a tool with no fixed mode of operation, and just runs with it?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 2. WILL THE REAL AGENTIC OS PLEASE STAND UP?        -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">The Foundation</h2>
+    <div class="section-text">
+      <p>In 1970, Per Brinch Hansen published a short paper called "The Nucleus of a Multiprogramming System." A multiprogramming system, in his context, is simply a computer system that can run multiple programs. Hansen observed that most such systems at the time came with a fixed way of working baked in — batch processing, or time-sharing, or real-time control. If you needed a different way of working, you were stuck. His words: "the user often finds it hopeless to modify an operating system that has made rigid assumptions in its basic design about a specific mode of operation."</p>
+      <p>His solution was to separate the base from what runs on top. Build a minimal core — a nucleus — that provides only the fundamental ability to create programs, let them communicate, and control their execution. Make no assumptions about what those programs will do. Then let each installation build its own system on top, tailored to its own needs. The nucleus stays the same. The systems built on it can be completely different.</p>
+      <p>Claude Code, as described in Anthropic's official documentation, is "an agentic coding tool that reads your codebase, edits files, runs commands, and integrates with your development tools" and is "composable and follows the Unix philosophy." It provides a set of built-in capabilities — reading files, writing files, running shell commands, searching content, fetching web pages — and a mechanism called skills for users to extend it. A skill is a SKILL.md file placed in a directory. Claude Code loads it, and it becomes part of what the system can do. Skills can bundle code, reference documents, and scripts. Users can create new skills, and Claude Code itself can write new skills — writes to the skills directory are automatically approved.</p>
+      <p>This is Hansen's pattern. The base provides primitives. Users build on top. The base doesn't change. Different users build different systems. One user's Claude Code might have 99 skills covering email, LaTeX, weather briefings, data science, and voice interaction. Another's might have 10 skills focused entirely on web development. Same nucleus. Different operating systems.</p>
+      <p>Not every AI tool follows this pattern. VS Code is a text editor. Adding AI to it — as Copilot or Cursor does — doesn't change that. The editor is still the center. The AI lives in a sidebar, constrained by the assumption that you're editing code. You can add extensions, but the mode of operation stays fixed: you write code in an editor, and the AI helps. Hansen would recognize this as a system with rigid assumptions baked into its basic design.</p>
+      <p>Claude Code and OpenAI's Codex take a different path. Both are terminal-native AI agents that grew naturally from the chat interfaces people already use — Claude in the browser became Claude Code in the terminal, ChatGPT became Codex. Both come with their respective subscriptions, no separate purchase. And the terminal, unlike an IDE, makes no assumptions about what you'll do. It's a blank prompt. The mode of operation is defined by what you build on it.</p>
+      <p>But two features really set Claude Code apart from the rest — including Codex. One is called channels, and the other is called remote control.</p>
+      <p>Channels let external systems push information into a running Claude Code session asynchronously — without Claude asking for it. This is different from regular MCP servers, where Claude initiates the call and the server responds. With channels, the outside world initiates. Much of the analysis and writing on this project was done through a voice system built with Claude Code to extend Claude Code — a phone-call-like interface where the user talks to Claude through a UI with a cute orange robot face that animates while speaking, with soft LED-like blue eyes. The conversation flows the way a natural human conversation does: either side can initiate, either side can interrupt, either side can change the subject. Papers were read aloud, ideas were debated, design decisions were argued — all through voice. That kind of interaction is impossible with other AI-assisted coding systems, where you type and wait for a response.</p>
+      <p>Remote control lets the user drive a local Claude Code session from a phone while the AI agent does serious computational work on the user's laptop. The laptop doesn't need the user physically present. Claude Code can spin up teams of agentic workers that emulate human experts — decomposing a problem, identifying root causes, proposing surgical fixes, changing code, running the new version, using browser automation to validate the result while recording the screen, producing a video, uploading it to Google Drive, and sharing the link with the user while they're out walking. The user approves from their phone. Claude Code commits and pushes to git. Then it moves on — writing LaTeX reports, running code on the laptop's GPU, downloading research papers, brainstorming the next steps with the user via phone texting. That's how 42,000 steps happen in a day while the work gets done.</p>
+      <p>Think about how it actually felt. You started by writing Python scripts in a terminal — every line was yours, every bug was yours. Then you discovered NumPy and stopped writing loops; the machine handled the math. Then you opened an IDE and stopped thinking about which files lived where. Then ChatGPT arrived and you stopped starting from a blank page — you described what you wanted in English and got code back. But you were still copying and pasting between a browser and an editor, so you moved to Cursor, where the AI lived inside the editor. Then Claude Code removed the editor entirely — you just talked to it in a terminal, and it read your codebase, wrote code, ran commands, spun up agents. Every step removed something you used to do manually. And then the obvious question: if all you're doing is talking to Claude Code, why do you need to sit in front of your computer to talk to it? You don't. That's remote control. That's the top of the ladder.</p>
+    </div>
+
+    <!-- Abstraction Ladder -->
+    <div class="abstraction-ladder" style="max-width:900px;margin:48px auto 0;position:relative;">
+      <style>
+        .ladder-container {
+          display:flex;flex-direction:column;gap:0;position:relative;
+          padding-left:40px;
+        }
+        .ladder-spine {
+          position:absolute;left:58px;top:0;bottom:0;width:3px;
+          background:linear-gradient(to top,#1a1c2a,#f97316);
+          border-radius:2px;
+        }
+        .ladder-rung {
+          display:flex;align-items:stretch;position:relative;
+          padding:0;transition:all 0.3s ease;cursor:default;
+        }
+        .ladder-rung:hover .rung-main {
+          background:#1e2030;
+        }
+        .ladder-rung:hover .rung-constraint {
+          color:#e0e0e0;
+        }
+        .rung-dot {
+          position:absolute;left:14px;top:50%;transform:translateY(-50%);
+          width:13px;height:13px;border-radius:50%;
+          background:#2e3140;border:2px solid #404560;
+          z-index:2;transition:all 0.3s ease;
+        }
+        .ladder-rung:hover .rung-dot {
+          border-color:#f97316;background:#f97316;
+          box-shadow:0 0 8px rgba(249,115,22,0.4);
+        }
+        .rung-main {
+          flex:1;display:flex;align-items:center;justify-content:space-between;
+          padding:14px 20px 14px 36px;border-radius:8px;
+          transition:background 0.3s ease;gap:16px;
+        }
+        .rung-left {
+          display:flex;align-items:center;gap:14px;min-width:0;
+        }
+        .rung-era {
+          font-size:11px;color:#606580;font-family:'SF Mono',monospace;
+          min-width:70px;flex-shrink:0;
+        }
+        .rung-name {
+          font-size:14px;color:#c8c8c8;font-weight:500;
+          white-space:nowrap;
+        }
+        .rung-constraint {
+          font-size:12px;color:#606580;font-style:italic;
+          text-align:right;transition:color 0.3s ease;
+          flex-shrink:0;max-width:320px;
+        }
+        /* Highlighted rungs */
+        .rung-highlight .rung-dot {
+          background:#f97316;border-color:#f97316;
+          box-shadow:0 0 12px rgba(249,115,22,0.5);
+          width:15px;height:15px;
+        }
+        .rung-highlight .rung-name {
+          color:#f97316;font-weight:700;font-size:15px;
+        }
+        .rung-highlight .rung-constraint {
+          color:#a0a0a0;
+        }
+        .rung-top .rung-dot {
+          background:#f97316;border-color:#fbbf24;
+          box-shadow:0 0 18px rgba(249,115,22,0.7);
+          width:17px;height:17px;
+          animation:pulse-dot 2s ease-in-out infinite;
+        }
+        .rung-top .rung-name {
+          color:#fbbf24;font-weight:700;font-size:16px;
+        }
+        .rung-top .rung-constraint {
+          color:#c8c8c8;font-weight:500;font-style:normal;
+        }
+        @keyframes pulse-dot {
+          0%,100%{box-shadow:0 0 12px rgba(249,115,22,0.5);}
+          50%{box-shadow:0 0 24px rgba(249,115,22,0.9);}
+        }
+        .ladder-label {
+          text-align:center;margin-top:24px;
+          font-size:12px;color:#606580;font-style:italic;
+        }
+        @media(max-width:700px){
+          .rung-constraint{display:none;}
+          .rung-main{padding:10px 12px 10px 30px;}
+          .rung-era{min-width:50px;font-size:10px;}
+          .rung-name{font-size:12px;}
+          .ladder-container{padding-left:30px;}
+          .ladder-spine{left:48px;}
+          .rung-dot{left:8px;}
+        }
+      </style>
+
+      <div class="ladder-container">
+        <div class="ladder-spine"></div>
+
+        <div class="ladder-rung rung-top">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">2026</span>
+              <span class="rung-name">Remote Control</span>
+            </div>
+            <span class="rung-constraint">Don't need to be at the computer</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung rung-highlight">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">2025–26</span>
+              <span class="rung-name">Claude Code / Codex</span>
+            </div>
+            <span class="rung-constraint">Don't need an editor. No fixed mode.</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">2024–25</span>
+              <span class="rung-name">Cursor / VS Code + AI</span>
+            </div>
+            <span class="rung-constraint">Don't need to copy-paste</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">2023–24</span>
+              <span class="rung-name">Copy-paste from LLMs</span>
+            </div>
+            <span class="rung-constraint">Still manual glue between AI and editor</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">2023+</span>
+              <span class="rung-name">LLMs (ChatGPT, Claude)</span>
+            </div>
+            <span class="rung-constraint">Don't need to write code yourself</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">2010s</span>
+              <span class="rung-name">IDEs (PyCharm, VS Code)</span>
+            </div>
+            <span class="rung-constraint">Don't need to manage files manually</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">2000s</span>
+              <span class="rung-name">NumPy / SciPy</span>
+            </div>
+            <span class="rung-constraint">Don't need to write loops for math</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">1990s</span>
+              <span class="rung-name">Python</span>
+            </div>
+            <span class="rung-constraint">Don't need type declarations or compilation</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">1970s</span>
+              <span class="rung-name">C</span>
+            </div>
+            <span class="rung-constraint">Don't need to track registers</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">1950s–60s</span>
+              <span class="rung-name">Assembly</span>
+            </div>
+            <span class="rung-constraint">Don't need to know the binary encoding</span>
+          </div>
+        </div>
+
+        <div class="ladder-rung">
+          <div class="rung-dot"></div>
+          <div class="rung-main">
+            <div class="rung-left">
+              <span class="rung-era">1940s–50s</span>
+              <span class="rung-name">Machine Code</span>
+            </div>
+            <span class="rung-constraint">Baseline</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="ladder-label">Each rung removes a constraint. The top rung removes the last one: physical presence.</p>
+    </div>
+
+    <div class="section-text" style="margin-top:32px;">
+      <p>The table below shows how these features compare across the current landscape of AI development tools.</p>
+    </div>
+
+    <!-- Comparison table -->
+    <div style="max-width:900px;margin:48px auto 0;overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;color:#c8c8c8;">
+        <thead>
+          <tr style="border-bottom:2px solid #2e3140;">
+            <th style="text-align:left;padding:12px 16px;color:#e0e0e0;font-size:15px;">Feature</th>
+            <th style="text-align:center;padding:12px 16px;color:#f97316;font-size:15px;">Claude Code</th>
+            <th style="text-align:center;padding:12px 16px;color:#a0a0a0;font-size:15px;">Codex</th>
+            <th style="text-align:center;padding:12px 16px;color:#a0a0a0;font-size:15px;">Cursor</th>
+            <th style="text-align:center;padding:12px 16px;color:#a0a0a0;font-size:15px;">VS Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;">Interface</td>
+            <td style="text-align:center;padding:10px 16px;color:#a0a0a0;">Terminal</td>
+            <td style="text-align:center;padding:10px 16px;color:#a0a0a0;">Terminal</td>
+            <td style="text-align:center;padding:10px 16px;color:#a0a0a0;">IDE + Sidebar</td>
+            <td style="text-align:center;padding:10px 16px;color:#a0a0a0;">IDE + Sidebar</td>
+          </tr>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;">Custom skills</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+          </tr>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;">MCP servers</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+          </tr>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;">Hooks</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+          </tr>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;">File system access</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+          </tr>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;">Can write new programs</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;">&#10003;</td>
+          </tr>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;font-weight:700;color:#e0e0e0;">Remote control (local session from phone)</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;font-weight:700;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+          </tr>
+          <tr style="border-bottom:1px solid #1a1c2a;">
+            <td style="padding:10px 16px;font-weight:700;color:#e0e0e0;">Channels (async push into session)</td>
+            <td style="text-align:center;padding:10px 16px;color:#4ade80;font-weight:700;">&#10003;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+            <td style="text-align:center;padding:10px 16px;color:#ef4444;">&#10007;</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 16px;font-weight:700;color:#e0e0e0;">Mode of operation</td>
+            <td style="text-align:center;padding:10px 16px;color:#f97316;font-weight:700;">User-defined</td>
+            <td style="text-align:center;padding:10px 16px;color:#a0a0a0;">Mostly neutral</td>
+            <td style="text-align:center;padding:10px 16px;color:#a0a0a0;">Code editor</td>
+            <td style="text-align:center;padding:10px 16px;color:#a0a0a0;">Text editor</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 3. THE REAL AGENTIC OS                              -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">The Real Agentic OS</h2>
+    <div class="section-text">
+      <p>The word "OS" showed up instinctively. There was no deliberate decision to call it that — it just felt like the right word for what the system had become. Hansen's 1970 paper helps explain why. The paper never directly defines what an operating system is, but it describes a concept space around the term — a set of principles that characterize how an OS relates to the base it runs on. The base should make no assumptions about what will be built on top of it. New systems should be buildable without modifying the base. Multiple modes of operation should coexist and be switchable dynamically. And the difference between an operating system and an ordinary program is not what it is, but what it has jurisdiction over. Claude Code's built-in tools make no assumptions about mode of operation. Skills are added as files without modifying Claude Code itself. Email, git, LaTeX, voice, data science, and weather skills all coexist and are available simultaneously, with the active mode shifting based on what the day demands. Each skill is just a program — but it has jurisdiction over its domain. The system maps closely to Hansen's concept space, and that proximity is what the instinct was detecting before there was language to describe it.</p></p>
+      <p>Anyone can take the same nucleus and build a completely different system on top. One person builds an email and voice workflow. Another builds a web development pipeline. A third builds a scientific computing environment. Same base. Different operating systems. The nucleus doesn't care what you build — it just provides the primitives and gets out of the way.</p>
+      <p>This system is one such build. 99 skills across eight domains — git workflows, media creation, writing and publishing, testing, dev workflow, AI research, infrastructure, and meta-tools for improving the system itself. All built over eight weeks by one person, on a nucleus that remained unchanged throughout. The system handles email, generates LaTeX documents, checks the weather with personalized running and walking strategy, produces music, analyzes data, manages a voice interface, and deploys presentations — all from the same terminal. The mode of operation is not "coding." The mode of operation is whatever the day demands.</p>
+      <p>One thing makes this different from any operating system that came before it. The system is also an agent. It doesn't just provide services and wait — it reads, reasons, writes code, makes decisions, and executes. The operating system and the operator are the same entity. That's what makes it an agentic OS.</p>
+      <p>Looks like the real agentic OS has stood up. The constellation below is its portrait.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 4. CONSTELLATION                                    -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="constellation-section">
+  <h2 class="section-header">The Constellation</h2>
+
+  <div class="constellation-wrap">
+    <svg id="constellation"></svg>
+    <div class="constellation-legend" id="legend"></div>
+  </div>
+
+  <!-- Timeline / Heartbeat -->
+  <div class="timeline-wrap">
+    <div class="timeline-controls">
+      <button id="play-btn" title="Play timeline">&#9654;</button>
+      <div class="timeline-slider-wrap">
+        <canvas id="heartbeat-canvas"></canvas>
+        <input type="range" id="timeline-slider" min="0" max="100" value="100">
+      </div>
+    </div>
+    <div class="timeline-info" style="position:relative;">
+      <span>Feb 8, 2026</span>
+      <span class="date" id="current-date">Apr 2, 2026</span>
+      <span class="count" id="current-count">97 skills</span>
+      <span id="annotation-label" style="position:absolute;top:0;color:#ffffff;font-size:13px;font-weight:400;transform:translateX(-50%);opacity:0;transition:opacity 0.2s;pointer-events:none;"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 3. STATS BAR                                        -->
+<!-- ════════════════════════════════════════════════════ -->
+<div class="stats-bar" id="stats-bar"></div>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 4. THE SKILL BANG                                   -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">The Skill Bang</h2>
+    <div class="section-text">
+      <p>Day one, the biggest problem was context. Claude couldn't remember anything between sessions, so the first skill built was a meta "remember" command — a way to persist facts across conversations. Around it, a cluster of dev workflow skills appeared: the basic tools needed to start working productively. A couple of writing skills — PDF and PPTX generation — and a few media skills rounded out the initial seed. The constellation began as a small, practical toolkit.</p>
+      <p>The next day, git skills came online. Version control is a natural extension of dev workflow — once you're building things, you need to track and share them. The blue cluster lit up, tightly orbiting the cyan dev workflow core.</p>
+      <p>Then came March 19th. Anthropic hosted a session about Claude Code skills. The talk acted as a catalyst — not because the specific advice was followed, but because it triggered conscious thinking about what skills could be. Most of the enterprise-oriented guidance was discarded. But the energy from that session fueled an explosion: the skill count nearly doubled in four days, jumping from 48 to 84.</p>
+      <p>Two entirely new categories emerged from that burst. Infrastructure and Ops appeared because the system had grown complex enough to need its own operational tooling — a bottoms-up necessity. You start doing things, realize you're limited by your infrastructure, and build tools to fix that. The Anthropic talk provided the push, but the need was already there.</p>
+      <p>Testing and Validation was the one category directly influenced by the talk. Anthropic spoke about getting agents to verify their own work, and that idea took root. Skills like behavioral-test-loop — which chains spec reading, browser testing, screen recording, and iterative fixing into a single loop — came from that direct inspiration.</p>
+      <p>Everything else in the explosion — the writing skills, the media tools, the git extensions — grew from the same bottoms-up process as before, just accelerated by conscious attention. The catalyst didn't change the method. It changed the tempo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 5. THE BIG PICTURE                                  -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">The Big Picture</h2>
+    <div class="section-text">
+      <p>Andrej Karpathy described LLMs as "the kernel process of a new Operating System." Claude Code OS takes that literally — it's a personalized operating system built on top of Claude Code, which itself runs on an LLM. Skills are its processes — 97 custom commands. Plugins are kernel extensions — 22 modules that modify core behavior. Hooks are daemons — 7 shell scripts triggered by events. MCP servers are the I/O layer — device drivers connecting to external services like voice, messaging, and browsers. Channels are the interrupt handlers — letting the outside world push events in asynchronously.</p>
+      <p>Not all 97 skills see active use. Some were experiments, some were outgrown, some solved a problem that no longer exists. 53 skills are actively used — these are the ones that survived daily practice. The constellation shows both: active skills glow bright, inactive ones are dimmed. The analysis sections below focus exclusively on the 53 active skills — the real operating surface of the system.</p>
+      <p>Each star's size reflects complexity — measured in lines of instruction. Its color encodes domain — git workflows in blue, media creation in purple, AI research in red, infrastructure in yellow. The heartbeat along the bottom traces the repo's pulse: 123 commits over two months, from an initial seed of 18 skills in Feb 2026 to 97 skills in April 2026 — what you see now.</p>
+      <p>Drag the timeline scrubber to watch the OS grow. The constellation assembles itself in the order the skills were built — revealing which domains came first, which grew fastest, and how the system's center of gravity shifted as new capabilities were added.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 6. DESIGN PHILOSOPHY                                -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Design Philosophy</h2>
+    <div class="section-text">
+      <p>In 1978, Doug McIlroy wrote the foreword to the Bell System Technical Journal's Unix issue. He laid down four maxims: make each program do one thing well. Expect the output of every program to become the input to another, as yet unknown program. Design and build software to be tried early — don't hesitate to throw away the clumsy parts and rebuild them. Use tools in preference to unskilled help, even if you have to detour to build the tools.</p>
+      <p>This system follows all four — not by design, but by convergence. Each skill does one thing. Skills compose into chains that weren't planned when the parts were built. 97 skills were tried in eight weeks — 44 were thrown away, 53 survived. The skill-creator skill is a tool built to make tools, just as McIlroy prescribed. The architecture arrived at Unix philosophy from the bottom up, through practice, not through reading the paper.</p>
+      <p>McIlroy also wrote: "intelligently applied computing technology can compress jobs that used to be big to a manageable size." In 1978, the technology was Unix itself. In 2026, it's Claude Code — an AI agent that turns one person with the right tools into a team. 53 active skills across eight domains, built and maintained by a single user. Small is beautiful, and AI makes it real.</p>
+      <p>The data portrait starring in this story is also a product of the same McIlroy philosophy — a customized workflow that resulted directly from intelligently applied computing technology.</p>
+      <p>Tukey predicted in 1962 that "graphs will certainly be increasingly drawn by the computer, without being touched by hands." Every visualization on this page was coded and drawn by Claude Code — but not just drawn. The constellation plot was Claude Code's design idea. The analytical decisions that shaped it further came from the human. The computer doesn't just draw the graphs. It also decides what graphs to draw.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 6. COMPOSITE SKILLS                                 -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="constellation-section">
+  <h2 class="section-header">Composite Skills</h2>
+  <div class="constellation-wrap" style="position:relative;">
+    <svg id="composite-diagram"></svg>
+    <button class="slide-btn slide-prev" id="comp-prev" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(15,16,25,0.7);border:1px solid #2e3140;color:#a0a0a0;font-size:22px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;">&#8249;</button>
+    <button class="slide-btn slide-next" id="comp-next" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:rgba(15,16,25,0.7);border:1px solid #2e3140;color:#a0a0a0;font-size:22px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;">&#8250;</button>
+    <div id="comp-counter" style="text-align:center;padding:12px;font-size:13px;color:#888;border-top:1px solid #1a1c2a;"></div>
+  </div>
+  <div class="section-inner" style="margin-top:32px">
+    <div class="section-text">
+      <p>McIlroy's second maxim: "expect the output of every program to become the input to another, as yet unknown program." Each slide shows one composite skill and the skills it calls. The composites are thin — just a sequence of calls. The complexity lives in the parts, not in the wiring. This is the Unix pipe pattern applied to an AI agent: the composite is the conductor, the isolated skills are the orchestra. Adding a new composition is trivial — one line per skill — because the parts were built to be independent. That independence is what makes composition cheap. To make programs composable, make them independent.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 8. SKILL COMPLEXITY                                 -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="constellation-section">
+  <h2 class="section-header">Skill Complexity</h2>
+  <div class="constellation-wrap">
+    <div id="complexity-filters" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:16px 24px;border-bottom:1px solid #1a1c2a;"></div>
+    <div style="padding:24px">
+      <canvas id="complexity-canvas" style="width:100%;height:340px;display:block;"></canvas>
+    </div>
+    <div id="complexity-fit-stats" style="text-align:center;padding:12px 24px;font-size:13px;color:#a0a0a0;border-top:1px solid #1a1c2a;"></div>
+  </div>
+  <div class="section-inner" style="margin-top:32px">
+    <div class="section-text">
+      <p>The right side is sparse. The left side is dense. That's the first thing the eye sees — and it tells the whole story. Composite skills are rare because you only compose when a real workflow demands it — and when they do appear, their bars are short. They're simple by nature: a composite skill just calls other skills in sequence, so the heavy lifting lives in the parts, not the wiring. Isolated skills are plentiful because you're building one tool per task, keeping each one focused.</p>
+      <p>Now look at the left side alone. Some bars are translucent with dashed outlines — those skills carry bundled code files, which inflates their line count. Toggle "Has Code" above to set them aside. What remains is the pure distribution: most bars are short, a few are long. That's a power law — the same shape you see in word frequencies, city sizes, earthquake magnitudes. The top-ranked items are disproportionately larger than the rest. In most systems, this shape emerges from amplification — popularity breeds popularity, size breeds size. Here, the mechanism is different. The fitted curve traces it.</p>
+      <p>Power laws usually emerge from amplification — the rich get richer, the popular get more popular, the best universities attract the best researchers who produce the best work. The outliers grow by accumulation. Here, the mechanism is inverted. The Unix philosophy is a constant downward pressure — make it simple, keep it small. Everything gets pushed towards the simple end. The few large skills aren't large because they attracted complexity. They're large because their tasks resisted simplification. The system tried to make them small and couldn't. Same shape, opposite cause.</p>
+      <p>What remains is a clean picture. Simple tools, used daily. A thin layer of composition on top. Complexity only where it was earned. Small is beautiful — and this is what it looks like.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 10. ACTIONABLE INSIGHTS                             -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Actionable Insights</h2>
+    <div class="section-text">
+      <p>Tukey wrote in 1962: "far better an approximate answer to the right question, which is often vague, than an exact answer to the wrong question, which can always be made precise." The power law fit is approximate — R² of 0.94, not 1.0. The distinction between useful and unused skills is approximate — marked by hand through a GTK dialog based on feel, not usage metrics or run counts. The composition network is approximate — keyword matching verified by human judgment. And yet the insights are real. Approximate answers to the right questions.</p>
+      <p>He also wrote: "if algebra and analysis cannot help us, we must press on just the same, making as good use of intuition and originality as we know how." The OS wasn't designed with algebra. It was designed with intuition — build what you need, keep it simple, throw away what doesn't work. The analysis came after, not before. The power law wasn't predicted — it was discovered. The Unix philosophy wasn't followed — it was recognized. The formalism confirmed what intuition already built.</p>
+      <p>The data portrait confirms a simple conclusion: keep going. The bottom-up approach works. 53 active skills, a power law distribution heavy-tailed towards simplicity, a thin composition layer, category evolution from dev workflow to infrastructure — all of it emerged from following instinct consistently over two months. McIlroy's four maxims, Schumacher's "small is beautiful," Tukey's empirical science — they converge on the same lesson: simplicity is not a constraint. It's a strategy.</p>
+      <p>The one new insight: the power law is generated by an inverted mechanism. Not "the rich get richer" but "the system resists complexity, and only what can't be simplified stays large." Default to small. Let the task prove it needs to be big. If it can't prove it, it isn't.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 11. FUTURE WORK                                     -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">What's Next</h2>
+    <div class="section-text">
+      <p>Claude is extraordinary at understanding natural language and generating code. Wolfram and Julia are extraordinary at verified, exact computation through decades of battle-tested packages. Alone, Claude can hallucinate APIs. Alone, Wolfram and Julia require you to know their syntax. Together, you get the best of both worlds: describe the physics in plain English, and the right skill constrains Claude's generation to the right framework. No hallucinated APIs, no syntax to memorize. One skill, one computation, same philosophy.</p>
+      <p>The next expansion is a scientific computing cluster — skills that connect Claude Code to Wolfram (via its MCP server) and Julia for symbolic and numerical computation. The peripheral infrastructure is already built: writing, publishing, version control, communication. Scientific computing fills the gap in the middle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 12. META LESSONS                                    -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Meta Lessons</h2>
+    <div class="section-text">
+      <p>Every Claude Code user builds. A startup founder builds email skills and client workflows. A product manager builds PRDs and status reports. A YouTuber builds video scripts and upload pipelines. They use the system, it works, they move on. Very few stop and ask: what did I just build, and why does it look like this?</p>
+      <p>That question — and the refusal to accept a shallow answer — is what produced this project. Not the code. Claude Code wrote every line of HTML, CSS, JavaScript, and Python. Not the individual skills. Anyone with enough ambition can build 103 skills over eight weeks. What produced this project is a scientific temperament: the instinct to look at something you built and ask why it behaves the way it does.</p>
+      <p>That temperament is part of a broader toolkit — the same one a physicist brings to any problem. It has three parts. Scientific temperament — the drive to examine, not just use. First-principles analysis — the habit of tracing a question back to its foundations rather than accepting received explanations. And a combination of algorithmic and mathematical thinking — the ability to see structure, decompose systems, and reason about their behavior. Some of that toolkit is intrinsic. But the part that can be sharpened from the outside is reading primary sources.</p>
+      <p>Primary sources are the papers and textbooks that define a field, not the ones that extend it. Hansen didn't write about operating systems — he defined what a nucleus is. McIlroy didn't write about Unix tools — he defined the philosophy that generated them. Tukey didn't do data analysis — he defined what data analysis should be. These are not citations. They are thinking tools. They install mental models that show up later — on a walk, in a conversation, in a moment of recognition when a system you built maps onto a pattern someone described fifty years ago.</p>
+      <p>Two lessons, then. First: keep building with Claude Code. Whether that means small new projects or integrating it into a long-running one, the system rewards dedication. The abstraction ladder works — you direct, the machine implements, and the constraint of physical presence falls away. Second: bring the physicist's toolkit. Ask why, not just what. Trace ideas to their foundations. Read the papers that defined the field, not the blog posts that summarized them. The toolkit is what turns a collection of skills into an operating system — and a user into an architect.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 13. REFERENCE                                       -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">References</h2>
+    <div class="section-text">
+      <p style="color:#a0a0a0;font-size:15px;line-height:1.8;">McIlroy, M.D., Pinson, E.N., and Tague, B.A. (1978). UNIX Time-Sharing System: Foreword. <em>The Bell System Technical Journal</em>, 57(6), 1899&ndash;1904.</p>
+      <p style="color:#a0a0a0;font-size:15px;line-height:1.8;">Tukey, J.W. (1962). The Future of Data Analysis. <em>The Annals of Mathematical Statistics</em>, 33(1), 1&ndash;67.</p>
+      <p style="color:#a0a0a0;font-size:15px;line-height:1.8;">Hansen, P.B. (1970). The Nucleus of a Multiprogramming System. <em>Communications of the ACM</em>, 13(4), 238&ndash;242.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 11. FOOTER                                          -->
+<!-- ════════════════════════════════════════════════════ -->
+<footer class="github-footer" style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:700px;margin:0 auto;padding:60px 24px 80px;">
+  <a href="unix_philosophy.pdf" target="_blank" rel="noopener noreferrer">
+    <span style="font-size:22px;">&#128220;</span>
+    McIlroy, Pinson, Tague &mdash; UNIX Time-Sharing System: Foreword (1978)
+  </a>
+  <a href="tukey_1962_future_of_data_analysis.pdf" target="_blank" rel="noopener noreferrer">
+    <span style="font-size:22px;">&#128220;</span>
+    Tukey &mdash; The Future of Data Analysis (1962)
+  </a>
+  <a href="hansen_1970_nucleus_multiprogramming.pdf" target="_blank" rel="noopener noreferrer">
+    <span style="font-size:22px;">&#128220;</span>
+    Hansen &mdash; The Nucleus of a Multiprogramming System (1970)
+  </a>
+</footer>
+
+<section class="section" style="padding-top:0;">
+  <div class="section-inner">
+    <h2 class="section-header">Repository</h2>
+    <div style="text-align:center;">
+      <a href="https://github.com/VivekKarmarkar/claude-code-os" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:10px;color:#a0a0a0;text-decoration:none;font-size:16px;transition:color 0.2s;">
+        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill:currentColor;">
+          <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+        </svg>
+        View the Claude Code OS repository on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- SCRIPTS                                             -->
+<!-- ════════════════════════════════════════════════════ -->
+<script>
+(async function() {
+  // ── Load data ──────────────────────────────────────
+  const resp = await fetch('data.json');
+  const data = await resp.json();
+  const { skills, commits, categories, summary, growth_timeline } = data;
+
+  // ── Stats bar ──────────────────────────────────────
+  const statsBar = document.getElementById('stats-bar');
+  const stats = [
+    { number: summary.active_skills || summary.total_skills, label: 'Active Skills' },
+    { number: summary.total_skills, label: 'Total Skills' },
+    { number: summary.total_plugins, label: 'Plugins' },
+    { number: summary.total_hooks, label: 'Hooks' },
+    { number: (summary.total_skill_lines / 1000).toFixed(1) + 'K', label: 'Lines of Instruction' },
+  ];
+  statsBar.innerHTML = stats.map(s => `
+    <div class="stat">
+      <div class="stat-number">${s.number}</div>
+      <div class="stat-label">${s.label}</div>
+    </div>
+  `).join('');
+
+  // ── Legend ──────────────────────────────────────────
+  const legend = document.getElementById('legend');
+  legend.innerHTML = Object.entries(categories).map(([id, cat]) => {
+    const count = skills.filter(s => s.category === id).length;
+    return `<div class="legend-dot"><span style="background:${cat.color}"></span>${cat.label} (${count})</div>`;
+  }).join('');
+
+  // ── Constellation (D3 force simulation) ────────────
+  const svg = d3.select('#constellation');
+  const container = svg.node().parentElement;
+  const width = container.clientWidth;
+  const height = 560;
+  svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+  // Sort skills by creation date, then build nodes
+  // Active skills are full brightness, inactive are dimmed
+  const nodes = skills.map((s, i) => ({
+    ...s,
+    r: Math.max(4, Math.sqrt(s.lines) * 0.8),
+    color: categories[s.category]?.color || '#888',
+    visible: true,
+    index: i,
+    birthDate: s.created_at ? new Date(s.created_at) : new Date(0),
+    baseOpacity: s.active ? 0.9 : 0.2,
+  }));
+
+  // Category centers for clustering
+  const catIds = Object.keys(categories);
+  const catCenters = {};
+  catIds.forEach((id, i) => {
+    const angle = (i / catIds.length) * Math.PI * 2 - Math.PI / 2;
+    const rx = width * 0.28;
+    const ry = height * 0.28;
+    catCenters[id] = {
+      x: width / 2 + Math.cos(angle) * rx,
+      y: height / 2 + Math.sin(angle) * ry,
+    };
+  });
+
+  // Tooltip
+  const tooltip = d3.select('body').append('div').attr('class', 'tooltip');
+
+  // Star glow filter
+  const defs = svg.append('defs');
+  const glowFilter = defs.append('filter').attr('id', 'star-glow')
+    .attr('x', '-50%').attr('y', '-50%').attr('width', '200%').attr('height', '200%');
+  glowFilter.append('feGaussianBlur').attr('in', 'SourceGraphic').attr('stdDeviation', '2').attr('result', 'blur');
+  const merge = glowFilter.append('feMerge');
+  merge.append('feMergeNode').attr('in', 'blur');
+  merge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+  // Background stars (ambient)
+  const bgGroup = svg.append('g');
+  for (let i = 0; i < 120; i++) {
+    bgGroup.append('circle')
+      .attr('cx', Math.random() * width)
+      .attr('cy', Math.random() * height)
+      .attr('r', Math.random() * 1.2)
+      .attr('fill', '#ffffff')
+      .attr('opacity', Math.random() * 0.15 + 0.03);
+  }
+
+  // Skill nodes group
+  const nodeGroup = svg.append('g');
+
+  // Code-bearing rings (drawn behind the filled circles)
+  const rings = nodeGroup.selectAll('circle.ring')
+    .data(nodes.filter(d => d.has_code))
+    .join('circle')
+    .attr('class', 'ring')
+    .attr('r', d => d.r + 4)
+    .attr('fill', 'none')
+    .attr('stroke', d => d.color)
+    .attr('stroke-width', 1.5)
+    .attr('stroke-dasharray', '3,2')
+    .attr('opacity', d => d.baseOpacity * 0.7)
+    .attr('filter', 'url(#star-glow)');
+
+  const circles = nodeGroup.selectAll('circle.star')
+    .data(nodes)
+    .join('circle')
+    .attr('class', 'star')
+    .attr('r', d => d.r)
+    .attr('fill', d => d.color)
+    .attr('opacity', d => d.baseOpacity)
+    .attr('filter', d => d.active ? 'url(#star-glow)' : null)
+    .on('mouseover', (event, d) => {
+      const codeLabel = d.has_code ? ` &middot; ${d.code_file_count} code files` : '';
+      tooltip.style('opacity', 1).html(`
+        <div class="tt-name" style="color:${d.color}">${d.name}</div>
+        <div class="tt-cat">${categories[d.category]?.label || 'Unknown'}${d.active ? '' : ' &middot; <span style="color:#666">inactive</span>'}${codeLabel}</div>
+        <div class="tt-lines">${d.lines} lines &middot; ${d.files} files</div>
+      `);
+      d3.select(event.target).attr('opacity', 1).attr('r', d.r * 1.4).attr('filter', 'url(#star-glow)');
+    })
+    .on('mousemove', (event) => {
+      tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+    })
+    .on('mouseout', (event, d) => {
+      tooltip.style('opacity', 0);
+      d3.select(event.target)
+        .attr('opacity', d.visible ? d.baseOpacity : 0)
+        .attr('r', d.r)
+        .attr('filter', d.active ? 'url(#star-glow)' : null);
+    });
+
+  // Force simulation
+  const simulation = d3.forceSimulation(nodes)
+    .force('charge', d3.forceManyBody().strength(-8))
+    .force('center', d3.forceCenter(width / 2, height / 2).strength(0.05))
+    .force('collision', d3.forceCollide().radius(d => d.r + 2))
+    .force('cluster', forceCluster(0.15))
+    .force('bounds', forceBounds())
+    .on('tick', () => {
+      circles.attr('cx', d => d.x).attr('cy', d => d.y);
+      rings.attr('cx', d => d.x).attr('cy', d => d.y);
+    });
+
+  // Custom cluster force
+  function forceCluster(strength) {
+    return function(alpha) {
+      nodes.forEach(d => {
+        const c = catCenters[d.category];
+        if (c) {
+          d.vx += (c.x - d.x) * alpha * strength;
+          d.vy += (c.y - d.y) * alpha * strength;
+        }
+      });
+    };
+  }
+
+  // Keep nodes in bounds
+  function forceBounds() {
+    return function() {
+      nodes.forEach(d => {
+        d.x = Math.max(d.r + 10, Math.min(width - d.r - 10, d.x));
+        d.y = Math.max(d.r + 10, Math.min(height - d.r - 10, d.y));
+      });
+    };
+  }
+
+  // ── Heartbeat canvas ───────────────────────────────
+  const heartbeatCanvas = document.getElementById('heartbeat-canvas');
+  const hctx = heartbeatCanvas.getContext('2d');
+  const hWidth = heartbeatCanvas.parentElement.clientWidth;
+  heartbeatCanvas.width = hWidth * 2;
+  heartbeatCanvas.height = 80;
+  heartbeatCanvas.style.width = hWidth + 'px';
+  heartbeatCanvas.style.height = '40px';
+
+  // Build commit density (commits per day bucket)
+  const dateRange = commits.map(c => new Date(c.date));
+  const minDate = d3.min(dateRange);
+  const maxDate = d3.max(dateRange);
+  const daySpan = (maxDate - minDate) / (1000 * 60 * 60 * 24);
+  const bucketCount = Math.min(200, Math.max(50, Math.floor(daySpan)));
+  const buckets = new Array(bucketCount).fill(0);
+
+  commits.forEach(c => {
+    const t = (new Date(c.date) - minDate) / (maxDate - minDate);
+    const idx = Math.min(bucketCount - 1, Math.floor(t * bucketCount));
+    buckets[idx] += c.insertions + c.deletions;
+  });
+
+  const maxBucket = Math.max(...buckets);
+
+  function drawHeartbeat(sliderPos) {
+    const w = heartbeatCanvas.width;
+    const h = heartbeatCanvas.height;
+    hctx.clearRect(0, 0, w, h);
+
+    // Draw waveform
+    hctx.beginPath();
+    hctx.moveTo(0, h);
+    for (let i = 0; i < bucketCount; i++) {
+      const x = (i / bucketCount) * w;
+      const barH = (buckets[i] / maxBucket) * h * 0.85;
+      hctx.lineTo(x, h - barH);
+    }
+    hctx.lineTo(w, h);
+    hctx.closePath();
+
+    // Gradient fill
+    const grad = hctx.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, '#f9731620');
+    grad.addColorStop(sliderPos / 100, '#f9731640');
+    grad.addColorStop(Math.min(1, sliderPos / 100 + 0.01), '#f9731610');
+    grad.addColorStop(1, '#f9731608');
+    hctx.fillStyle = grad;
+    hctx.fill();
+
+    // Line on top
+    hctx.beginPath();
+    hctx.moveTo(0, h);
+    for (let i = 0; i < bucketCount; i++) {
+      const x = (i / bucketCount) * w;
+      const barH = (buckets[i] / maxBucket) * h * 0.85;
+      hctx.lineTo(x, h - barH);
+    }
+    hctx.strokeStyle = '#f97316';
+    hctx.lineWidth = 1.5;
+    hctx.globalAlpha = 0.6;
+    hctx.stroke();
+    hctx.globalAlpha = 1;
+
+    // Annotation lines (e.g., Anthropic talk) — just the vertical dashed line on the heartbeat
+    const annotations = data.annotations || [];
+    annotations.forEach(ann => {
+      const annDate = new Date(ann.date);
+      const t = (annDate - minDate) / (maxDate - minDate);
+      const ax = t * w;
+      // Dashed vertical line
+      hctx.beginPath();
+      hctx.setLineDash([4, 3]);
+      hctx.moveTo(ax, 0);
+      hctx.lineTo(ax, h);
+      hctx.strokeStyle = '#ffffff';
+      hctx.lineWidth = 3;
+      hctx.globalAlpha = 0.6;
+      hctx.stroke();
+      hctx.setLineDash([]);
+      hctx.globalAlpha = 1;
+    });
+
+    // Playhead line — no offset, full width
+    const px = (sliderPos / 100) * w;
+    hctx.beginPath();
+    hctx.moveTo(px, 0);
+    hctx.lineTo(px, h);
+    hctx.strokeStyle = '#f97316';
+    hctx.lineWidth = 2;
+    hctx.globalAlpha = 0.8;
+    hctx.stroke();
+    hctx.globalAlpha = 1;
+  }
+
+  drawHeartbeat(100);
+
+  // ── Timeline scrubber ──────────────────────────────
+  const slider = document.getElementById('timeline-slider');
+  const dateDisplay = document.getElementById('current-date');
+  const countDisplay = document.getElementById('current-count');
+
+  // Map slider position to a date and skill count
+  function getTimelineState(pct) {
+    const t = pct / 100;
+    const date = new Date(minDate.getTime() + t * (maxDate.getTime() - minDate.getTime()));
+
+    // Find the skill count at this point
+    let skillCount = 0;
+    for (const g of growth_timeline) {
+      if (new Date(g.date) <= date) {
+        skillCount = g.skill_count;
+      } else break;
+    }
+
+    return { date, skillCount };
+  }
+
+  let prevVisibleCategories = new Set();
+
+  // Precompute: which active skill is the first in each category?
+  const categoryBirthSkills = {};
+  const catBirthData = data.category_births || [];
+  catBirthData.forEach(b => {
+    categoryBirthSkills[b.category] = b.skill;
+  });
+
+  function updateTimeline(pct) {
+    const state = getTimelineState(pct);
+    const dateStr = state.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    dateDisplay.textContent = dateStr;
+
+    // Show/hide nodes based on their actual creation date
+    const currentDate = state.date;
+    let visibleCount = 0;
+    const currentCategories = new Set();
+    nodes.forEach(d => {
+      d.visible = d.birthDate <= currentDate;
+      if (d.visible) {
+        visibleCount++;
+        if (d.active) currentCategories.add(d.category);
+      }
+    });
+
+    countDisplay.textContent = visibleCount + ' skills';
+
+    circles
+      .transition().duration(80)
+      .attr('opacity', d => d.visible ? d.baseOpacity : 0)
+      .attr('r', d => d.visible ? d.r : 0);
+
+    rings
+      .transition().duration(80)
+      .attr('opacity', d => d.visible ? d.baseOpacity * 0.7 : 0)
+      .attr('r', d => d.visible ? d.r + 4 : 0);
+
+    // Birth flash only for category-initiating active skills
+    currentCategories.forEach(cat => {
+      if (!prevVisibleCategories.has(cat)) {
+        // New category just appeared — find the birth skill
+        const birthSkillName = categoryBirthSkills[cat];
+        const birthNode = nodes.find(d => d.name === birthSkillName);
+        if (birthNode && birthNode.x) {
+          const flash = nodeGroup.append('circle')
+            .attr('cx', birthNode.x).attr('cy', birthNode.y)
+            .attr('r', birthNode.r)
+            .attr('fill', 'none')
+            .attr('stroke', birthNode.color)
+            .attr('stroke-width', 3)
+            .attr('opacity', 1)
+            .attr('filter', 'url(#star-glow)');
+          flash.transition().duration(800)
+            .attr('r', birthNode.r * 5)
+            .attr('opacity', 0)
+            .remove();
+        }
+      }
+    });
+
+    prevVisibleCategories = new Set(currentCategories);
+
+    // Show annotation label aligned with the white dashed line
+    const annLabel = document.getElementById('annotation-label');
+    const annotationsData = data.annotations || [];
+    let nearestAnn = null;
+    annotationsData.forEach(ann => {
+      const annDate = new Date(ann.date);
+      const daysDiff = Math.abs(currentDate - annDate) / (1000 * 60 * 60 * 24);
+      if (daysDiff < 3) nearestAnn = ann;
+    });
+    if (nearestAnn) {
+      const annDate = new Date(nearestAnn.date);
+      const t = (annDate - minDate) / (maxDate - minDate);
+      const infoDiv = annLabel.parentElement;
+      const xPos = t * infoDiv.clientWidth;
+      annLabel.textContent = nearestAnn.label;
+      annLabel.style.left = xPos + 'px';
+      annLabel.style.opacity = '1';
+    } else {
+      annLabel.style.opacity = '0';
+    }
+
+    drawHeartbeat(pct);
+  }
+
+  slider.addEventListener('input', () => updateTimeline(parseInt(slider.value)));
+
+  // ── Play button ────────────────────────────────────
+  let playing = false;
+  let playInterval;
+  const playBtn = document.getElementById('play-btn');
+
+  playBtn.addEventListener('click', () => {
+    if (playing) {
+      clearInterval(playInterval);
+      playing = false;
+      playBtn.innerHTML = '&#9654;';
+    } else {
+      playing = true;
+      playBtn.innerHTML = '&#9646;&#9646;';
+      if (parseInt(slider.value) >= 100) slider.value = 0;
+
+      playInterval = setInterval(() => {
+        const val = parseInt(slider.value) + 1;
+        if (val > 100) {
+          clearInterval(playInterval);
+          playing = false;
+          playBtn.innerHTML = '&#9654;';
+          return;
+        }
+        slider.value = val;
+        updateTimeline(val);
+      }, 60);
+    }
+  });
+
+  // ══════════════════════════════════════════════════
+  // COMPOSITE SKILLS (slideshow of individual composers)
+  // ══════════════════════════════════════════════════
+  const netEdges = data.composition_network || [];
+  if (netEdges.length > 0) {
+    // Group edges by source — only active skills
+    const activeSet = new Set(skills.filter(s => s.active).map(s => s.name));
+    const composers = {};
+    netEdges.forEach(e => {
+      if (!activeSet.has(e.source)) return;
+      if (!composers[e.source]) composers[e.source] = [];
+      composers[e.source].push(e.target);
+    });
+
+    // Use featured composites if available, otherwise fall back to top composites
+    const featured = data.featured_composites || [];
+    let composerList;
+    if (featured.length > 0) {
+      composerList = featured
+        .filter(name => composers[name] && composers[name].length >= 2)
+        .map(name => [name, composers[name]]);
+    } else {
+      composerList = Object.entries(composers)
+        .filter(([, targets]) => targets.length >= 2)
+        .sort((a, b) => b[1].length - a[1].length);
+    }
+
+    const compSvg = d3.select('#composite-diagram');
+    const compContainer = compSvg.node().parentElement;
+    const cw = compContainer.clientWidth;
+    const ch = 400;
+    compSvg.attr('viewBox', `0 0 ${cw} ${ch}`).style('height', ch + 'px');
+
+    // Glow filter reuse
+    const compDefs = compSvg.append('defs');
+    const compGlow = compDefs.append('filter').attr('id', 'comp-glow')
+      .attr('x', '-50%').attr('y', '-50%').attr('width', '200%').attr('height', '200%');
+    compGlow.append('feGaussianBlur').attr('in', 'SourceGraphic').attr('stdDeviation', '3').attr('result', 'blur');
+    const compMerge = compGlow.append('feMerge');
+    compMerge.append('feMergeNode').attr('in', 'blur');
+    compMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+    // Arrow marker
+    compDefs.append('marker').attr('id', 'comp-arrow').attr('viewBox', '0 0 10 6')
+      .attr('refX', 10).attr('refY', 3).attr('markerWidth', 8).attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('path').attr('d', 'M0,0 L10,3 L0,6').attr('fill', '#ffffff40');
+
+    let compIdx = 0;
+
+    function drawComposite(idx) {
+      compSvg.selectAll('g.comp-scene').remove();
+      const [sourceName, targetNames] = composerList[idx];
+      const sourceSkill = skills.find(s => s.name === sourceName) || { category: 'devworkflow' };
+      const sourceColor = categories[sourceSkill.category]?.color || '#888';
+
+      const scene = compSvg.append('g').attr('class', 'comp-scene');
+
+      // Center node (the composite skill)
+      const cx = cw / 2;
+      const cy = ch / 2 - 10;
+      const centerR = 28;
+
+      // Target nodes in a circle around center
+      const targets = targetNames.map((name, i) => {
+        const skill = skills.find(s => s.name === name) || { category: 'devworkflow' };
+        const angle = (i / targetNames.length) * Math.PI * 2 - Math.PI / 2;
+        const orbitR = Math.min(cw, ch) * 0.3;
+        return {
+          name,
+          color: categories[skill.category]?.color || '#888',
+          x: cx + Math.cos(angle) * orbitR,
+          y: cy + Math.sin(angle) * orbitR,
+          r: 16,
+        };
+      });
+
+      // Draw lines from center to targets
+      targets.forEach(t => {
+        scene.append('line')
+          .attr('x1', cx).attr('y1', cy)
+          .attr('x2', t.x).attr('y2', t.y)
+          .attr('stroke', sourceColor + '30')
+          .attr('stroke-width', 2)
+          .attr('marker-end', 'url(#comp-arrow)');
+      });
+
+      // Draw target nodes
+      targets.forEach(t => {
+        scene.append('circle')
+          .attr('cx', t.x).attr('cy', t.y).attr('r', t.r)
+          .attr('fill', t.color).attr('opacity', 0.8)
+          .attr('filter', 'url(#comp-glow)');
+        scene.append('text')
+          .attr('x', t.x).attr('y', t.y + t.r + 16)
+          .attr('text-anchor', 'middle')
+          .attr('fill', t.color).attr('font-size', '11px').attr('font-weight', '700')
+          .text(t.name);
+      });
+
+      // Draw center node (on top)
+      scene.append('circle')
+        .attr('cx', cx).attr('cy', cy).attr('r', centerR)
+        .attr('fill', sourceColor).attr('opacity', 0.9)
+        .attr('filter', 'url(#comp-glow)');
+      scene.append('text')
+        .attr('x', cx).attr('y', cy + centerR + 18)
+        .attr('text-anchor', 'middle')
+        .attr('fill', sourceColor).attr('font-size', '14px').attr('font-weight', '700')
+        .text(sourceName);
+      scene.append('text')
+        .attr('x', cx).attr('y', cy + centerR + 34)
+        .attr('text-anchor', 'middle')
+        .attr('fill', '#888').attr('font-size', '11px')
+        .text(`calls ${targetNames.length} skills`);
+
+      // Counter
+      document.getElementById('comp-counter').textContent =
+        `${idx + 1} / ${composerList.length}`;
+    }
+
+    drawComposite(0);
+
+    document.getElementById('comp-prev').addEventListener('click', () => {
+      compIdx = (compIdx - 1 + composerList.length) % composerList.length;
+      drawComposite(compIdx);
+    });
+    document.getElementById('comp-next').addEventListener('click', () => {
+      compIdx = (compIdx + 1) % composerList.length;
+      drawComposite(compIdx);
+    });
+
+    // Auto-advance every 5 seconds
+    let compTimer = setInterval(() => {
+      compIdx = (compIdx + 1) % composerList.length;
+      drawComposite(compIdx);
+    }, 5000);
+    // Pause auto-advance on manual nav
+    ['comp-prev', 'comp-next'].forEach(id => {
+      document.getElementById(id).addEventListener('click', () => {
+        clearInterval(compTimer);
+        compTimer = setInterval(() => {
+          compIdx = (compIdx + 1) % composerList.length;
+          drawComposite(compIdx);
+        }, 5000);
+      });
+    });
+  }
+
+
+  // ══════════════════════════════════════════════════
+  // SKILL COMPLEXITY (filtered bar chart)
+  // ══════════════════════════════════════════════════
+  {
+    const featuredComplexity = new Set(data.featured_complexity || []);
+    const allComplexitySkills = (featuredComplexity.size > 0
+      ? skills.filter(s => featuredComplexity.has(s.name))
+      : skills.filter(s => s.active)
+    ).sort((a, b) => b.lines - a.lines);
+
+    // Category filter state — all on by default
+    const catFilter = {};
+    Object.keys(categories).forEach(c => catFilter[c] = true);
+
+    // Build filter toggles
+    const filtersDiv = document.getElementById('complexity-filters');
+
+    // Category toggles
+    Object.entries(categories).forEach(([catId, cat]) => {
+      const count = allComplexitySkills.filter(s => s.category === catId).length;
+      if (count === 0) return;
+      const toggle = document.createElement('div');
+      toggle.className = 'cat-toggle';
+      toggle.dataset.cat = catId;
+      toggle.style.color = cat.color;
+      toggle.style.borderColor = cat.color + '40';
+      toggle.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${cat.color};display:inline-block;"></span>${cat.label} (${count})`;
+      toggle.addEventListener('click', () => {
+        catFilter[catId] = !catFilter[catId];
+        toggle.classList.toggle('off', !catFilter[catId]);
+        drawComplexity();
+      });
+      filtersDiv.appendChild(toggle);
+    });
+
+    // Code filter toggle
+    let codeFilterOn = false;
+    const codeCount = allComplexitySkills.filter(s => s.has_code).length;
+    const codeToggle = document.createElement('div');
+    codeToggle.className = 'cat-toggle off';
+    codeToggle.style.color = '#ffffff';
+    codeToggle.style.borderColor = '#ffffff30';
+    codeToggle.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;border:1.5px dashed #fff;display:inline-block;"></span>Has Code (${codeCount})`;
+    codeToggle.addEventListener('click', () => {
+      codeFilterOn = !codeFilterOn;
+      codeToggle.classList.toggle('off', !codeFilterOn);
+      drawComplexity();
+    });
+    filtersDiv.appendChild(codeToggle);
+
+    // Determine which skills are composite (call 2+ other skills)
+    const compositeSet = new Set();
+    const compEdges = data.composition_network || [];
+    const compCounts = {};
+    compEdges.forEach(e => {
+      compCounts[e.source] = (compCounts[e.source] || 0) + 1;
+    });
+    Object.entries(compCounts).forEach(([name, count]) => {
+      if (count >= 2) compositeSet.add(name);
+    });
+
+    // Fixed layout: every skill gets a permanent slot
+    // Center axis — composite extends right, isolated extends left
+    const maxLines = allComplexitySkills[0].lines;
+    const cCanvas = document.getElementById('complexity-canvas');
+    const cctx = cCanvas.getContext('2d');
+    const cw = cCanvas.parentElement.clientWidth;
+    const ch = 340;
+    cCanvas.width = cw * 2;
+    cCanvas.height = ch * 2;
+    cCanvas.style.width = cw + 'px';
+    cCanvas.style.height = ch + 'px';
+
+    const barH = Math.min(5, (ch - 20) / allComplexitySkills.length);
+    const centerX = cw / 2;
+    const halfW = centerX - 20; // max bar width on each side
+
+    // Store bar rects for hover detection
+    const barRects = [];
+
+    function drawComplexity() {
+      const ctx = cctx;
+      ctx.setTransform(2, 0, 0, 2, 0, 0);
+      ctx.clearRect(0, 0, cw, ch);
+      barRects.length = 0;
+
+      // Center axis line
+      ctx.strokeStyle = '#2e314060';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(centerX, 5);
+      ctx.lineTo(centerX, ch - 5);
+      ctx.stroke();
+
+      // Labels
+      ctx.fillStyle = '#555';
+      ctx.font = '11px DM Sans';
+      ctx.textAlign = 'center';
+      ctx.fillText('← Isolated', centerX - halfW / 2, ch - 2);
+      ctx.fillText('Composite →', centerX + halfW / 2, ch - 2);
+
+      allComplexitySkills.forEach((s, i) => {
+        if (!catFilter[s.category]) return;
+        if (codeFilterOn && s.has_code) return;
+        const barW = (s.lines / maxLines) * halfW;
+        const y = 10 + i * barH;
+        const color = categories[s.category]?.color || '#888';
+        const isComposite = compositeSet.has(s.name);
+        const alpha = s.has_code ? '50' : 'cc';
+        ctx.fillStyle = color + alpha;
+
+        let bx;
+        if (isComposite) {
+          bx = centerX + 1;
+          ctx.fillRect(bx, y, barW, Math.max(1.5, barH - 0.8));
+        } else {
+          bx = centerX - 1 - barW;
+          ctx.fillRect(bx, y, barW, Math.max(1.5, barH - 0.8));
+        }
+
+        // Dashed outline for code-bearing skills
+        if (s.has_code) {
+          ctx.strokeStyle = color + '90';
+          ctx.lineWidth = 0.8;
+          ctx.setLineDash([3, 2]);
+          ctx.strokeRect(bx, y, barW, Math.max(1.5, barH - 0.8));
+          ctx.setLineDash([]);
+        }
+
+        barRects.push({ x: bx, y, w: barW, h: Math.max(1.5, barH - 0.8), skill: s, isComposite, color });
+      });
+
+      // Fit and overlay a power law curve on the isolated skills
+      const isolatedSkills = allComplexitySkills
+        .map((s, i) => ({ ...s, slotIndex: i }))
+        .filter(s => !compositeSet.has(s.name) && catFilter[s.category] && (!codeFilterOn || !s.has_code));
+
+      if (isolatedSkills.length >= 3) {
+        // Power law fit: lines = a * rank^(-b)
+        // Use log-log linear regression: ln(lines) = ln(a) - b * ln(rank)
+        const n = isolatedSkills.length;
+        // Rank them 1..n by descending lines (they're already sorted)
+        let sumLnR = 0, sumLnL = 0, sumLnRLnL = 0, sumLnR2 = 0;
+        isolatedSkills.forEach((s, idx) => {
+          const rank = idx + 1;
+          const lnR = Math.log(rank);
+          const lnL = Math.log(s.lines);
+          sumLnR += lnR;
+          sumLnL += lnL;
+          sumLnRLnL += lnR * lnL;
+          sumLnR2 += lnR * lnR;
+        });
+        const b = -(n * sumLnRLnL - sumLnR * sumLnL) / (n * sumLnR2 - sumLnR * sumLnR);
+        const lnA = (sumLnL + b * sumLnR) / n;
+        const a = Math.exp(lnA);
+
+        // Compute R² for the fit
+        const meanLnL = sumLnL / n;
+        let ssTot = 0, ssRes = 0;
+        isolatedSkills.forEach((s, idx) => {
+          const rank = idx + 1;
+          const lnL = Math.log(s.lines);
+          const lnPred = lnA - b * Math.log(rank);
+          ssTot += (lnL - meanLnL) ** 2;
+          ssRes += (lnL - lnPred) ** 2;
+        });
+        const r2 = 1 - ssRes / ssTot;
+
+        // Draw the fitted curve — thick bright dashed line
+        ctx.beginPath();
+        ctx.strokeStyle = '#f97316';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 5]);
+
+        isolatedSkills.forEach((s, idx) => {
+          const rank = idx + 1;
+          const fittedLines = a * Math.pow(rank, -b);
+          const fittedBarW = (fittedLines / maxLines) * halfW;
+          const y = 10 + s.slotIndex * barH + barH / 2;
+          const x = centerX - 1 - fittedBarW;
+          if (idx === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Show fit stats below the chart
+        const statsEl = document.getElementById('complexity-fit-stats');
+        if (statsEl) {
+          statsEl.innerHTML = `<span style="color:#f97316;">Power law fit (isolated skills):</span> lines ∝ rank<sup>${(-b).toFixed(2)}</sup> &nbsp;&middot;&nbsp; R² = ${r2.toFixed(3)} &nbsp;&middot;&nbsp; n = ${n}`;
+        }
+      } else {
+        const statsEl = document.getElementById('complexity-fit-stats');
+        if (statsEl) statsEl.innerHTML = '';
+      }
+    }
+
+    drawComplexity();
+
+    // Hover detection on canvas
+    cCanvas.addEventListener('mousemove', (event) => {
+      const rect = cCanvas.getBoundingClientRect();
+      const scaleX = cw / rect.width;
+      const scaleY = ch / rect.height;
+      const mx = (event.clientX - rect.left) * scaleX;
+      const my = (event.clientY - rect.top) * scaleY;
+
+      let hit = null;
+      for (const bar of barRects) {
+        if (mx >= bar.x && mx <= bar.x + bar.w && my >= bar.y && my <= bar.y + bar.h + 2) {
+          hit = bar;
+          break;
+        }
+      }
+
+      if (hit) {
+        const s = hit.skill;
+        const side = hit.isComposite ? 'composite' : 'isolated';
+        const codeTag = s.has_code ? ` &middot; ${s.code_file_count} code files` : '';
+        tooltip.style('opacity', 1).html(`
+          <div class="tt-name" style="color:${hit.color}">${s.name}</div>
+          <div class="tt-cat">${categories[s.category]?.label || ''} &middot; ${side}${codeTag}</div>
+          <div class="tt-lines">${s.lines} lines</div>
+        `);
+        tooltip.style('left', (event.pageX + 12) + 'px').style('top', (event.pageY - 10) + 'px');
+        cCanvas.style.cursor = 'pointer';
+      } else {
+        tooltip.style('opacity', 0);
+        cCanvas.style.cursor = 'default';
+      }
+    });
+
+    cCanvas.addEventListener('mouseleave', () => {
+      tooltip.style('opacity', 0);
+      cCanvas.style.cursor = 'default';
+    });
+  }
+
+})();
+</script>
+</body>
+</html>

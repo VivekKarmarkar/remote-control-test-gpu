@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCP: Remote Control Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─── Reset & Global ───────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #0f1019;
+  color: #e0e0e0;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Layout helpers ───────────────────────────────── */
+.section {
+  padding: 80px 24px;
+}
+.section-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.section-header {
+  font-size: 32px;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin-bottom: 48px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+.section-text p {
+  margin-bottom: 1.4em;
+  color: #c8c8c8;
+}
+.section-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* ─── 1. Hero ──────────────────────────────────────── */
+.hero {
+  text-align: center;
+  padding: 120px 24px 80px;
+}
+.hero h1 {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  color: #e0e0e0;
+  letter-spacing: 1px;
+  line-height: 1.15;
+}
+.hero .tagline {
+  margin-top: 16px;
+  font-size: 17px;
+  color: #a0a0a0;
+  letter-spacing: 0.3px;
+}
+.hero-tags-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 24px auto 0;
+  width: fit-content;
+}
+.hero-tags {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hero-tag {
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+.tag-tech-primary { color: #f97316; border: 1px solid #f9731640; }
+.tag-audience { color: #4ade80; border: 1px solid #4ade8040; }
+
+/* ─── 2. Video ─────────────────────────────────────── */
+.video-section {
+  padding: 0 24px 80px;
+}
+.video-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: min(56.25%, 540px);
+  height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #23263a;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+}
+.video-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* ─── Video thumbnail fallback ─────────────────────── */
+.video-thumb {
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000 center/cover no-repeat;
+  text-decoration: none;
+}
+.video-thumb .play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px; height: 48px;
+  background: rgba(255,0,0,0.85);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.video-thumb:hover .play-btn { background: #f00; }
+.video-thumb .play-btn::after {
+  content: '';
+  display: block;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 3px;
+}
+
+/* ─── 3b. Abstraction Ladder ──────────────────────── */
+.ladder-section {
+  padding: 80px 24px;
+}
+.ladder-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  padding-left: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.ladder-spine {
+  position: absolute;
+  left: 58px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to top, #1a1c2a, #f97316);
+  border-radius: 2px;
+}
+.ladder-rung {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  padding: 0;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+.ladder-rung:hover .rung-main {
+  background: #1e2030;
+}
+.ladder-rung:hover .rung-constraint {
+  color: #e0e0e0;
+}
+.rung-dot {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #2e3140;
+  border: 2px solid #404560;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.ladder-rung:hover .rung-dot {
+  border-color: #f97316;
+  background: #f97316;
+  box-shadow: 0 0 8px rgba(249,115,22,0.4);
+}
+.rung-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px 14px 36px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  gap: 16px;
+}
+.rung-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.rung-era {
+  font-size: 11px;
+  color: #606580;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  min-width: 70px;
+  flex-shrink: 0;
+}
+.rung-name {
+  font-size: 14px;
+  color: #c8c8c8;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.rung-constraint {
+  font-size: 12px;
+  color: #606580;
+  font-style: italic;
+  text-align: right;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+  max-width: 320px;
+}
+.rung-highlight .rung-dot {
+  background: #f97316;
+  border-color: #f97316;
+  box-shadow: 0 0 12px rgba(249,115,22,0.5);
+  width: 15px;
+  height: 15px;
+}
+.rung-highlight .rung-name {
+  color: #f97316;
+  font-weight: 700;
+  font-size: 15px;
+}
+.rung-highlight .rung-constraint {
+  color: #a0a0a0;
+}
+.rung-top .rung-dot {
+  background: #f97316;
+  border-color: #fbbf24;
+  box-shadow: 0 0 18px rgba(249,115,22,0.7);
+  width: 17px;
+  height: 17px;
+  animation: pulse-ladder-dot 2s ease-in-out infinite;
+}
+.rung-top .rung-name {
+  color: #fbbf24;
+  font-weight: 700;
+  font-size: 16px;
+}
+.rung-top .rung-constraint {
+  color: #c8c8c8;
+  font-weight: 500;
+  font-style: normal;
+}
+@keyframes pulse-ladder-dot {
+  0%, 100% { box-shadow: 0 0 12px rgba(249,115,22,0.5); }
+  50% { box-shadow: 0 0 24px rgba(249,115,22,0.9); }
+}
+.ladder-label {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 12px;
+  color: #606580;
+  font-style: italic;
+}
+@media (max-width: 700px) {
+  .rung-constraint { display: none; }
+  .rung-main { padding: 10px 12px 10px 30px; }
+  .rung-era { min-width: 50px; font-size: 10px; }
+  .rung-name { font-size: 12px; }
+  .ladder-container { padding-left: 30px; }
+  .ladder-spine { left: 48px; }
+  .rung-dot { left: 8px; }
+}
+
+/* ─── 4. Architecture section ──────────────────────── */
+.arch-section {
+  padding: 80px 24px;
+}
+.arch-section .section-header {
+  max-width: 700px;
+  margin: 0 auto 48px;
+}
+
+/* ─── RCP Playground (integrated) ──────────────────── */
+.rcp-playground {
+  max-width: 1100px;
+  margin: 0 auto 56px;
+}
+
+.rcp-status-banner {
+  text-align: center;
+  padding: 14px 20px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.5s ease;
+  border-radius: 12px 12px 0 0;
+  position: relative;
+  overflow: hidden;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+}
+.rcp-status-banner.ready {
+  background: linear-gradient(135deg, #001a0d, #002a15);
+  color: #00ff88;
+  border-bottom: 2px solid #00ff88;
+  text-shadow: 0 0 20px #00ff88, 0 0 40px #00ff8833;
+}
+.rcp-status-banner.not-ready {
+  background: linear-gradient(135deg, #1a0005, #2a000d);
+  color: #ff3355;
+  border-bottom: 2px solid #ff3355;
+  text-shadow: 0 0 20px #ff3355;
+}
+.rcp-status-banner .scanline {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00ff88, transparent);
+  animation: rcp-scanline 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.rcp-status-banner.ready .scanline { opacity: 0.6; }
+@keyframes rcp-scanline {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+.rcp-failing-list {
+  text-align: center;
+  padding: 6px 20px;
+  font-size: 0.75rem;
+  color: #ff3355;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  min-height: 24px;
+  transition: all 0.3s;
+  background: #0f1019;
+}
+.rcp-failing-list.hidden { opacity: 0; }
+
+.rcp-counter {
+  text-align: center;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.8rem;
+  padding: 4px;
+  color: #667;
+  background: #0f1019;
+}
+.rcp-counter span { font-weight: 700; }
+.rcp-counter .on-count { color: #00ff88; }
+
+.rcp-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  height: 620px;
+  margin: 0 auto;
+  background: #0a0e17;
+}
+
+.rcp-canvas .lines-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.rcp-canvas .conn-line {
+  stroke-width: 2.5;
+  fill: none;
+  transition: stroke 0.4s, filter 0.4s;
+}
+.rcp-canvas .conn-line.off { stroke: #222; filter: none; }
+.rcp-canvas .conn-line.on {
+  stroke: #00ff88;
+  filter: drop-shadow(0 0 6px #00ff88);
+}
+.rcp-canvas .conn-line.dashed { stroke-dasharray: 8 6; }
+
+/* Laptop */
+.rcp-laptop {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px; height: 100px;
+  z-index: 10;
+  cursor: default;
+  transition: filter 0.5s;
+}
+.rcp-laptop.ready {
+  filter: drop-shadow(0 0 25px #00ff88) drop-shadow(0 0 50px #00ff8833);
+}
+.rcp-laptop.not-ready {
+  filter: drop-shadow(0 0 10px #222);
+}
+.rcp-laptop .laptop-body { fill: #1a2236; stroke: #2a3a5c; stroke-width: 2; }
+.rcp-laptop .laptop-screen { fill: #0d1520; }
+.rcp-laptop .laptop-base { fill: #1a2236; stroke: #2a3a5c; stroke-width: 2; }
+.rcp-laptop .laptop-screen-content { fill: #00ff8833; transition: fill 0.5s; }
+.rcp-laptop.ready .laptop-screen-content { fill: #00ff88; opacity: 0.3; }
+.rcp-laptop.not-ready .laptop-screen-content { fill: #ff3355; opacity: 0.15; }
+
+@keyframes rcp-pulse {
+  0%, 100% { filter: drop-shadow(0 0 25px #00ff88) drop-shadow(0 0 50px #00ff8833); }
+  50% { filter: drop-shadow(0 0 40px #00ff88) drop-shadow(0 0 80px #00ff8833); }
+}
+.rcp-laptop.ready.celebrating { animation: rcp-pulse 1.5s ease-in-out infinite; }
+
+/* Nodes */
+.rcp-node-icon-wrap {
+  position: absolute;
+  z-index: 20;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.15s;
+}
+.rcp-node-icon-wrap:hover { transform: scale(1.08); }
+.rcp-node-icon-wrap:active { transform: scale(0.95); }
+
+.rcp-node-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border: 2.5px solid #1e2a42;
+  transition: all 0.4s ease;
+}
+.rcp-node-icon-wrap.on .rcp-node-icon {
+  border-color: #00ff88;
+  background: radial-gradient(circle, #00ff8833, transparent);
+  box-shadow: 0 0 15px #00ff8833, inset 0 0 15px #00ff8833;
+}
+.rcp-node-icon-wrap.off .rcp-node-icon {
+  border-color: #333;
+  background: #131a2b;
+  box-shadow: none;
+}
+.rcp-node-icon-wrap.phone-shape .rcp-node-icon {
+  border-radius: 14px;
+  width: 48px; height: 72px;
+}
+
+/* Labels */
+.rcp-label-group {
+  position: absolute;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.rcp-label-text {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.2;
+  transition: color 0.3s;
+}
+.rcp-label-group.on .rcp-label-text { color: #00ff88; text-shadow: 0 0 8px #00ff8833; }
+.rcp-label-group.off .rcp-label-text { color: #667; }
+
+.rcp-label-status {
+  font-size: 0.6rem;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  padding: 2px 8px;
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+.rcp-label-group.on .rcp-label-status { background: #00ff8833; color: #00ff88; }
+.rcp-label-group.off .rcp-label-status { background: #1a1a2a; color: #555; }
+
+/* Presets */
+.rcp-presets {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  flex-wrap: wrap;
+  background: #0a0e17;
+  border-radius: 0 0 12px 12px;
+}
+.rcp-preset-btn {
+  background: #131a2b;
+  border: 1px solid #1e2a42;
+  color: #e0e8f0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rcp-preset-btn:hover {
+  border-color: #00ff88;
+  color: #00ff88;
+  background: #0a1a12;
+}
+
+/* Next step */
+.rcp-next-step {
+  max-width: 900px;
+  margin: 16px auto 0;
+  padding: 0 20px;
+}
+.rcp-next-box {
+  background: #131a2b;
+  border: 1px solid #1e2a42;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: #e0e8f0;
+  text-align: center;
+}
+.rcp-next-box .step-label {
+  color: #ffaa00;
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+.rcp-next-box.all-ready { border-color: #00ff88; color: #00ff88; }
+.rcp-next-box.all-ready .step-label { color: #00ff88; }
+
+@keyframes rcp-flash {
+  0% { box-shadow: 0 0 0 0 #00ff88; }
+  50% { box-shadow: 0 0 30px 10px #00ff8833; }
+  100% { box-shadow: 0 0 15px #00ff8833, inset 0 0 15px #00ff8833; }
+}
+.rcp-node-icon-wrap.just-toggled-on .rcp-node-icon {
+  animation: rcp-flash 0.4s ease-out;
+}
+
+/* ─── 7. GitHub footer ─────────────────────────────── */
+.github-footer {
+  text-align: center;
+  padding: 60px 24px 80px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+.github-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #a0a0a0;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+.github-footer a:hover { color: #e0e0e0; }
+.github-footer svg { fill: currentColor; }
+
+/* ─── Responsive ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero { padding: 80px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .arch-section { padding: 60px 16px; }
+  .section-header { font-size: 26px; margin-bottom: 36px; }
+  .rcp-canvas { height: 500px; }
+  .rcp-node-icon { width: 48px; height: 48px; font-size: 20px; }
+  .rcp-preset-btn { padding: 6px 10px; font-size: 0.65rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 1. HERO                                             -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="hero">
+  <h1>RCP: Remote Control Protocol</h1>
+  <p class="tagline">RCP &mdash; a protocol for remote-controlled GPU compute, born from friction</p>
+  <div class="hero-tags-wrap">
+    <div class="hero-tags">
+      <span class="hero-tag tag-tech-primary">Claude Code</span>
+    </div>
+    <div class="hero-tags">
+      <span class="hero-tag tag-audience">AI Startups</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 2. VIDEO                                            -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="video-section">
+  <div class="video-wrap" id="video-container"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 3. INTRODUCTION                                     -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Introduction</h2>
+    <div class="section-text">
+      <p>Somewhere outdoors, a phone buzzes in a pocket. A neural network is training on a laptop GPU back home &mdash; no one sitting in front of it, no one watching the screen. The results push to GitHub automatically. The person walking doesn't need to be there. They trained a neural network from their phone while on a walk, and it just worked. That one sentence is why everything in this project exists.</p>
+      <p>A blank terminal. A cursor flickering. <span style="font-family:'SF Mono','Cascadia Code','Fira Code',Consolas,monospace;color:#f97316">/remote-control-protocol</span>. Eight conditions check themselves. A laptop in one room talks to a phone on a sidewalk ten minutes away, and a neural network begins training on a GPU that no one is sitting in front of.</p>
+      <p>The neural network itself was deliberately small &mdash; a 3-layer MLP with 4096 hidden units per layer, trained on MNIST with Adam at lr=0.001 for 8 minutes on the RTX 2000 Ada. None of those parameters were chosen for accuracy. They were chosen for feedback speed. The core philosophy driving every design decision was: quick verifiable output drives design, not the other way around. Checkpoint plots pushed to GitHub every 2 minutes &mdash; colorblind-safe Okabe-Ito palette, phone-readable at 150 DPI, two panels showing loss and accuracy against elapsed time. Those plots were not decoration. They were the entire feedback system. When you're on a sidewalk and your terminal is invisible, a plot appearing on GitHub is the only proof that training is alive. If a checkpoint took too long to arrive, the design was wrong &mdash; not the interval. The final suite pushed 5 plots after training ended: training curves, easy wins, edge cases, confident failures, and a confusion matrix. Every run was scoped by a tag &mdash; one tag, one experiment, one set of outputs &mdash; so no run could overwrite another. The model reached 98%+ validation accuracy, but the accuracy was never the point. The point was that the results arrived on a phone, on schedule, while the person who launched them was a quarter mile away and walking.</p>
+      <p>The human's specific, slightly absurd goal of training an MNIST neural network on a laptop's RTX 2000 Ada GPU, remotely, from a phone, while walking 100,000+ steps outside in ~3 days is how this protocol was born. Claude Code's remote control feature made the connection possible. But the connection alone wasn't enough &mdash; CUDA died on suspend, drivers didn't load at boot, sessions dropped and killed running jobs, private repos couldn't be checked from a phone. Each failure became a rule. Each rule became a step. The steps became RCP &mdash; a bottom-up approach followed to its finest.</p>
+      <p>The neural network training was never the project. It was the starting point, the experimental testbed, the breeding ground, and the killer demo &mdash; all at once. RCP &mdash; Remote Control Protocol &mdash; is what emerged.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 3b. THE ABSTRACTION LADDER                          -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="ladder-section">
+  <div class="section-inner">
+    <h2 class="section-header">The Abstraction Ladder</h2>
+    <div class="section-text">
+      <p>To understand why RCP matters, it helps to see where remote control sits in a longer story. Computing has always moved in one direction: removing things the human used to do manually. Each generation of tools took away a constraint and handed it to the machine. That progression &mdash; from Assembly to AI agents &mdash; forms a ladder. And remote control is the rung at the top.</p>
+    </div>
+  </div>
+
+  <div style="height:48px"></div>
+
+  <div class="ladder-container">
+    <div class="ladder-spine"></div>
+
+    <div class="ladder-rung rung-top">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">2026</span>
+          <span class="rung-name">Remote Control</span>
+        </div>
+        <span class="rung-constraint">Don't need to be at the computer</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung rung-highlight">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">2025&ndash;26</span>
+          <span class="rung-name">Claude Code / Codex</span>
+        </div>
+        <span class="rung-constraint">Don't need an editor. No fixed mode.</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">2024&ndash;25</span>
+          <span class="rung-name">Cursor / VS Code + AI</span>
+        </div>
+        <span class="rung-constraint">Don't need to copy-paste</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">2023&ndash;24</span>
+          <span class="rung-name">Copy-paste from LLMs</span>
+        </div>
+        <span class="rung-constraint">Still manual glue between AI and editor</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">2023+</span>
+          <span class="rung-name">LLMs (ChatGPT, Claude)</span>
+        </div>
+        <span class="rung-constraint">Don't need to write code yourself</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">2010s</span>
+          <span class="rung-name">IDEs (PyCharm, VS Code)</span>
+        </div>
+        <span class="rung-constraint">Don't need to manage files manually</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">2000s</span>
+          <span class="rung-name">NumPy / SciPy</span>
+        </div>
+        <span class="rung-constraint">Don't need to write loops for math</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">1990s</span>
+          <span class="rung-name">Python</span>
+        </div>
+        <span class="rung-constraint">Don't need type declarations or compilation</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">1970s</span>
+          <span class="rung-name">C</span>
+        </div>
+        <span class="rung-constraint">Don't need to track registers</span>
+      </div>
+    </div>
+
+    <div class="ladder-rung">
+      <div class="rung-dot"></div>
+      <div class="rung-main">
+        <div class="rung-left">
+          <span class="rung-era">1950s&ndash;60s</span>
+          <span class="rung-name">Assembly</span>
+        </div>
+        <span class="rung-constraint">Don't need to know the binary encoding</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="ladder-label">Each rung removes something you used to do manually &uarr;</p>
+
+  <div class="section-inner" style="margin-top:72px">
+    <div class="section-text">
+      <p>Read the ladder from the bottom up. Assembly freed you from binary. C freed you from tracking registers. Python freed you from type declarations and compilation. NumPy freed you from writing loops for math. IDEs freed you from managing files. LLMs freed you from writing code yourself. Cursor put the AI inside the editor so you could stop copy-pasting. Claude Code removed the editor entirely &mdash; you talked to it in a terminal, and it read your codebase, wrote code, ran commands, spun up agents. Each step up, something you used to do manually became something the machine handled.</p>
+      <p>And then the obvious question: if all you're doing is talking to Claude Code, why do you need to sit in front of your computer to talk to it? You don't. That's remote control. That's the top of the ladder &mdash; the final manual constraint, physical presence, falls away. You're on a sidewalk with a phone. Your laptop is in another room training a neural network. Claude Code is the one sitting at the keyboard.</p>
+      <p>But reaching the top of the ladder and staying there are different things. The top rung is real &mdash; Claude Code's remote control feature makes it possible &mdash; but it's unstable without guardrails. CUDA dies on suspend. Drivers silently fail to load at boot. Sessions drop and kill running jobs. Private repos return 404 from a phone. Every one of these failures happened during the walks that produced RCP. The protocol is what turns a fragile top rung into a platform you can actually stand on. The diagram below shows exactly what that platform looks like &mdash; eight conditions, each one toggleable, each one a guardrail that was earned.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 4. ARCHITECTURE (RCP Playground)                    -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="arch-section">
+  <h2 class="section-header">Architecture</h2>
+
+  <div class="rcp-playground">
+    <!-- Status Banner -->
+    <div class="rcp-status-banner not-ready" id="rcp-banner">
+      <div class="scanline"></div>
+      <span id="rcp-status-text">REMOTE CONTROL: NOT READY</span>
+    </div>
+    <div class="rcp-failing-list" id="rcp-failing"></div>
+    <div class="rcp-counter"><span class="on-count" id="rcp-on-count">0</span> / <span>8</span> systems online</div>
+
+    <!-- Interactive Canvas -->
+    <div class="rcp-canvas" id="rcp-canvas">
+      <svg class="lines-svg" id="rcp-lines-svg"></svg>
+
+      <!-- Laptop (center) -->
+      <div class="rcp-laptop not-ready" id="rcp-laptop">
+        <svg viewBox="0 0 140 100" width="140" height="100">
+          <rect class="laptop-body" x="15" y="5" width="110" height="70" rx="6"/>
+          <rect class="laptop-screen" x="22" y="12" width="96" height="56" rx="3"/>
+          <rect class="laptop-screen-content" x="26" y="16" width="88" height="48" rx="2"/>
+          <path class="laptop-base" d="M 5 78 L 15 75 L 125 75 L 135 78 L 135 85 Q 135 90 130 90 L 10 90 Q 5 90 5 85 Z"/>
+          <g fill="#2a3a5c" opacity="0.5">
+            <rect x="20" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="27" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="34" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="41" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="48" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="58" y="80" width="20" height="2" rx="0.5"/>
+            <rect x="82" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="89" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="96" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="103" y="80" width="4" height="2" rx="0.5"/>
+            <rect x="110" y="80" width="4" height="2" rx="0.5"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Presets -->
+    <div class="rcp-presets">
+      <button class="rcp-preset-btn" onclick="applyPreset('all-off')">All Off</button>
+      <button class="rcp-preset-btn" onclick="applyPreset('all-on')">All On</button>
+      <button class="rcp-preset-btn" onclick="applyPreset('at-desk')">At Desk (No Phone)</button>
+      <button class="rcp-preset-btn" onclick="applyPreset('forgot-sleep')">Forgot Sleep Inhibit</button>
+      <button class="rcp-preset-btn" onclick="applyPreset('no-gpu')">No GPU Driver</button>
+    </div>
+
+    <!-- Next Step -->
+    <div class="rcp-next-step">
+      <div class="rcp-next-box" id="rcp-next-box">
+        <span class="step-label" id="rcp-step-label">NEXT STEP</span>
+        <span id="rcp-prompt-text"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Architecture prose -->
+  <div class="section-inner" style="margin-top:56px">
+    <div class="section-text">
+      <p>RCP is a preflight checklist for remote-controlled compute sessions. It formalizes the handshake between a human with a phone and an AI agent running on their machine: is the laptop plugged in? Is CUDA alive? Will the GPU survive a sleep event? Is the phone connected? Eight booleans, AND'd together. All green means go. The diagram above is the protocol itself &mdash; eight conditions radiate from a central laptop, each connected by a line that glows green when the condition is met. Click any node to toggle it. When all eight are green, the banner flips to READY and the laptop pulses. The machine is safe to walk away from.</p>
+      <p>The conditions aren't arbitrary. They form a dependency chain. Power keeps the machine alive. WiFi enables the remote session and the git pushes that deliver results. Sleep Inhibit prevents the OS from suspending the GPU mid-training &mdash; CUDA contexts don't survive suspend, and recovering from a destroyed context requires a full reboot. The GPU Driver step loads nvidia_uvm, a kernel module that doesn't auto-load on this hardware. CUDA verification confirms the entire stack is functional. Git Public ensures the repo is accessible from a phone browser. GWS CLI creates optionality for communication via Google Drive and Gmail &mdash; apart from providing an alternative channel, it provides a backup if the primary connection drops. Phone Connected is the final gate &mdash; the human confirms they have a working link before leaving the room.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 5. DESIGN PHILOSOPHY                                -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">Design Philosophy</h2>
+    <div class="section-text">
+      <p>We call the core design insight the <strong>Friction-Forged Protocol</strong>. The idea is that the most reliable operational protocols aren't designed upfront from requirements documents &mdash; they crystallize from failure.</p>
+      <p>Sleep Inhibit exists because CUDA died on suspend during an early test run and the GPU context couldn't recover without a full reboot. The GPU Driver step exists because nvidia_uvm silently fails to load at boot on this specific hardware, and we only discovered this after torch.cuda.is_available() returned False with no useful error message. Git Public exists because a private repo looked fine from the laptop but returned 404 on the phone. Detached processes exist as free technical insurance &mdash; they aren't strictly necessary, but they're good practice that costs nothing and prevents job death if a session drops. Each rule traces to a specific incident.</p>
+      <p>The result is a protocol that's small, specific, and hard to break &mdash; not because someone thought carefully about what might go wrong, but because someone lived through what actually did.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 6a. RCP AND MCP                                     -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">RCP and MCP</h2>
+    <div class="section-text">
+      <p>RCP rhymes with MCP, and not just phonetically.</p>
+      <p>MCP &mdash; Model Context Protocol &mdash; is an open standard by Anthropic that gives AI applications a universal way to connect to external tools and data sources: a client-server architecture that replaces fragile, one-off integrations with a single protocol, the way USB-C replaced a drawer full of proprietary cables. RCP applies the same structural idea to a different problem &mdash; not "can the AI reach the tool?" but "can the human control their machine remotely, with Claude Code, from their phone?" Both are protocols. Both replace ad-hoc, fragile processes with a formalized standard so that downstream work can assume a known-good state.</p>
+      <p>The naming wasn't intentional. RCP was written out in long-form &mdash; "Remote Control Protocol" &mdash; and the phonetic echo only became obvious after building a local MCP server in a separate project. They operate at different scales but solve the same category of problem: formalize a connection pattern so it's repeatable and reliable. MCP is an ecosystem-wide standard shipped as infrastructure. RCP is a personal protocol, portable across projects, built by one person who wanted the same reliability guarantees for kicking off GPU training from a phone on a walk.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 6b. WHAT KIND OF PROJECT IS THIS                    -->
+<!-- ════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-inner">
+    <h2 class="section-header">A Claude Code Project</h2>
+    <div class="section-text">
+      <p>RCP borrows from established categories without belonging to any of them. It has the motivation of internal tooling &mdash; encode operational knowledge into something repeatable. The structure of SRE runbooks &mdash; phased checklists with verification gates. The safety philosophy of aerospace preflight procedures &mdash; all conditions must pass before go. But none of these map cleanly, because all of them assume a human operator.</p>
+      <p>RCP inverts that. Claude drives the sequence. The human provides judgment at critical gates &mdash; confirming they've left the machine, providing a tag name, saying "go" to launch the job. The AI is the operator. The human is the approver. That partnership didn't exist before Claude Code, and there's no established category for tooling that supports it.</p>
+      <p>This makes RCP a Claude Code project for a simple reason: remote control is a feature unique to Claude Code. It's not available in Cursor, Codex, or any other AI coding tool. RCP exists because remote control exists, and remote control only exists in Claude Code. That's the whole explanation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- 7. GITHUB FOOTER                                    -->
+<!-- ════════════════════════════════════════════════════ -->
+<footer class="github-footer">
+  <a href="https://github.com/VivekKarmarkar/remote-control-test-gpu" target="_blank" rel="noopener noreferrer">
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+    </svg>
+    View on GitHub
+  </a>
+  <a href="remote-control-protocol-rcp-website.md" target="_blank" rel="noopener noreferrer">
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4C4 2.89543 4.89543 2 6 2H14L20 8V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M14 2V8H20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="17" x2="14" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    View Skill
+  </a>
+</footer>
+
+<!-- ════════════════════════════════════════════════════ -->
+<!-- SCRIPTS                                             -->
+<!-- ════════════════════════════════════════════════════ -->
+<script>
+// ── Video embed ────────────────────────────────────
+(function() {
+  var container = document.getElementById('video-container');
+  var videoId = 'ZtF7B43adgU';
+  if (location.protocol === 'file:') {
+    container.innerHTML =
+      '<a class="video-thumb" href="https://www.youtube.com/watch?v=' + videoId + '" target="_blank" rel="noopener" ' +
+      'style="background-image:url(https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg)">' +
+      '<div class="play-btn"></div></a>';
+  } else {
+    container.innerHTML =
+      '<iframe src="https://www.youtube.com/embed/' + videoId + '" ' +
+      'title="RCP: Remote Control Protocol — Demo" ' +
+      'allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+      'allowfullscreen></iframe>';
+  }
+})();
+
+// ── RCP Playground Logic ───────────────────────────
+(function() {
+  var conditions = [
+    { id: 'power', label: 'Power',         icon: '\u26A1',
+      next: 'Plug in the laptop.' },
+    { id: 'wifi',  label: 'WiFi',          icon: '\uD83D\uDCF6',
+      next: 'Connect to WiFi.' },
+    { id: 'sleep', label: 'Sleep Inhibit', icon: '\uD83D\uDEE1\uFE0F',
+      next: 'Mask sleep targets: sudo systemctl mask sleep.target suspend.target hibernate.target' },
+    { id: 'gpu',   label: 'GPU Driver',    icon: '\uD83D\uDD27',
+      next: 'Load GPU driver: sudo modprobe nvidia_uvm' },
+    { id: 'cuda',  label: 'CUDA',          icon: '\uD83D\uDFE9',
+      next: 'Verify CUDA: python -c "import torch; print(torch.cuda.is_available())"' },
+    { id: 'git',   label: 'Git Public',    icon: '\uD83D\uDCE6',
+      next: 'Ensure GitHub repo is public so it can be accessed from phone.' },
+    { id: 'gws',   label: 'GWS CLI',       icon: '\u2601\uFE0F',
+      next: 'Verify GWS CLI is healthy.' },
+    { id: 'phone', label: 'Phone',         icon: '\uD83D\uDCF1',
+      next: 'Connect phone to mobile data and open remote session.' },
+  ];
+
+  var state = {};
+  conditions.forEach(function(c) { state[c.id] = false; });
+
+  // Layout
+  var cx = 480, cy = 310, radius = 200;
+  var LABEL_OFFSET = 80;
+
+  var nodePositions = {};
+  var arcNodes = conditions.filter(function(c) { return c.id !== 'phone'; });
+  arcNodes.forEach(function(c, i) {
+    var startAngle = -155;
+    var endAngle = 55;
+    var angle = (startAngle + (endAngle - startAngle) * (i / (arcNodes.length - 1))) * Math.PI / 180;
+    nodePositions[c.id] = { x: cx + radius * Math.cos(angle), y: cy + radius * Math.sin(angle) };
+  });
+  nodePositions.phone = { x: cx + 310, y: cy };
+
+  // Build DOM
+  var canvas = document.getElementById('rcp-canvas');
+  var svg = document.getElementById('rcp-lines-svg');
+
+  conditions.forEach(function(c) {
+    var pos = nodePositions[c.id];
+
+    // Connection line
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', cx);
+    line.setAttribute('y1', cy);
+    line.setAttribute('x2', pos.x);
+    line.setAttribute('y2', pos.y);
+    line.classList.add('conn-line', 'off');
+    if (c.id === 'phone' || c.id === 'git' || c.id === 'gws') line.classList.add('dashed');
+    line.id = 'rcp-line-' + c.id;
+    svg.appendChild(line);
+
+    // Icon
+    var iconWrap = document.createElement('div');
+    iconWrap.className = 'rcp-node-icon-wrap off';
+    iconWrap.id = 'rcp-icon-' + c.id;
+    if (c.id === 'phone') iconWrap.classList.add('phone-shape');
+    iconWrap.style.left = (pos.x - 32) + 'px';
+    iconWrap.style.top = (pos.y - 32) + 'px';
+    iconWrap.innerHTML = '<div class="rcp-node-icon">' + c.icon + '</div>';
+    iconWrap.addEventListener('click', function() { toggleCondition(c.id); });
+    canvas.appendChild(iconWrap);
+
+    // Label
+    var dx = pos.x - cx;
+    var dy = pos.y - cy;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    var ux = dx / dist;
+    var uy = dy / dist;
+    var labelX = pos.x + ux * LABEL_OFFSET;
+    var labelY = pos.y + uy * LABEL_OFFSET;
+
+    var labelGroup = document.createElement('div');
+    labelGroup.className = 'rcp-label-group off';
+    labelGroup.id = 'rcp-label-' + c.id;
+    labelGroup.style.left = labelX + 'px';
+    labelGroup.style.top = labelY + 'px';
+    labelGroup.style.transform = 'translate(-50%, -50%)';
+    labelGroup.innerHTML =
+      '<div class="rcp-label-text">' + c.label + '</div>' +
+      '<div class="rcp-label-status">OFF</div>';
+    canvas.appendChild(labelGroup);
+  });
+
+  function toggleCondition(id) {
+    state[id] = !state[id];
+    updateAll();
+    var iconWrap = document.getElementById('rcp-icon-' + id);
+    if (state[id]) {
+      iconWrap.classList.add('just-toggled-on');
+      setTimeout(function() { iconWrap.classList.remove('just-toggled-on'); }, 500);
+    }
+  }
+
+  function updateAll() {
+    var allOn = conditions.every(function(c) { return state[c.id]; });
+    var onCount = conditions.filter(function(c) { return state[c.id]; }).length;
+    var failing = conditions.filter(function(c) { return !state[c.id]; });
+
+    conditions.forEach(function(c) {
+      var iconWrap = document.getElementById('rcp-icon-' + c.id);
+      var labelGroup = document.getElementById('rcp-label-' + c.id);
+      var lineEl = document.getElementById('rcp-line-' + c.id);
+      var statusEl = labelGroup.querySelector('.rcp-label-status');
+
+      if (state[c.id]) {
+        iconWrap.classList.remove('off'); iconWrap.classList.add('on');
+        labelGroup.classList.remove('off'); labelGroup.classList.add('on');
+        lineEl.classList.remove('off'); lineEl.classList.add('on');
+        statusEl.textContent = 'ONLINE';
+      } else {
+        iconWrap.classList.remove('on'); iconWrap.classList.add('off');
+        labelGroup.classList.remove('on'); labelGroup.classList.add('off');
+        lineEl.classList.remove('on'); lineEl.classList.add('off');
+        statusEl.textContent = 'OFF';
+      }
+    });
+
+    // Banner
+    var banner = document.getElementById('rcp-banner');
+    var statusText = document.getElementById('rcp-status-text');
+    if (allOn) {
+      banner.className = 'rcp-status-banner ready';
+      statusText.textContent = 'REMOTE CONTROL: READY';
+    } else {
+      banner.className = 'rcp-status-banner not-ready';
+      statusText.textContent = 'REMOTE CONTROL: NOT READY';
+    }
+
+    // Laptop
+    var laptop = document.getElementById('rcp-laptop');
+    laptop.className = allOn ? 'rcp-laptop ready celebrating' : 'rcp-laptop not-ready';
+
+    // Failing list
+    var failList = document.getElementById('rcp-failing');
+    if (failing.length > 0) {
+      failList.className = 'rcp-failing-list';
+      failList.textContent = 'FAILING: ' + failing.map(function(c) { return c.label; }).join(' \u2022 ');
+    } else {
+      failList.className = 'rcp-failing-list hidden';
+      failList.textContent = '';
+    }
+
+    // Counter
+    document.getElementById('rcp-on-count').textContent = onCount;
+
+    // Next step
+    var box = document.getElementById('rcp-next-box');
+    var label = document.getElementById('rcp-step-label');
+    var text = document.getElementById('rcp-prompt-text');
+    if (allOn) {
+      box.classList.add('all-ready');
+      label.textContent = 'ALL SYSTEMS GO';
+      text.textContent = 'Ready for remote-controlled GPU operation. Walk away.';
+    } else {
+      box.classList.remove('all-ready');
+      var next = failing[0];
+      label.textContent = 'NEXT STEP \u2014 ' + next.label.toUpperCase();
+      text.textContent = next.next;
+    }
+  }
+
+  // Presets (exposed globally for onclick)
+  window.applyPreset = function(name) {
+    switch (name) {
+      case 'all-off':
+        conditions.forEach(function(c) { state[c.id] = false; }); break;
+      case 'all-on':
+        conditions.forEach(function(c) { state[c.id] = true; }); break;
+      case 'at-desk':
+        conditions.forEach(function(c) { state[c.id] = true; });
+        state.phone = false; break;
+      case 'forgot-sleep':
+        conditions.forEach(function(c) { state[c.id] = true; });
+        state.sleep = false; break;
+      case 'no-gpu':
+        conditions.forEach(function(c) { state[c.id] = true; });
+        state.gpu = false; state.cuda = false; break;
+    }
+    updateAll();
+  };
+
+  updateAll();
+})();
+</script>
+</body>
+</html>
